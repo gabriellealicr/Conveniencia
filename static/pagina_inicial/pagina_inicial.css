@@ -1,0 +1,90 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.sucess_login_message {
+    background-color: green;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 80px;
+    right: 10px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    line-height: 1; 
+    font-size: 14px;
+}
+
+.grafico{
+    height: 49vh;
+    width: 80vh;
+    position: absolute;
+    top:70%;
+    left:76%;
+    transform: translate(-50%,-50%);
+}
+
+.grafico::after {
+    content: attr(title);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.grafico_produtos{
+    height: 49vh;
+    width: 80vh;
+    position: absolute;
+    top:70%;
+    left:26%;
+    transform: translate(-50%,-50%);
+}
+
+.grafico_produtos::after {
+    content: attr(title);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.titulo{
+    position: absolute;
+    margin-top: 10vh;
+    left:47%;
+    color: rgb(9, 67, 143)
+}
+
+.titulo:hover{
+    color: rgb(235, 238, 79);
+    text-shadow: 3px 2px 2px rgb(9, 67, 143);
+}
+
+.titulo2{
+    position: absolute;
+    margin-top: 14vh;
+    left:36%;
+    color: rgb(9, 67, 143);
+}
+
+.titulo2:hover{
+    color: rgb(235, 238, 79);
+    text-shadow: 3px 2px 2px rgb(9, 67, 143);
+}
+  
+.imagem_tema{
+    position: absolute;
+    margin-top: 10vh;
+    left: 35%;
+}
+

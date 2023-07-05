@@ -1,0 +1,82 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form-login {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 64vh;
+    width: 40vh;
+}
+
+.botao-login {
+    width: 100%;
+    margin-top: 160px;
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-login:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+}  
+
+.botao-login:active,
+.botao-login:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control {
+    font-size: 16px;
+    height: 40px;
+}
+
+.usuario {
+    margin-top: 20px;
+}
+
+.titulo {
+    margin-bottom: 20px;
+}
+
+.imagem {
+    width: 370px;
+    height: 200px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: -60px;
+}
+
+.erro{
+    color: red;
+    position: absolute;
+    margin-top: 25px;
+    margin-left: 2px;
+}
+
+.input-group-text {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 109vh;
+    margin-top: -35px;
+    z-index: 2;
+    padding: 10px;
+}
+
+.senha {
+    margin-top: 20px;
+    width: 10px;
+}

@@ -1,0 +1,70 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'produtos/cadastro.css' %}" />
+    <title>Cadastro de Colaborador</title>
+</head>
+<body>
+    <div class="form">
+      {% if sucesso_cadastro %}
+      <div class="success-cadastro-message" id = "success-cadastro-message">
+              {{ sucesso_cadastro }}
+      </div> 
+      {% endif %}
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </div>
+    {% endif %}
+        <form class="form-cadastro-produto" method="post" action="{% url 'cadastro_produto' %}">
+            {% csrf_token %}
+            <h2 class="form-signin-heading titulo">Registrar Produto</h2>
+            <input type="text" class="form-control nome" id="nome" name="nome" placeholder="Nome" required value="{{ request.GET.nome }}" />
+            <select class="form-control custom-select">A
+              <option value="1">Alimento</option>
+              <option value="2">Outros</option>
+            </select>
+            <input type="text" class="form-control codigo_barras" maxlength="13" id="codigo_barras" name="codigo_barras" placeholder="Codigo de Barras" required value="{{ request.GET.codigo_barras }}" />
+            <input type="text" class="form-control preco" id="preco" name="preco" placeholder="Preço" required value="{{ request.GET.preco }}"/>
+            <button class="btn btn-lg btn-primary btn-block botao-salvar" type="submit">Salvar</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+      <script>
+        const nomeField = document.getElementById("nome");
+            nomeField.addEventListener("input", function() {
+            this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>]/g, "");
+        });
+        
+        const codigoField = document.getElementById("codigo_barras");
+        codigoField.addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, "");
+        });
+
+        const precoField = document.getElementById("preco");
+        precoField.addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, "");
+        const formatter = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+        });
+        this.value = formatter.format(this.value / 100);
+        });
+
+        $(document).ready(function() {
+          $('#cpf').inputmask('999.999.999-99');
+        });
+      </script>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="imagex/png" href="{% static 'imagens/logo.ico' %}">
+  <link rel="stylesheet" href="{% static 'compra/conveniencia.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <title>Conveniência</title>
+</head>
+
+<body>
+  <form class="form-modal" method="post" action="{% url 'finalizar_compra' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="enviarLoginModal" tabindex="-1" role="dialog" aria-labelledby="enviarLoginModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title3" id="enviarLoginModalLabel">Confirmação de Colaborador</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control login" id="login" name="login" placeholder="Login" required>
+            <br>
+            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary btn-ok-modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="form-modal" method="post" action="{% url 'verificar_referencia' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="enviarLoginRefModal" tabindex="-1" role="dialog"
+      aria-labelledby="enviarLoginRefModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title1" id="enviarLoginRefModalLabel">Verificar Referência</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control login" id="login" name="login" placeholder="Login" required>
+            <br>
+            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary btn-ok-modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal fade" id="enviarReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="enviarReferenciaModal"
+    aria-hidden="true">
+    <div class="modal-dialog ref align-items-center" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title2" id="enviarReferenciaModalLabel">Gastos: {{colaborador}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Referência Anterior: R${{ gasto_referencia_anterior|floatformat:2 }}</p>
+          <p>Referência Atual: R${{ gasto_referencia_atual|floatformat:2 }}</p>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="form-compra" method="post" action="{% url 'conveniencia' %}">
+    {% csrf_token %}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if erro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ erro }}
+    </div>
+    {% endif %}
+    {% if erro_senha %}
+    <div class="erro_senha" id="erro_senha">
+      {{ erro_senha }}
+    </div>
+    {% endif %}
+    {% if erro_colab %}
+    <div class="erro_colab" id="erro_colab">
+      {{ erro_colab }}
+    </div>
+    {% endif %}
+    {% if erro_inativo %}
+    <div class="erro_inativo" id="erro_inativo">
+      {{ erro_inativo }}
+    </div>
+    {% endif %}
+    <!-- <h2 class="titulo">Conveniência</h2> -->
+    <img class="imagem" src="{% static 'imagens/logooficial.png' %}">
+    <strong class="campo">Inserir produto:</strong>
+    <input type="text" class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
+      placeholder="Código de Barras" required>
+    <button class="btn btn-light botao-add" type="submit"><strong>Adicionar Produto</strong></button>
+    <button class="btn btn-light botao-limpar" name="limpar" formnovalidate formaction="{% url 'limpar' %}">
+      <strong>Limpar</strong></button>
+    <a class="btn btn-light botao-finalizar" data-toggle="modal" data-target="#enviarLoginModal"><strong>Finalizar
+        Compra</strong></a>
+    <a class="btn btn-light botao-referencia" data-toggle="modal" data-target="#enviarLoginRefModal"><strong>Verificar
+        Referência</strong></a>
+    <div class="lista">
+      <table class="table table-hover">
+        {% if produtos_adicionados %}
+        <h3 class="prod_add">Produtos Adicionados</h3>
+        <thead class="topo">
+          <tr class="topo">
+            <th scope="col" class="nome">Nome</th>
+            <th scope="col" class="codbarras">Código de Barras</th>
+            <th scope="col" class="qtd">Quantidade</th>
+            <th scope="col" class="preco">Preço</th>
+            <th scope="col" class="exc"></th>
+          </tr>
+        </thead>
+        <ul>
+          {% for produto_data in produtos_adicionados %}
+          <div class="produtos">
+            <tr>
+              <td>{{ produto_data.nome }}</td>
+              <td>{{ produto_data.codigo_barras }}</td>
+              <td>{{ produto_data.quantidade }}</td>
+              <td>{{ produto_data.preco }}</td>
+              <td>
+                <!-- <a class="deletar-item" href="{% url 'excluir_produto' produto_data.id %}">Excluir</a> -->
+                <a href="{% url 'excluir_produto' produto_data.id %}" class="fa fa-minus-square lixeira" aria-hidden="true"></a>
+          </div>
+          {% endfor %}
+        </ul>
+      </table>
+    </div>
+    <div class="valor_total">
+      <h5>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</h5>
+    </div>
+    <div class="itens">
+      <h5>Itens: {{itens}}</h5>
+      {% endif %}
+    </div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script>
+
+    const codigoBarrasField = document.getElementById("codigo_barras");
+    codigoBarrasField.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, "");
+    });
+    function hideSuccessMessage(message) {
+      var successMessage = document.getElementById("success-cadastro-message");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 4000);
+    }
+    var successMessage = document.getElementById("success-cadastro-message");
+    if (successMessage) {
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
+    }
+
+    function hideSuccessMessage(message) {
+      var erroSenha = document.getElementById("erro_senha");
+      erroSenha.innerText = message;
+      erroSenha.style.display = "block";
+      setTimeout(function () {
+        erroSenha.style.display = "none";
+      }, 4000);
+    }
+    var erroSenha = document.getElementById("erro_senha");
+    if (erroSenha) {
+      var message = erroSenha.innerText;
+      hideSuccessMessage(message);
+    }
+
+    function hideSuccessMessage(message) {
+      var erroColab = document.getElementById("erro_colab");
+      erroColab.innerText = message;
+      erroColab.style.display = "block";
+      setTimeout(function () {
+        erroColab.style.display = "none";
+      }, 4000);
+    }
+    var erroColab = document.getElementById("erro_colab");
+    if (erroColab) {
+      var message = erroColab.innerText;
+      hideSuccessMessage(message);
+    }
+
+    function hideSuccessMessage(message) {
+      var erroInativo = document.getElementById("erro_inativo");
+      erroInativo.innerText = message;
+      erroInativo.style.display = "block";
+      setTimeout(function () {
+        erroInativo.style.display = "none";
+      }, 4000);
+    }
+    var erroInativo = document.getElementById("erro_inativo");
+    if (erroInativo) {
+      var message = erroInativo.innerText;
+      hideSuccessMessage(message);
+    }
+
+    function finalizar_compra() {
+      window.location.href = "{% url 'finalizar_compra' %}";
+    }
+
+    {% if mostrar_ref %}
+
+    $(document).ready(function () {
+      $('#enviarReferenciaModal').modal('show');
+    });
+
+    setTimeout(function () {
+      $('#enviarReferenciaModal').modal('hide');
+    }, 8000);
+    {% endif %}
+  </script>
+</body>
+
+</html>

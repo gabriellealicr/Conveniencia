@@ -1,0 +1,72 @@
+.fundo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    background-color: rgb(136, 211, 224); 
+}
+  
+.fundo .dropdown {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.fundo .pag-inicial{
+  margin-left: 70px !important;
+}
+  
+.fundo .dropdown:last-child {
+    margin-right: 0;
+}
+
+.dropdown-item.cadastrar-item.active, .dropdown-item.cadastrar-item:active,
+.dropdown-item.visualizar-item.active, .dropdown-item.visualizar-item:active {
+  background-color: rgb(235, 238, 79); 
+  color: black;
+}
+
+.botao-logout{
+    margin-left: 175vh;
+    background-color: rgb(136, 211, 224) !important; 
+    border: none;
+    position: absolute;
+}
+
+.botao-logout:hover {
+  color: rgb(255, 255, 29)!important;
+  border: none;
+}  
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.content {
+  margin-top: 70px; 
+  padding-top: 20px;
+}
+.imagem{
+  position: absolute;
+  margin-right: 170vh;
+  width: 10vh;
+  height: 6vh;
+}
+
+.btn-ok-modal {
+  background-color: rgb(9, 67, 143) !important;
+  color: #ffffff; 
+}
+
+.btn-ok-modal:hover {
+  background-color: yellow !important;
+  color: #000 !important;
+  border-color: rgb(235, 238, 79) !important;
+}  
+
+.modal-title{
+  margin-left: 120px;
+}

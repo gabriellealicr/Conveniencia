@@ -1,0 +1,112 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'colaboradores/acessar.css' %}" />
+    <title>Acesso ao Colaborador</title>
+</head>
+<body>
+  <div class="modal fade" id="enviarMensagemModalInativacao" tabindex="-1" role="dialog" aria-labelledby="enviarMensagemModalInativacao" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enviarMensagemModalInativacao">Confirmação de Inativação</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que inativar este colaborador?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary btn-ok-modal" onclick="inativar()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="enviarMensagemModalAtivacao" tabindex="-1" role="dialog" aria-labelledby="enviarMensagemModalAtivacao" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enviarMensagemModalInativacao">Confirmação de Ativação</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que ativar este colaborador?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary btn-ok-modal" onclick="ativar()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="form">
+        <form class="form-acesso-colaborador" action="{% url 'alterar_colaborador' colaborador.id %}" method="POST">
+            {% csrf_token %}
+            <h2 class="titulo">Edição de Colaborador</h2>
+            <i onclick="history.back()" class="fa fa-arrow-left arrow"></i>
+            <br>
+            <input type="hidden" value="{{colaborador.id}}" name="colaborador_id">
+            {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </div>
+          {% endif %}
+        <body>
+          <div class="campos">
+          <h6 class="campo"><strong>Nome:</strong></h6>
+        <input class = "form-control" type="text" id="nome" value="{{colaborador.nome}}" name="nome" required>
+        <br>
+        <br>
+        <br>
+        <h6 class="campo"><strong>CPF:</strong></h6>
+        <input class = "form-control" type="text" id = "cpf" value="{{colaborador.cpf_formatado}}" name="cpf" required>
+          <br>
+          <br>
+          <br>
+          <h6 class="campo"><strong>Login:</strong></h6>
+        <input class = "form-control" type="text" id="login" value="{{colaborador.login}}" name="login" required>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-success botao-salvar btn-lg">Salvar</button>
+        {% if colaborador.ativo %}
+        <a data-toggle="modal" data-target="#enviarMensagemModalInativacao" class="btn btn-warning btn-lg botao-inativar">Inativar</a>
+        {% else %} 
+        <a data-toggle="modal" data-target="#enviarMensagemModalAtivacao" class="btn btn-warning btn-lg botao-ativar">Ativar</a>
+        {% endif %} 
+      </div>
+      </form>
+      </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    <script>
+      const nomeField = document.getElementById("nome");
+      nomeField.addEventListener("input", function() {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>]/g, "");
+      });
+      $(document).ready(function() {
+        $('#cpf').inputmask('999.999.999-99');
+      });
+      function inativar() {
+        window.location.href = "{% url 'inativar_colaborador' colaborador.id %}";
+      }
+      function ativar() {
+        window.location.href = "{% url 'ativar_colaborador' colaborador.id %}";
+      }
+    </script>
+  {% endblock %}
+</body>
+</html>

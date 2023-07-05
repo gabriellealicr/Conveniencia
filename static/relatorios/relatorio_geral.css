@@ -1,0 +1,35 @@
+body{
+    background: #f1f9ff !important;	
+}
+
+.form-relatorio-consumo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 59vh;
+    width: 90vh;
+    position: absolute;
+}
+
+.botao-gerar{
+    background-color: rgb(9, 67, 143) !important;
+    width: 170px !important;
+    margin-left: 102vh;
+    margin-top: 280px;
+    position: absolute;
+}
+
+.botao-gerar:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+}  
+
+.titulo{
+    color: rgb(9, 67, 143);
+    margin-left: 110vh;
+    width: 500px;
+    position: absolute;
+    margin-bottom: 260px;
+}

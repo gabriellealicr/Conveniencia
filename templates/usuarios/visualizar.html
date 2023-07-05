@@ -1,0 +1,120 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuarios/visualizar.css' %}" />
+    <title>Listagem de Usuários</title>
+</head>
+<body>
+        <!-- <form class="form-visualizacao-usuario">
+            {% csrf_token %}
+            {% if sucesso_cadastro %}
+            <div class="success-cadastro-message" id = "success-cadastro-message">
+                    {{ sucesso_cadastro }}
+            </div> 
+            {% endif %}
+            <br>
+            <div class="filtro">
+              <br>
+              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome de usuário ou e-mail do usuário">
+              <button class="btn btn-light" type="submit">Buscar</button>
+            </div>
+            <br>
+            <div class="ch-colab-inativos">
+              <input type = "checkbox" id = "inativos" name = "inativos">
+              <label for = "inativos"> Filtrar por Usuários Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
+            </div>
+            {% for usuario in usuarios %}
+            <div>
+              <br>
+              <label class="campo" name="usuario">Usuário:</label>
+              {{ usuario.username }}
+            </div>
+            <div>
+              <label class="campo" name="email">E-mail:</label>
+              {{ usuario.email }}
+            </div>
+            <div>
+              <label class="campo" name="situacao">Situação:</label>
+              {% if usuario.is_active %}
+              <label>Ativo</label>
+              {% else %} 
+              <label>Inativo</label>
+              {% endif %} 
+            </div>
+            <a href="{% url  'acessar_usuario' usuario.id %}" class="botao_acessar_usuario"> Acessar para edição/inativação </a>
+          {% endfor %}
+        </form> -->
+
+        <form class="form-visualizacao-usuario">
+          {% csrf_token %}
+          {% if sucesso_cadastro %}
+          <div class="success-cadastro-message" id = "success-cadastro-message">
+                  {{ sucesso_cadastro }}
+          </div> 
+          {% endif %}
+          <h2 class="titulo"><strong>Lista de Usuários</strong></h2>
+          <div class="filtro">
+            <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome de usuário ou e-mail">
+            <button class="btn btn-light" type="submit">Buscar</button>  
+          </div>
+          <div class="ch-colab-inativos">
+            <input type = "checkbox" id = "inativos" name = "inativos">
+            <label for = "inativos"> Filtrar por Usuários Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
+          </div>
+          <table class="table table-hover lista">
+            <thead>
+              <tr>
+                <th class="usuario" scope="col">Usuário</th> 
+                <th class="email" scope="col">E-mail</th>
+                <th class="situacao" scope="col">Situação</th>
+                <th class="exc" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for usuario in usuarios %} 
+              <tr>
+                <td>{{ usuario.username }}</td> 
+                <td>{{ usuario.email }}</td>
+                <td>
+                  {% if usuario.is_active %}
+                  Ativo
+                  {% else %}
+                  Inativo
+                  {% endif %}
+                </td>
+                <td class="coluna">
+                  <a href="{% url 'acessar_usuario' usuario.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
+                </td>          
+              </tr>    
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+
+<script>
+    function hideSuccessMessage(message) {
+      var successMessage = document.getElementById("success-cadastro-message");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
+
+      setTimeout(function() {
+          successMessage.style.display = "none";
+      }, 4000);
+  }
+  var successMessage = document.getElementById("success-cadastro-message");
+  if (successMessage) {
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
+  }
+</script>
+    {% endblock %}
+</body>
+</html>

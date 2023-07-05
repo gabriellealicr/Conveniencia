@@ -1,0 +1,54 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'relatorios/relatorio_consumo.css' %}" />
+    <title>Relatório</title>
+</head>
+<body>
+<form method="POST" class="form-relatorio-consumo" action="{% url 'relatorio_consumo' %}">
+  {% csrf_token %}
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </div>
+{% endif %}
+    <h2 class="titulo">Relatório de Consumo Detalhado</h2>
+    <h4 class="de">De:</h4>
+    <input type="date" class="data_inicio" id="data_inicio" name="data_inicio">
+    <h4 class="ate">Até:</h4>
+    <input type="date" class="data_fim" id="data_fim" name="data_fim">
+  
+    <h4 class="login_colab">Login de Colaborador:</h4>
+    <input type="text" class="login_colab_input" id="colaborador_pesquisa" name="colaborador_pesquisa">
+  
+    <button class="btn btn-lg btn-primary btn-block botao-gerar" type="submit">Gerar Relatório</button>
+  </form>
+  <script>
+    function hideSuccessMessage(message) {
+        var successMessage = document.getElementById("colab_nao_encontrado");
+        successMessage.innerText = message;
+        successMessage.style.display = "block";
+
+        setTimeout(function() {
+            successMessage.style.display = "none";
+        }, 4000);
+    }
+
+    var successMessage = document.getElementById("colab_nao_encontrado");
+    if (successMessage) {
+        var message = successMessage.innerText;
+        hideSuccessMessage(message);
+    }
+</script>
+    {% endblock %}
+</body>
+</html>

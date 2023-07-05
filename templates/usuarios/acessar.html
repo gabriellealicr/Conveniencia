@@ -1,0 +1,103 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuarios/acessar.css' %}" />
+    <title>Acesso ao Usuário</title>
+</head>
+<body>
+          <div class="modal fade" id="enviarMensagemModalInativacao" tabindex="-1" role="dialog" aria-labelledby="enviarMensagemModalInativacao" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="enviarMensagemModalInativacao">Confirmação de Inativação</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Tem certeza que inativar este usuário?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary btn-ok-modal" onclick="inativar()">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="enviarMensagemModalAtivacao" tabindex="-1" role="dialog" aria-labelledby="enviarMensagemModalAtivacao" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="enviarMensagemModalInativacao">Confirmação de Ativação</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Tem certeza que ativar este usuário?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary btn-ok-modal" onclick="ativar()">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <div class="login">
+        <form class="form-acesso-usuario" action="{% url 'alterar_usuario' user.id %}" method="POST">
+            {% csrf_token %}
+            <h2 class="titulo">Edição de Usuário</h2>
+            <i onclick="history.back()" class="fa fa-arrow-left arrow"></i>
+            <br>
+            {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </div>
+          {% endif %}
+        <body>
+        <div class="campos">
+        <h6 class="campo"><strong>Nome de usuário:</strong></h6>
+        <input class = "form-control" type="text" id = "usuario_usuario" value="{{user.username}}" name="usuario" required>
+        <br>
+        <br>
+        <br>
+        <h6 class="campo"><strong>E-mail:</strong></h6>
+        <input class = "form-control" type="text" id = "email" value="{{user.email}}" name="email" required>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-success botao-salvar btn-lg">Salvar</button>
+        {% if user.is_active %} {% if not user.is_superuser %}
+        <a data-toggle="modal" data-target="#enviarMensagemModalInativacao" class="btn btn-warning btn-lg botao-inativar">Inativar</a>
+        {% endif %} 
+        {% else %} 
+        <a data-toggle="modal" data-target="#enviarMensagemModalAtivacao" class="btn btn-warning btn-lg botao-ativar">Ativar</a>
+        {% endif %} 
+      </div>
+        </form>
+      </div>
+<script>
+    function enviarMensagem() {
+        $('#enviarMensagemModalInativacao').modal('show');
+    }
+    function inativar() {
+        window.location.href = "{% url 'inativar_usuario' user.id %}";
+    }
+    function enviarMensagem() {
+        $('#enviarMensagemModalInativacao').modal('show');
+    }
+    function ativar() {
+        window.location.href = "{% url 'ativar_usuario' user.id %}";
+    }
+</script>
+  {% endblock %}
+</body>
+</html>

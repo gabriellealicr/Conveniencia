@@ -1,0 +1,113 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.form-cadastro-usuario {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+}
+
+.form .form-cadastro-usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 59vh;
+    width: 90vh;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.botao-salvar {
+    width: 200px;
+    align-self: center;
+    margin-top: 110px;
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-salvar:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+}  
+
+.botao-salvar:active,
+.botao-salvar:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 30px;
+}
+  
+.titulo{
+    text-align: center;
+}
+
+.usuario{
+    margin-top: 80px;
+}
+
+.erro_usuario{
+    color: red;
+    position: absolute;
+    margin-top: 17vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+}
+
+.erro_usuario_cad{
+    color: red;
+    position: absolute;
+    margin-top: 17vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.erro_email{
+    color: red;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 24vh;
+}
+
+.erro_senha{
+    color: red;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 31vh;
+}
+
+.input-group-text-senha {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 31vh;
+    margin-top: 04vh;
+    z-index: 2;
+    padding: 10px;
+}
+
+.input-group-text-conf {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 31vh;
+    margin-top: 18vh;
+    z-index: 2;
+    padding: 10px;
+}

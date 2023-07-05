@@ -1,0 +1,232 @@
+body {
+	background: #f0f0ee !important;	
+}
+
+.form-compra {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:40%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    padding: 15px 35px 45px;
+	background: #f1f9ff !important;	
+    width: 190vh;
+    height: 100vh; 
+    margin-top: 90px; 
+}
+
+.codigo-barras {
+    position: absolute;
+    font-size: 20px;
+    width: 130vh !important;
+    margin-bottom: 27vh;
+    left: 170px;
+}
+
+.botao-add {
+    position: absolute;
+    font-size: 15px !important;
+    width: 200px;
+    margin-bottom: 27vh;
+    right: 170px;
+    background-color: rgb(228, 228, 228) !important;
+}
+
+.botao-add:hover{
+    background-color: yellow !important;
+}
+
+.botao-limpar {
+    position: absolute;
+    font-size: 20px;
+    width: 130px;
+    margin-top: 85vh;
+    right: 170px;
+    background-color: rgb(228, 228, 228) !important;
+}
+
+.botao-limpar:hover{
+    background-color: yellow !important;
+}
+
+.produtos {
+    margin-top: 10px;
+}
+
+.lista{
+    top:41%;
+    position: absolute;
+    overflow-y: auto; /* Adiciona uma rolagem vertical quando necessário */
+    height: 430px;
+    width: 1500px;
+	background: #d6edff;	
+}
+
+.success-cadastro-message {
+    background-color: red;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    line-height: 1; 
+    font-size: 14px;
+    width: 183px;
+}
+
+.erro_senha {
+    background-color: red;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    line-height: 1; 
+    font-size: 17px;
+    width: 150px;
+}
+
+.erro_colab {
+    background-color: red;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    line-height: 1; 
+    font-size: 17px;
+    width: 245px;
+}
+
+.erro_inativo {
+    background-color: red;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    line-height: 1; 
+    font-size: 17px;
+    width: 210px;
+}
+
+.imagem{
+    margin-bottom: 230px;
+}
+
+.botao-finalizar{
+    position: absolute;
+    font-size: 20px;
+    width: 150px;
+    margin-top: 85vh;
+    background-color: rgb(228, 228, 228) !important;
+}
+
+.botao-finalizar:hover{
+    background-color: yellow !important;
+}
+
+.botao-referencia{
+    position: absolute;
+    font-size: 20px;
+    width: 180px;
+    margin-top: 85vh;
+    left: 170px;
+    background-color: rgb(228, 228, 228) !important;
+}
+
+.botao-referencia:hover{
+    background-color: yellow !important;
+}
+
+.valor_total {
+    position: absolute;
+    margin-top: 72vh;
+    margin-left: 125vh;
+    width: 300px;
+  }
+  
+.itens{
+    position: absolute;
+    margin-top: 72vh;
+    margin-right: 145vh;
+}
+
+.ref{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.modal-title1{
+    margin-left: 14vh;
+}
+
+.modal-title3{
+    margin-left: 10vh;
+}
+
+.lixeira{
+    font-size: 18px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.lixeira:hover{
+    color: red;
+}
+
+.campo{
+    margin-bottom: 40vh;
+    margin-right: 138vh;
+    color: rgb(9, 67, 143);
+    font-size: 22px;
+}
+
+.prod_add{
+    margin-left: 10px;
+}
+
+.topo .qtd, .topo .preco{
+    width: 50px;
+}
+
+.topo .codbarras{
+    width: 150px;
+}
+
+.topo .exc{
+    width: 10px;
+}
+
+.topo .nome{
+    width: 300px;
+}
+
+.btn-ok-modal {
+    background-color: rgb(9, 67, 143) !important;
+    color: #ffffff; 
+  }
+  
+  .btn-ok-modal:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+  }  

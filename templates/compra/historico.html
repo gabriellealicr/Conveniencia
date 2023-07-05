@@ -1,0 +1,105 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'compra/historico.css' %}" />
+    <title>Histórico de Compras</title>
+</head>
+<body>
+      <!-- <form class="form-visualizacao-historico">
+            {% csrf_token %}
+            <br>
+            <div class="filtro">
+              <br>
+              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
+              <button class="btn btn-light" type="submit">Buscar</button>  
+            </div>
+            <br>
+            {% for compra in compras %}
+            <br>
+            <div>
+              <label class="campo" id = "data" for="nome">Data:</label>
+              {{ compra.data|date:"d-m-Y H:i:s"}}
+            </div>
+            <div>
+              <label class="campo" id = "valor_total" for="cpf">Valor Total:</label>
+              {{ compra.valor_total }}
+            </div>
+            <div>
+              <label class="campo" for="login">Colaborador:</label>
+              {{ compra.colaborador }}
+            </div>
+            <div>
+              <label class="campo" for="produtos">Produtos:</label>
+              {% for item in compra.item_compra_set.all %}
+                  {{ item.produto.nome }} (Cód: {{ item.produto.codigo_barras }}){% if not forloop.last %},{% endif %}
+              {% endfor %}
+          </div>
+          {% endfor %}
+      </form> -->
+      <form class="form-visualizacao-historico">
+        {% csrf_token %}
+      <div class="tela">
+        {% if sucesso_cadastro %}
+        <div class="success-cadastro-message" id = "success-cadastro-message">
+                {{ sucesso_cadastro }}
+        </div> 
+        {% endif %}
+        <h2 class="titulo"><strong>Lista de Compras</strong></h2>
+        <div class="filtro">
+          <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
+          <button class="btn btn-light" type="submit">Buscar</button>  
+        </div>
+        <table class="table table-hover lista">
+          <thead>
+            <tr>
+              <th scope="col">Data</th> 
+              <th scope="col">Valor total</th>
+              <th scope="col">Colaborador</th>
+              <th scope="col">Produtos</th> 
+              <th scope="col">Código de Barras</th> 
+              <th scope="col">Quantidade</th> 
+            </tr>
+          </thead>
+          <tbody>
+            {% for compra in compras %} 
+            <tr>
+              <td>{{ compra.data|date:"d-m-Y H:i:s" }}</td> 
+              <td>{{ compra.valor_total }}</td>
+              <td>{{ compra.colaborador }}</td>
+              <td>
+                {% for item in compra.item_compra_set.all %}
+                {{ item.produto.nome }}
+                <br>
+            {% endfor %} 
+              </td>
+              <td>
+                {% for item in compra.item_compra_set.all %}
+                {{ item.produto.codigo_barras }}
+                <br>
+                {% endfor %} 
+                </td>
+                <td>
+                  {% for item in compra.item_compra_set.all %}
+                  {{item.quantidade}}
+                  <br>
+                  {% endfor %} 
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    {% endblock %}
+</body>
+</html>

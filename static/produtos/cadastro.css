@@ -1,0 +1,113 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.form-cadastro-produto {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #f6fcff;
+  border: 2px solid rgba(0,0,0,0.1);  
+  border-radius: 15px; 
+}
+
+.form .form-cadastro-produto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 59vh;
+    width: 90vh;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.botao-salvar {
+    width: 200px;
+    align-self: center;
+    margin-top: 100px;
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-salvar:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+}  
+
+.botao-salvar:active,
+.botao-salvar:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 30px;
+}
+  
+.titulo{
+    position: absolute;
+    text-align: center;
+    margin-bottom: 490px;
+}
+
+.nome{
+    margin-top: 140px;
+}
+
+.erro_codigo_barras {
+    color: red;
+    position: absolute;
+    margin-top: 490px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.erro_codigo_barras_cad{
+    color: red;
+    position: absolute;
+    margin-top: 490px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.erro_preco{
+    color: red;
+    position: absolute;
+    margin-top: 556px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.erro_nome{
+    color: red;
+    position: absolute;
+    margin-top: 420px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.form .success-cadastro-message {
+    background-color: green;
+    color: #fff;
+    padding: 10px; 
+    border-radius: 5px;
+    position: fixed;
+    top: 80px;
+    right: 10px;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    line-height: 1; 
+    font-size: 14px;
+}

@@ -1,0 +1,111 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.form-acesso-produto {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    position: absolute;
+    top:52%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 70vh;
+    height: 66vh;
+    text-align: center;
+    background-color: #f6fcff;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-salvar {
+    width: 115px;
+    height: 48px;
+    font-size: 15px;
+    margin-top: -10px;
+}
+
+.botao-ativar, .botao-inativar{
+    width: 115px;
+    margin-top: -10px;
+    background-color: rgb(235, 238, 79) !important;
+    border-color: rgb(235, 238, 79) !important;
+}
+
+.form-control {
+    font-size: 16px;
+    height: auto;
+    width: 40vh !important;
+}
+
+.campos{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 12vh;
+}
+
+.nome{
+    margin-top: 50px;
+}
+.filtro .busca{
+    width: 500px;
+}
+
+.campo{
+    margin-top: -40px;
+    position: absolute;
+}
+
+.erro_codigo_barras{
+    color: red;
+    position: absolute;
+    margin-top: 21vh;
+    margin-left: 200px;
+}
+
+.erro_preco{
+    color: red;
+    position: absolute;
+    margin-top: 32vh;
+    margin-left: 260px;
+}
+
+.erro_nome{
+    color: red;
+    position: absolute;
+    margin-left: 250px;
+    margin-top: 9vh;
+}
+
+.arrow{
+    margin-top: 3vh;
+    margin-left: -32vh;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.titulo{
+    text-align: center;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 410px;
+}
+
+.btn-ok-modal {
+    background-color: rgb(9, 67, 143) !important;
+    color: #ffffff; 
+}
+  
+.btn-ok-modal:hover {
+    background-color: yellow !important;
+    color: #000 !important;
+    border-color: rgb(235, 238, 79) !important;
+}  

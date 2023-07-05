@@ -1,0 +1,127 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'colaboradores/visualizar.css' %}" />
+    <title>Visualização de Colaboradores</title>
+</head>
+<body>
+        <!-- <form class="form-visualizacao-colaborador">
+            {% csrf_token %}
+            <br>
+            <div class="filtro">
+              <br>
+              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o CPF do colaborador">
+              <button class="btn btn-light" type="submit">Buscar</button>  
+            </div>
+            <br>
+            <div class="ch-colab-inativos">
+              <input type = "checkbox" id = "inativos" name = "inativos">
+              <label for = "inativos"> Filtrar por Colaboradores Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
+            </div>
+            {% for colaborador in colaboradores %}
+            <div>
+              <br>
+              <label class="campo" for="nome">Nome:</label>
+              {{ colaborador.nome }}
+            </div>
+            <div>
+              <label class="campo" for="cpf">CPF:</label>
+              {{ colaborador.cpf_formatado }}
+            </div>
+            <div>
+              <label class="campo" for="login">Login:</label>
+              {{ colaborador.login }}
+            </div>
+            <div>
+              <label class="campo" name="situacao">Situação:</label>
+              {% if colaborador.ativo %}
+              <label>Ativo</label>
+              {% else %} 
+              <label>Inativo</label>
+              {% endif %} 
+            </div>
+            <a href="{% url  'acessar_colaborador' colaborador.id %}" class="botao_acessar_colaborador"> Acessar para edição/inativação </a>
+          {% endfor %}
+        </form> -->
+
+        <form class="form-visualizacao-colaborador">
+          {% csrf_token %}
+          {% if sucesso_cadastro %}
+          <div class="success-cadastro-message" id = "success-cadastro-message">
+                  {{ sucesso_cadastro }}
+          </div> 
+          {% endif %}
+          <h2 class="titulo"><strong>Lista de Colaboradores</strong></h2>
+          <div class="filtro">
+            <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o CPF ou login do colaborador">
+            <button class="btn btn-light" type="submit">Buscar</button>  
+          </div>
+          <div class="ch-colab-inativos">
+            <input type = "checkbox" id = "inativos" name = "inativos">
+            <label for = "inativos"> Filtrar por Colaboradores Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
+          </div>
+          <table class="table table-hover lista">
+            <thead>
+              <tr>
+                <th scope="col" class="nome" >Nome</th> 
+                <th scope="col" class="cpf" >CPF</th>
+                <th scope="col" class="login" >Login</th>
+                <th scope="col" class="situacao" >Situação</th> 
+                <th scope="col" class="editar" ></th> 
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for colaborador in colaboradores %} 
+              <tr>
+                <td>{{ colaborador.nome }}</td> 
+                <td>{{ colaborador.cpf_formatado }}</td>
+                <td>{{ colaborador.login }}</td>
+                <td>
+                  {% if colaborador.ativo %}
+                  Ativo
+                  {% else %}
+                  Inativo
+                  {% endif %}
+                </td>
+                <td class="coluna">
+                  <a href="{% url 'acessar_colaborador' colaborador.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
+                </td>          
+              </tr>    
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+          
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#cpf').inputmask('999.999.999-99');
+      });
+        function hideSuccessMessage(message) {
+            var successMessage = document.getElementById("success-cadastro-message");
+            successMessage.innerText = message;
+            successMessage.style.display = "block";
+    
+            setTimeout(function() {
+                successMessage.style.display = "none";
+            }, 4000);
+        }
+        var successMessage = document.getElementById("success-cadastro-message");
+        if (successMessage) {
+            var message = successMessage.innerText;
+            hideSuccessMessage(message);
+        }
+        
+    </script>
+    {% endblock %}
+</body>
+</html>

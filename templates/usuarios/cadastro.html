@@ -1,0 +1,60 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuarios/cadastro.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Cadastro de Colaborador</title>
+</head>
+<body>
+    <div class="form">
+        <form class="form-cadastro-usuario" method="post" action="{% url 'cadastrar_usuario' %}">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+            </div>
+          {% endif %}
+            <h2 class="form-signin-heading titulo">Registrar Usuário</h2>
+            <input type="text" class="form-control usuario" id="usuario_usuario" name="usuario_usuario" placeholder="Nome de Usuário" value="{{ request.GET.usuario_usuario }}" required/>
+            <input type="text" class="form-control email" id="email" name="email" placeholder="E-mail" value="{{ request.GET.email }}" required />
+            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required/>
+            <span class="input-group-text-senha">
+                <i class="fas fa-eye" id="togglePasswordS"></i>
+            </span>     
+            <input type="password" class="form-control conf_senha" name="conf_senha" placeholder="Confirmação de Senha" required/>
+            <span class="input-group-text-conf">
+                <i class="fas fa-eye" id="togglePasswordC"></i>
+            </span>     
+            <button class="btn btn-lg btn-primary btn-block botao-salvar" type="submit">Salvar</button>
+        </form>
+    </div>
+    <script>
+        const togglePasswordS = document.querySelector('#togglePasswordS');
+        const passwordInputS = document.querySelector('.senha');
+    
+        togglePasswordS.addEventListener('click', function () {
+            const type = passwordInputS.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputS.setAttribute('type', type);
+            togglePasswordS.classList.toggle('fa-eye-slash');
+        });
+        const togglePasswordC = document.querySelector('#togglePasswordC');
+        const passwordInputC = document.querySelector('.conf_senha');
+    
+        togglePasswordC.addEventListener('click', function () {
+            const type = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputC.setAttribute('type', type);
+            togglePasswordC.classList.toggle('fa-eye-slash');
+        });
+    </script>
+    {% endblock %} 
+</body>
+</html>
