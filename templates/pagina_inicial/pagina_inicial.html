@@ -4,46 +4,61 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'pagina_inicial/pagina_inicial.css' %}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Página Inicial</title>
 </head>
+
 <body>
     <img class="imagem_tema" src="{% static 'imagens/logooficial.png' %}">
     {% if messages %}
     <div class="messages">
-      {% for message in messages %}
-        <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
+        {% for message in messages %}
+        <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
     </div>
-  {% endif %}
-    <!-- <div id="grafico_produtos" class="grafico_produtos" title="Produtos mais vendidos">
+    {% endif %}
+     <div id="grafico_produtos" class="grafico_produtos" title="Produtos mais vendidos">
         {{ grafico_produtos|safe }}
     </div>
-    <div id="grafico" class="grafico" title="Cadastrados no sistema">
+    <!-- <div id="grafico" class="grafico" title="Cadastrados no sistema">
         {{ grafico|safe }}
     </div> -->
+    <div class="estoque">
+        <div class="titulo-estoque">
+            <strong>Produtos com Baixo Estoque</strong>
+        </div>
+        <div class="tabela-prod">
+            <table class="table-prod">
+                <tr>
+                    <th class="produt">Produto</th>
+                    <th>Quantidade</th>
+                    <th>Status</th>
+                </tr>
+                {% for produto in produtos_baixo_estoque %}
+                <tr>
+                    <td class="nome">{{ produto.produtos.nome }}</td>
+                    <td class="qtd">{{ produto.quantidade }}</td>
+                    <td{% if produto.quantidade < 1 %}
+                    <i class="fas fa-square" style="color: #d92121;"></i>
+                    {% else %}
+                    <i class="fas fa-square" style="color: #d9d621;"></i>
+                    {% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
     <script>
-        function hideSuccessMessage(message) {
-            var successMessage = document.getElementById("sucess_login_message");
-            successMessage.innerText = message;
-            successMessage.style.display = "block";
-    
-            setTimeout(function() {
-                successMessage.style.display = "none";
-            }, 4000);
-        }
-    
-        var successMessage = document.getElementById("sucess_login_message");
-        if (successMessage) {
-            var message = successMessage.innerText;
-            hideSuccessMessage(message);
-        }
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}
 </body>
+
 </html>

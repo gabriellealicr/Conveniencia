@@ -4,117 +4,112 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'usuarios/visualizar.css' %}" />
-    <title>Listagem de Usuários</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'usuarios/visualizar.css' %}" />
+  <title>Listagem de Usuários</title>
 </head>
+
 <body>
-        <!-- <form class="form-visualizacao-usuario">
-            {% csrf_token %}
-            {% if sucesso_cadastro %}
-            <div class="success-cadastro-message" id = "success-cadastro-message">
-                    {{ sucesso_cadastro }}
-            </div> 
+  <form class="form-visualizacao-usuario">
+    {% csrf_token %}
+    {% if sucesso_cadastro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ sucesso_cadastro }}
+    </div>
+    {% endif %}
+    <h2 class="titulo"><strong>Lista de Usuários</strong></h2>
+    <input class="busca filtro-nome" type="text" name="filtro-nome" placeholder="Filtrar por Nome de Usuário">
+    <input class="busca filtro-email" type="text" name="filtro-email" placeholder="Filtrar por E-mail">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
+    <table class="table table lista">
+      <thead>
+        <tr>
+          <th class="usuario" scope="col">Usuário</th>
+          <th class="email" scope="col">E-mail</th>
+          <th class="situacao" scope="col">Situação</th>
+          <th class="exc" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for usuario in usuarios %}
+        <tr {% if not usuario.is_active %}class="inativo" {% endif %}>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>
+            {% if usuario.is_active %}
+            Ativo
+            {% else %}
+            Inativo
             {% endif %}
-            <br>
-            <div class="filtro">
-              <br>
-              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome de usuário ou e-mail do usuário">
-              <button class="btn btn-light" type="submit">Buscar</button>
-            </div>
-            <br>
-            <div class="ch-colab-inativos">
-              <input type = "checkbox" id = "inativos" name = "inativos">
-              <label for = "inativos"> Filtrar por Usuários Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
-            </div>
-            {% for usuario in usuarios %}
-            <div>
-              <br>
-              <label class="campo" name="usuario">Usuário:</label>
-              {{ usuario.username }}
-            </div>
-            <div>
-              <label class="campo" name="email">E-mail:</label>
-              {{ usuario.email }}
-            </div>
-            <div>
-              <label class="campo" name="situacao">Situação:</label>
-              {% if usuario.is_active %}
-              <label>Ativo</label>
-              {% else %} 
-              <label>Inativo</label>
-              {% endif %} 
-            </div>
-            <a href="{% url  'acessar_usuario' usuario.id %}" class="botao_acessar_usuario"> Acessar para edição/inativação </a>
-          {% endfor %}
-        </form> -->
-
-        <form class="form-visualizacao-usuario">
-          {% csrf_token %}
-          {% if sucesso_cadastro %}
-          <div class="success-cadastro-message" id = "success-cadastro-message">
-                  {{ sucesso_cadastro }}
-          </div> 
-          {% endif %}
-          <h2 class="titulo"><strong>Lista de Usuários</strong></h2>
-          <div class="filtro">
-            <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome de usuário ou e-mail">
-            <button class="btn btn-light" type="submit">Buscar</button>  
-          </div>
-          <div class="ch-colab-inativos">
-            <input type = "checkbox" id = "inativos" name = "inativos">
-            <label for = "inativos"> Filtrar por Usuários Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
-          </div>
-          <table class="table table-hover lista">
-            <thead>
-              <tr>
-                <th class="usuario" scope="col">Usuário</th> 
-                <th class="email" scope="col">E-mail</th>
-                <th class="situacao" scope="col">Situação</th>
-                <th class="exc" scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              
-              {% for usuario in usuarios %} 
-              <tr>
-                <td>{{ usuario.username }}</td> 
-                <td>{{ usuario.email }}</td>
-                <td>
-                  {% if usuario.is_active %}
-                  Ativo
-                  {% else %}
-                  Inativo
-                  {% endif %}
-                </td>
-                <td class="coluna">
-                  <a href="{% url 'acessar_usuario' usuario.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
-                </td>          
-              </tr>    
-              {% endfor %}
-            </tbody>
-          </table>
-        </form>
-
-<script>
+          </td>
+          <td class="coluna">
+            <a href="{% url 'acessar_usuario' usuario.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
     function hideSuccessMessage(message) {
       var successMessage = document.getElementById("success-cadastro-message");
       successMessage.innerText = message;
       successMessage.style.display = "block";
 
-      setTimeout(function() {
-          successMessage.style.display = "none";
+      setTimeout(function () {
+        successMessage.style.display = "none";
       }, 4000);
-  }
-  var successMessage = document.getElementById("success-cadastro-message");
-  if (successMessage) {
+    }
+    var successMessage = document.getElementById("success-cadastro-message");
+    if (successMessage) {
       var message = successMessage.innerText;
       hideSuccessMessage(message);
-  }
-</script>
-    {% endblock %}
+    }
+
+    const situacaoField = document.getElementById("situacao");
+    situacaoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-nome, .filtro-email, .filtro-situacao').on('input', function () {
+        // Chamada para a função de atualização da lista de colaboradores
+        atualizarListaUsuarios();
+      });
+
+      function atualizarListaUsuarios() {
+        // Captura os valores dos campos de filtro
+        var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroEmail = $('.filtro-email').val().toLowerCase();
+        var filtroSituacao = $('.filtro-situacao').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de produtos
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var email = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var situacao = $(this).find('td:nth-child(3)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&
+            (filtroEmail === '' || email.indexOf(filtroEmail) !== -1) &&
+            (filtroSituacao === '' || situacao.indexOf(filtroSituacao) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
 </body>
+
 </html>

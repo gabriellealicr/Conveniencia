@@ -1,5 +1,5 @@
 body {
-	background: #f0f0ee !important;	
+    background: #f0f0ee !important;
 }
 
 .form-compra {
@@ -8,47 +8,59 @@ body {
     align-items: center;
     justify-content: center;
     position: absolute;
-    top:40%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 15px 35px 45px;
-	background: #f1f9ff !important;	
-    width: 190vh;
-    height: 100vh; 
-    margin-top: 90px; 
+    background: #8fc3eb !important;
+    width: 191vh;
+    height: 101vh;
+    margin-top: 90px;
 }
 
 .codigo-barras {
+    background: #d6edff !important;
     position: absolute;
     font-size: 20px;
-    width: 130vh !important;
+    width: 135vh !important;
     margin-bottom: 27vh;
     left: 170px;
+    border: 2px solid #d6edff;
+    border-radius: 10px;
 }
 
 .botao-add {
     position: absolute;
-    font-size: 15px !important;
-    width: 200px;
+    width: 170px;
     margin-bottom: 27vh;
     right: 170px;
-    background-color: rgb(228, 228, 228) !important;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
 }
 
-.botao-add:hover{
+.botao-add:hover {
+    border: 2px solid yellow !important;
+    color: black !important;
     background-color: yellow !important;
 }
 
 .botao-limpar {
     position: absolute;
     font-size: 20px;
-    width: 130px;
+    width: 100px;
     margin-top: 85vh;
     right: 170px;
-    background-color: rgb(228, 228, 228) !important;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
 }
 
-.botao-limpar:hover{
+.botao-limpar:hover {
+    border: 2px solid yellow !important;
+    color: black !important;
     background-color: yellow !important;
 }
 
@@ -56,101 +68,69 @@ body {
     margin-top: 10px;
 }
 
-.lista{
-    top:41%;
+.lista {
+    top: 41%;
     position: absolute;
-    overflow-y: auto; /* Adiciona uma rolagem vertical quando necessário */
+    overflow-y: auto;
     height: 430px;
     width: 1500px;
-	background: #d6edff;	
-}
-
-.success-cadastro-message {
-    background-color: red;
-    color: #fff;
-    padding: 10px; 
-    border-radius: 5px;
-    position: fixed;
-    top: 30px;
-    right: 20px;
-    transition: opacity 0.5s ease-in-out;
-    display: flex;
-    line-height: 1; 
-    font-size: 14px;
-    width: 183px;
-}
-
-.erro_senha {
-    background-color: red;
-    color: #fff;
-    padding: 10px; 
-    border-radius: 5px;
-    position: fixed;
-    top: 30px;
-    right: 20px;
-    transition: opacity 0.5s ease-in-out;
-    display: flex;
-    line-height: 1; 
-    font-size: 17px;
-    width: 150px;
-}
-
-.erro_colab {
-    background-color: red;
-    color: #fff;
-    padding: 10px; 
-    border-radius: 5px;
-    position: fixed;
-    top: 30px;
-    right: 20px;
-    transition: opacity 0.5s ease-in-out;
-    display: flex;
-    line-height: 1; 
-    font-size: 17px;
-    width: 245px;
+    background: #d6edff;
+    border: 2px solid #d6edff;
+    border-radius: 10px;
 }
 
 .erro_inativo {
     background-color: red;
     color: #fff;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 5px;
     position: fixed;
     top: 30px;
     right: 20px;
     transition: opacity 0.5s ease-in-out;
     display: flex;
-    line-height: 1; 
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 17px;
-    width: 210px;
 }
 
-.imagem{
+.imagem {
     margin-bottom: 230px;
 }
 
-.botao-finalizar{
+.botao-finalizar {
     position: absolute;
     font-size: 20px;
-    width: 150px;
+    width: 153px;
     margin-top: 85vh;
-    background-color: rgb(228, 228, 228) !important;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
 }
 
-.botao-finalizar:hover{
+.botao-finalizar:hover {
+    border: 2px solid yellow !important;
+    color: black !important;
     background-color: yellow !important;
 }
 
-.botao-referencia{
+.botao-referencia {
     position: absolute;
     font-size: 20px;
-    width: 180px;
+    width: 173px;
     margin-top: 85vh;
     left: 170px;
-    background-color: rgb(228, 228, 228) !important;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
 }
 
-.botao-referencia:hover{
+.botao-referencia:hover {
+    border: 2px solid yellow !important;
+    color: black !important;
     background-color: yellow !important;
 }
 
@@ -158,75 +138,112 @@ body {
     position: absolute;
     margin-top: 72vh;
     margin-left: 125vh;
-    width: 300px;
-  }
-  
-.itens{
+    width: 340px;
+    color: rgb(9, 67, 143);
+}
+
+.itens {
     position: absolute;
     margin-top: 72vh;
     margin-right: 145vh;
+    color: rgb(9, 67, 143);
 }
 
-.ref{
+.ref {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
 }
 
-.modal-title1{
+.modal-title1 {
     margin-left: 14vh;
 }
 
-.modal-title3{
+.modal-title3 {
     margin-left: 10vh;
 }
 
-.lixeira{
+.lixeira {
     font-size: 18px;
     margin-top: 5px;
     cursor: pointer;
     color: black;
 }
 
-.lixeira:hover{
+.lixeira:hover {
     color: red;
 }
 
-.campo{
+.campo {
     margin-bottom: 40vh;
     margin-right: 138vh;
     color: rgb(9, 67, 143);
     font-size: 22px;
 }
 
-.prod_add{
+.prod_add {
+    color: rgb(9, 67, 143);
+    font-size: 25px;
     margin-left: 10px;
 }
 
-.topo .qtd, .topo .preco{
+.topo .qtd,
+.topo .preco {
     width: 50px;
 }
 
-.topo .codbarras{
+.topo .codbarras {
     width: 150px;
 }
 
-.topo .exc{
+.topo .exc {
     width: 10px;
 }
 
-.topo .nome{
+.topo .nome {
     width: 300px;
 }
 
 .btn-ok-modal {
     background-color: rgb(9, 67, 143) !important;
-    color: #ffffff; 
-  }
-  
-  .btn-ok-modal:hover {
+    color: #ffffff;
+}
+
+.btn-ok-modal:hover {
     background-color: yellow !important;
     color: #000 !important;
     border-color: rgb(235, 238, 79) !important;
-  }  
+}
+
+.form-group {
+    width: 350px;
+    position: relative;
+    top: -65%;
+    left: -42%;
+}
+
+.form-group span {
+    position: absolute;
+    left: 175px;
+    top: 8px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus~span {
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(9, 67, 143);
+}
+
+.form-group input:valid~span {
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(9, 67, 143);
+}

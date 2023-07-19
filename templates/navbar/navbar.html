@@ -1,19 +1,23 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   {% block head %}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    {% endblock %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="imagex/png" href="{% static 'imagens/logo.ico' %}">
-    <link rel="stylesheet" href="{% static 'navbar/navbar.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  </head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {% endblock %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="imagex/png" href="{% static 'imagens/logo.ico' %}">
+  <link rel="stylesheet" href="{% static 'navbar/navbar.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
 <body>
-  <div class="modal fade" id="enviarMensagemModal" tabindex="-1" role="dialog" aria-labelledby="enviarMensagemModalLabel" aria-hidden="true">
+  <div class="modal fade" id="enviarMensagemModal" tabindex="-1" role="dialog"
+    aria-labelledby="enviarMensagemModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -32,82 +36,108 @@
       </div>
     </div>
   </div>
-  
+
   <nav class="fundo">
     <img class="imagem" src="{% static 'imagens/logo-sci-ofc.png' %}">
     <div class="dropdown pag-inicial">
-      <a class="btn btn-secondary" href="{% url 'pagina_inicial' %}">Página Inicial</a>
+      <a class="btn btn-secondary botao-pagina-inicial" href="{% url 'pagina_inicial' %}">Página Inicial</a>
     </div>
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle botao-colaboradores" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Colaboradores
-    </button>
-    <div class="dropdown-menu menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item cadastrar-item" href="{% url 'cadastro_colaborador' %}">Cadastrar</a>
-      <a class="dropdown-item visualizar-item" href="{% url 'visualizar_colaboradores' %}">Visualizar/Editar/Inativar</a>
+
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-estoques" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Estoque
+      </button>
+      <div class="dropdown-menu menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item botao-estoque" href="{% url 'estoque' %}">Controle</a>
+        <a class="dropdown-item botao-movimentacao" href="{% url 'movimentacao' %}">Movimentação</a>
+      </div>
     </div>
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle botao-produtos" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Produtos
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item cadastrar-item" href="{% url 'cadastro_produto' %}">Cadastrar</a>
-      <a class="dropdown-item visualizar-item" href="{% url 'visualizar_produtos' %}">Visualizar/Editar/Inativar</a>
+
+
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-colaboradores" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Colaboradores
+      </button>
+      <div class="dropdown-menu menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item cadastrar-item" href="{% url 'cadastro_colaborador' %}">Cadastrar</a>
+        <a class="dropdown-item visualizar-item"
+          href="{% url 'visualizar_colaboradores' %}">Visualizar/Editar/Inativar</a>
+      </div>
     </div>
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle botao-compras" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Compras
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item cadastrar-item" href="{% url 'conveniencia' %}">Conveniência</a>
-      <a class="dropdown-item cadastrar-item" href="{% url 'historico' %}">Histórico</a>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-produtos" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Produtos
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item cadastrar-item" href="{% url 'cadastro_produto' %}">Cadastrar</a>
+        <a class="dropdown-item visualizar-item" href="{% url 'visualizar_produtos' %}">Visualizar/Editar/Inativar</a>
+      </div>
     </div>
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle botao-relatorios" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Relatórios
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item cadastrar-item" href="{% url 'relatorio_consumo' %}">Consumo detalhado</a>
-      <a class="dropdown-item visualizar-item" href="{% url 'relatorio_geral' %}">Consumo geral</a>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-compras" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Compras
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item cadastrar-item" href="{% url 'conveniencia' %}">Conveniência</a>
+        <a class="dropdown-item cadastrar-item" href="{% url 'historico' %}">Histórico</a>
+      </div>
     </div>
-  </div>
-  {% if usuario.is_superuser %}
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle botao-usuarios" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Usuários
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item cadastrar-item" href="{% url 'cadastrar_usuario' %}">Cadastrar</a>
-    <a class="dropdown-item visualizar-item" href="{% url 'visualizar_usuarios' %}">Visualizar/Editar/Inativar</a>
-  </div>
-</div>
-{% endif %}
-<button type="button" data-toggle="modal" data-target="#enviarMensagemModal" class="botao-logout">
-  Logout
-</button>
-</nav>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
-<script>
-  $(document).ready(function() {
-    $('#cpf').inputmask('999.999.999-99');
-  });
-  document.addEventListener("DOMContentLoaded", function() {
-    {% if campo_foco %}
-        document.getElementById("{{ campo_foco }}").focus();
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-relatorios" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Relatórios
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item cadastrar-item" href="{% url 'relatorio_consumo' %}">Consumo detalhado</a>
+        <a class="dropdown-item visualizar-item" href="{% url 'relatorio_geral' %}">Consumo geral</a>
+      </div>
+    </div>
+    {% if usuario.is_superuser %}
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-usuarios" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Usuários
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item cadastrar-item" href="{% url 'cadastrar_usuario' %}">Cadastrar</a>
+        <a class="dropdown-item visualizar-item" href="{% url 'visualizar_usuarios' %}">Visualizar/Editar/Inativar</a>
+      </div>
+    </div>
     {% endif %}
-});
-function enviarMensagem() {
-$('#enviarMensagemModal').modal('show');
-}
-function redirecionarLogout() {
-window.location.href = "{% url 'logout' %}";
-}
-</script>
+    <a data-toggle="modal" data-target="#enviarMensagemModal" class="botao-logout">
+      Logout
+    </a>
+  </nav>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#cpf').inputmask('999.999.999-99');
+    });
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   {% if campo_foco %}
+    //   document.getElementById("{{ campo_foco }}").focus();
+    //   {% endif %}
+    // });
+    function enviarMensagem() {
+      $('#enviarMensagemModal').modal('show');
+    }
+    function redirecionarLogout() {
+      window.location.href = "{% url 'logout' %}";
+    }
+  </script>
 </body>
+
 </html>

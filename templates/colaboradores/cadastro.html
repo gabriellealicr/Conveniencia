@@ -4,6 +4,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,43 +13,68 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Cadastro de Colaborador</title>
 </head>
+
 <body>
     <div class="form">
         <form class="form-cadastro-colaborador" method="post" action="{% url 'cadastro_colaborador' %}">
             {% csrf_token %}
+            <img class="robot" src="{% static 'imagens/robot.png' %}">
             {% if messages %}
             <div class="messages">
-              {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-              {% endfor %}
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
             </div>
-          {% endif %}
+            {% endif %}
             <h2 class="form-signin-heading titulo">Registrar Colaborador</h2>
-            <input type="text" class="form-control nome" id="nome" name="nome" placeholder="Nome Completo" required value="{{ request.GET.nome }}" />
-            <input type="text" class="form-control cpf" id="cpf" name="cpf" placeholder="CPF" required value="{{ request.GET.cpf }}" />
-            <input type="text" class="form-control login" id="login" name="login" placeholder="Login" required value="{{ request.GET.login }}" />
-            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required/>
+            <div class="form-group">
+            <input type="text" class="form-control nome" id="nome" name="nome" autocomplete="off" required
+                value="{{ request.GET.nome }}" />
+                <span>Nome Completo</span>
+            </div>
+            <div class="form-group">
+            <input type="text" class="form-control cpf" id="cpf" name="cpf" autocomplete="off" required
+                value="{{ request.GET.cpf }}" />
+                <span>CPF</span>
+            </div>
+            <div class="form-group">
+            <input type="text" class="form-control email" id="email" name="email" autocomplete="off" required
+                value="{{ request.GET.email }}" />
+                <span>E-mail</span>
+            </div>
+            <div class="form-group">
+            <input type="text" class="form-control login" id="login" name="login" autocomplete="off" required
+                value="{{ request.GET.login }}" />
+                <span>Login</span>
+            </div>
+            <div class="form-group">
+            <input type="password" class="form-control senha" id="senha" name="senha" autocomplete="off" required value="{{ request.GET.senha }}"/>
+            <span>Senha</span>
+            </div>
+            <a class="gerar_senha" href="#" id="gerarSenha">Gerar senha padrão</a>
             <span class="input-group-text-senha">
                 <i class="fas fa-eye" id="togglePasswordS"></i>
-            </span>     
-            <input type="password" class="form-control conf_senha" name="conf_senha" placeholder="Confirmação de Senha" required/>
+            </span>
+            <div class="form-group">
+            <input type="password" class="form-control conf_senha" id="conf_senha" name="conf_senha" autocomplete="off" required value="{{ request.GET.conf_senha }}" />
+            <span>Confirmação de Senha</span>
+            </div>
             <span class="input-group-text-conf">
                 <i class="fas fa-eye" id="togglePasswordC"></i>
-            </span>     
+            </span>
             <button class="btn btn-lg btn-primary btn-block botao-salvar" type="submit">Salvar</button>
-            <!-- Se houver um erro no campo 'nome', defina o foco nesse campo -->
         </form>
     </div>
     <script>
         const nomeField = document.getElementById("nome");
-            nomeField.addEventListener("input", function() {
-                this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>]/g, "");
+        nomeField.addEventListener("input", function () {
+            this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
         });
     </script>
     <script>
         const togglePasswordS = document.querySelector('#togglePasswordS');
         const passwordInputS = document.querySelector('.senha');
-    
+
         togglePasswordS.addEventListener('click', function () {
             const type = passwordInputS.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInputS.setAttribute('type', type);
@@ -56,13 +82,32 @@
         });
         const togglePasswordC = document.querySelector('#togglePasswordC');
         const passwordInputC = document.querySelector('.conf_senha');
-    
+
         togglePasswordC.addEventListener('click', function () {
             const type = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInputC.setAttribute('type', type);
             togglePasswordC.classList.toggle('fa-eye-slash');
         });
+
+        const gerarSenhaLink = document.getElementById("gerarSenha");
+        gerarSenhaLink.addEventListener("click", function(event) {
+            event.preventDefault(); // Impede o comportamento padrão de seguir o link
+
+            const senhaInput = document.getElementById("senha");
+            const confSenhaInput = document.getElementById("conf_senha");
+
+            senhaInput.value = "#sci!";
+            confSenhaInput.value = "#sci!";
+
+            const typeC = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
+            const typeS = passwordInputS.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputC.setAttribute('type', typeC);
+            passwordInputS.setAttribute('type', typeS);
+            togglePasswordC.classList.toggle('fa-eye-slash');
+            togglePasswordS.classList.toggle('fa-eye-slash');
+        });
     </script>
-  {% endblock %}
+    {% endblock %}
 </body>
+
 </html>

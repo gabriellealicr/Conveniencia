@@ -1,30 +1,45 @@
-body{
-    background: #f1f9ff !important;	
+body {
+    background: #f1f9ff !important;
 }
 
-.form-relatorio-consumo{
+.form-relatorio-consumo {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vh;
+    height: 56vh;
+    text-align: center;
+    background-color: #f6fcff;
+}
+
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 59vh;
-    width: 90vh;
-    position: absolute;
 }
 
-.titulo{
-    color: rgb(9, 67, 143);
-    margin-left: 110vh;
-    width: 500px;
+
+.titulo {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 53vh;
     position: absolute;
-    margin-bottom: 260px;
+    margin-top: 3vh;
+    color: rgb(9, 67, 143); 
+    font-weight: bold;
+    font-size: 30px;
 }
 
-.botao-gerar{
+.botao-gerar {
     background-color: rgb(9, 67, 143) !important;
-    width: 170px !important;
-    margin-left: 105vh;
-    margin-top: 780px;
+    width: 230px !important;
+    left: 58%;
+    transform: translate(-50%, -50%);
+    margin-top: 48vh;
     position: absolute;
 }
 
@@ -32,59 +47,135 @@ body{
     background-color: yellow !important;
     color: #000 !important;
     border-color: rgb(235, 238, 79) !important;
-}  
-
-.de{
-    position: absolute;
-    margin-left: 83vh;
-    margin-top: 108px;
 }
 
-.data_inicio{
+.ch-formato-pdf {
+    margin-top: 40vh;
     position: absolute;
-    margin-left: 110vh;
-    margin-top: 100px;
-    width: 200px;
+    margin-left: 220px;
 }
 
-.ate{
+.ch-formato-txt {
+    margin-top: 40vh;
+    margin-left: 345px;
     position: absolute;
-    margin-left: 82vh;
-    margin-top: 280px;
 }
 
-.data_fim{
+.de {
     position: absolute;
-    margin-left: 110vh;
-    margin-top: 280px;
-    width: 200px;
+    left: 6vh;
+    margin-top: 15vh;
 }
 
-.login_colab{
+.data_inicio {
     position: absolute;
-    margin-left: 105vh;
-    width: 250px;
-    margin-top: 400px;
+    margin-top: 140px;
+    left: 12vh;
+    width: 16vh !important;
 }
 
-.login_colab_input{
+.ate {
     position: absolute;
-    margin-left: 105vh;
-    margin-top: 510px;
-    width: 250px;
+    left: 32vh;
+    margin-top: 15vh;
+}
+
+.data_fim {
+    position: absolute;
+    left: 38vh;
+    margin-top: 140px;
+    width: 16vh !important;
+}
+
+.login_colab_input {
+    position: absolute;
+    left: 10%;
+    margin-top: 230px;
+    width: 48vh !important;
 }
 
 .colab_nao_encontrado {
     background-color: red;
     color: #fff;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 5px;
     position: fixed;
-    top: 80px;
-    right: 10px;
+    top: -16vh;
+    left: 100vh;
     transition: opacity 0.5s ease-in-out;
     display: flex;
-    line-height: 1; 
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 14px;
+    width: 240px;
+}
+
+.robot {
+    top: 64%;
+    left: 6%;
+    position: absolute;
+    height: 20vh;
+    width: 18vh;
+}
+
+.info {
+    top: 3%;
+    left: 542px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.info::after {
+    content: attr(data-message);
+    display: none;
+    position: absolute;
+    background-color: rgb(9, 67, 143);
+    color: white;
+    padding: 10px;
+    width: 420px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    white-space: pre-line;
+}
+
+.info:hover::after {
+    display: block;
+}
+
+.ch-email{
+    position: absolute;
+    left: 10%;
+    margin-top: 290px;
     font-size: 17px;
+}
+
+.email_input{
+    position: absolute;
+    left: 38%;
+    margin-top: 285px;
+    width: 302px !important;
+    visibility: hidden;
+}
+
+.form-group span{
+    position: absolute;
+    left: 73px;
+    top: 238px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
     font-size: 14px;
 }
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+

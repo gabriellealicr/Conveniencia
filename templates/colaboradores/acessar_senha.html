@@ -1,0 +1,99 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'colaboradores/acessar_senha.css' %}" />
+    <title>Alteração de Senha Colaborador</title>
+</head>
+
+<body>
+    <div class="form">
+        <form class="form-acesso-senha" action="{% url 'alterar_senha_colaborador' colaborador.id %}" method="POST">
+            {% csrf_token %}
+            <img class="robot" src="{% static 'imagens/roboedicao.png' %}">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </div>
+            {% endif %}
+            <h2 class="titulo">Alteração de Senha</h2>
+            <i onclick="history.back()" class="fa fa-arrow-left arrow"></i>
+            <input type="hidden" value="{{colaborador.id}}" name="colaborador_id">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-group colaborador">
+                <input type="text" class="form-control input_colaborador" id="colaborador" name="colaborador"
+                    autocomplete="off" readonly value="{{colaborador.nome}}" />
+            </div>
+            <p class="colab">Colaborador</p>
+            <div class="form-group">
+                <input type="text" class="form-control senha" id="senha" name="senha" autocomplete="off" required />
+                <span>Senha</span>
+            </div>
+            <a class="gerar_senha" href="#" id="gerarSenha">Gerar senha padrão</a>
+            <span class="input-group-text-senha">
+                <i class="fas fa-eye" id="togglePasswordS"></i>
+            </span>
+            <div class="form-group">
+                <input type="text" class="form-control conf_senha" id="conf_senha" name="conf_senha" autocomplete="off"
+                    required />
+                <span>Confirmação de senha</span>
+            </div>
+            <span class="input-group-text-conf">
+                <i class="fas fa-eye" id="togglePasswordC"></i>
+            </span>
+            <button type="submit" class="btn btn-success botao-salvar btn-lg">Salvar</button>
+        </form>
+    </div>
+    <script>
+        const togglePasswordS = document.querySelector('#togglePasswordS');
+        const passwordInputS = document.querySelector('.form-control#senha');
+
+        togglePasswordS.addEventListener('click', function () {
+            const type = passwordInputS.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputS.setAttribute('type', type);
+            togglePasswordS.classList.toggle('fa-eye-slash');
+        });
+
+        const togglePasswordC = document.querySelector('#togglePasswordC');
+        const passwordInputC = document.querySelector('.form-control#conf_senha');
+
+        togglePasswordC.addEventListener('click', function () {
+            const type = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputC.setAttribute('type', type);
+            togglePasswordC.classList.toggle('fa-eye-slash');
+        });
+
+        const gerarSenhaLink = document.getElementById("gerarSenha");
+        gerarSenhaLink.addEventListener("click", function(event) {
+            event.preventDefault(); // Impede o comportamento padrão de seguir o link
+
+            const senhaInput = document.getElementById("senha");
+            const confSenhaInput = document.getElementById("conf_senha");
+
+            senhaInput.value = "#sci!";
+            confSenhaInput.value = "#sci!";
+
+            const type = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputC.setAttribute('type', typeC);
+            togglePasswordC.classList.toggle('fa-eye-slash');
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>

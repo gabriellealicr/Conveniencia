@@ -1,0 +1,140 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'estoque/visualizar.css' %}" />
+  <title>Visualização de Estoque</title>
+</head>
+
+<body>
+  <form class="form-visualizacao-estoque">
+    {% csrf_token %}
+    {% if sucesso_cadastro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ sucesso_cadastro }}
+    </div>
+    {% endif %}
+    <h2 class="titulo"><strong>Estoque</strong></h2>
+    <input class="busca filtro-nome" type="text" id="nome" name="filtro-nome" placeholder="Filtrar por Nome">
+    <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras"
+      placeholder="Filtrar por Código de Barras">
+    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif" placeholder="Filtrar por Classificação">
+    <input class="busca filtro-qtd" type="text" id="qtd" name="filtro-qtd" placeholder="Filtrar por Quantidade">
+    <table class="table table lista">
+      <thead>
+        <tr>
+          <th class="nome" scope="col">Nome</th>
+          <th class="codbarras" scope="col">Código de Barras</th>
+          <th scope="col" class="classificacao">Classificação</th>
+          <th scope="col" class="quantidade">Quantidade</th>
+          <th scope="col" class="opc">Movimentação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produto in produtos %}
+        {% if produto.ativo %}
+        {% for estoque in produto.estoque_set.all %}
+        <tr>
+          <td>{{ produto.nome }}</td>
+          <td>{{ produto.codigo_barras }}</td>
+          <td>{{ produto.tipo }}</td>
+          <td id="qtd" name="qtd" class="quantidade-atual">
+            {{ estoque.quantidade }}
+          </td>
+          <input type="hidden" value="{{ estoque.id }}" name="id_estoque_id">
+          <td class="botoes">
+            <a href="{% url 'entrada_estoque' estoque.id %}" class="btn btn entrada">Entrada</a>
+            <a href="{% url 'saida_estoque' estoque.id %}" class="btn btn saida">Saída</a>
+          </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+
+    const nomeField = document.getElementById("nome");
+    nomeField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const codigoField = document.getElementById("codigo-barras");
+    codigoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const qtdField = document.getElementById("qtd");
+    qtdField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const classifField = document.getElementById("classif");
+    classifField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    function hideSuccessMessage(message) {
+      var successMessage = document.getElementById("success-cadastro-message");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
+
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 4000);
+    }
+    var successMessage = document.getElementById("success-cadastro-message");
+    if (successMessage) {
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
+    }
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-nome, .filtro-codigo-barras, .filtro-classif, .filtro-qtd').on('input', function () {
+        // Chamada para a função de atualização da lista de colaboradores
+        atualizarListaEstoque();
+      });
+
+      function atualizarListaEstoque() {
+        // Captura os valores dos campos de filtro
+        var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroCodigoBarras = $('.filtro-codigo-barras').val().toLowerCase();
+        var filtroClassif = $('.filtro-classif').val().toLowerCase();
+        var filtroQtd = $('.filtro-qtd').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de colaboradores
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var cod = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var classif = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var qtd = $(this).find('td:nth-child(4)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&
+            (filtroCodigoBarras === '' || cod.indexOf(filtroCodigoBarras) !== -1) &&
+            (filtroClassif === '' || classif.indexOf(filtroClassif) !== -1) &&
+            (filtroQtd === '' || qtd.indexOf(filtroQtd) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
+</body>
+
+</html>

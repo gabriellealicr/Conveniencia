@@ -3,11 +3,11 @@ body {
 }
 
 .form-cadastro-produto {
-  max-width: 380px;
+  max-width: 480px;
   padding: 15px 35px 45px;
   margin: 0 auto;
   background-color: #f6fcff;
-  border: 2px solid rgba(0,0,0,0.1);  
+  border: 2px solid rgba(0,0,0,0.1); 
   border-radius: 15px; 
 }
 
@@ -16,7 +16,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 59vh;
+    height: 75vh;
     width: 90vh;
     position: absolute;
     top:50%;
@@ -25,9 +25,10 @@ body {
 }
 
 .botao-salvar {
-    width: 200px;
+    position: fixed;
+    width: 308px !important;
     align-self: center;
-    margin-top: 100px;
+    margin-top: 64vh;
     background-color: rgb(9, 67, 143) !important;
 }
 
@@ -37,33 +38,33 @@ body {
     border-color: rgb(235, 238, 79) !important;
 }  
 
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
 .botao-salvar:active,
 .botao-salvar:focus {
   outline: none !important;
   box-shadow: none !important;
 }
-
-.form-control {
-    position: relative;
-    font-size: 16px;
-    height: auto;
-    margin-top: 30px;
-}
   
 .titulo{
     position: absolute;
     text-align: center;
-    margin-bottom: 490px;
-}
-
-.nome{
-    margin-top: 140px;
+    margin-top: -64vh;
+    color: rgb(9, 67, 143); 
+    font-size: 33px;
+    font-weight: bold;
 }
 
 .erro_codigo_barras {
     color: red;
     position: absolute;
-    margin-top: 490px;
+    margin-top: 8vh;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
@@ -72,8 +73,8 @@ body {
 .erro_codigo_barras_cad{
     color: red;
     position: absolute;
-    margin-top: 490px;
     left: 50%;
+    margin-top: 8vh;
     transform: translateX(-50%);
     z-index: 1;
 }
@@ -81,8 +82,8 @@ body {
 .erro_preco{
     color: red;
     position: absolute;
-    margin-top: 556px;
     left: 50%;
+    margin-top: 16vh;
     transform: translateX(-50%);
     z-index: 1;
 }
@@ -90,7 +91,7 @@ body {
 .erro_nome{
     color: red;
     position: absolute;
-    margin-top: 420px;
+    margin-top: -83px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
@@ -110,4 +111,48 @@ body {
     justify-content: center; 
     line-height: 1; 
     font-size: 14px;
+}
+
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 25px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 32px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.classif{
+    font-size: 14px;
+    position: absolute;
+    top: -7%;
+    left: 0.5vh;
+}
+
+.input-nome{
+    margin-top: -15vh;
 }

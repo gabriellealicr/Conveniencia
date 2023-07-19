@@ -4,7 +4,7 @@ body {
 
 .lista {
     position: absolute;
-    top:47%;
+    top:32%;
     left: 10%;
     width: 80% !important; /* Defina a largura desejada */
     margin: 0 auto; /* Centralize horizontalmente */
@@ -35,25 +35,30 @@ body {
     top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    color: rgb(9, 67, 143);
-    font-family: 'Exo 2';
+    color: rgb(9, 67, 143); 
+    font-size: 33px;
 }
 
 .filtro .busca{
     width: 500px;
 }
 
-.botao-filtrar{
+.btn-filtrar{
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px !important;
     margin-left: 10px;
     height: 40px;
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
 }
 
-.btn-light{
-    background-color: rgb(162, 226, 238) !important;
+.btn-buscar{
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
+    margin-left: 53vh;
+    margin-top: -7vh;
 }
 
 .success-cadastro-message {
@@ -73,6 +78,7 @@ body {
 }
 
 .botao-edit {
+    background-color: rgb(9, 67, 143) !important;
     visibility: hidden;
 }
 
@@ -107,4 +113,35 @@ tr:hover .botao-edit {
 
 .email, .usuario{
     width: 250px;
+}
+
+.inativo {
+    background-color: #dee4eb !important;
+}
+
+.busca{
+    outline: none;
+    border: 2px solid rgb(238, 237, 237);
+    border-radius: 3px;
+    position: absolute;
+    margin-top: 273px;
+    background-color: #f3faff;
+}
+
+.filtro-nome {
+    margin-left: 19vh;
+    width: 58vh !important;
+    height: 37px;
+}
+
+.filtro-email{
+    margin-left: 77vh;
+    width: 58vh !important;
+    height: 37px;
+}
+
+.filtro-situacao{
+    margin-left: 135vh;
+    width: 354px !important;
+    height: 37px;
 }

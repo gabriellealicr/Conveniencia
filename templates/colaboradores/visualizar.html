@@ -4,124 +4,139 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'colaboradores/visualizar.css' %}" />
-    <title>Visualização de Colaboradores</title>
-</head>
-<body>
-        <!-- <form class="form-visualizacao-colaborador">
-            {% csrf_token %}
-            <br>
-            <div class="filtro">
-              <br>
-              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o CPF do colaborador">
-              <button class="btn btn-light" type="submit">Buscar</button>  
-            </div>
-            <br>
-            <div class="ch-colab-inativos">
-              <input type = "checkbox" id = "inativos" name = "inativos">
-              <label for = "inativos"> Filtrar por Colaboradores Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
-            </div>
-            {% for colaborador in colaboradores %}
-            <div>
-              <br>
-              <label class="campo" for="nome">Nome:</label>
-              {{ colaborador.nome }}
-            </div>
-            <div>
-              <label class="campo" for="cpf">CPF:</label>
-              {{ colaborador.cpf_formatado }}
-            </div>
-            <div>
-              <label class="campo" for="login">Login:</label>
-              {{ colaborador.login }}
-            </div>
-            <div>
-              <label class="campo" name="situacao">Situação:</label>
-              {% if colaborador.ativo %}
-              <label>Ativo</label>
-              {% else %} 
-              <label>Inativo</label>
-              {% endif %} 
-            </div>
-            <a href="{% url  'acessar_colaborador' colaborador.id %}" class="botao_acessar_colaborador"> Acessar para edição/inativação </a>
-          {% endfor %}
-        </form> -->
 
-        <form class="form-visualizacao-colaborador">
-          {% csrf_token %}
-          {% if sucesso_cadastro %}
-          <div class="success-cadastro-message" id = "success-cadastro-message">
-                  {{ sucesso_cadastro }}
-          </div> 
-          {% endif %}
-          <h2 class="titulo"><strong>Lista de Colaboradores</strong></h2>
-          <div class="filtro">
-            <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o CPF ou login do colaborador">
-            <button class="btn btn-light" type="submit">Buscar</button>  
-          </div>
-          <div class="ch-colab-inativos">
-            <input type = "checkbox" id = "inativos" name = "inativos">
-            <label for = "inativos"> Filtrar por Colaboradores Inativos </label>  <button class="btn btn-light btn-lg botao-filtrar" type="submit">Filtrar</button>  
-          </div>
-          <table class="table table-hover lista">
-            <thead>
-              <tr>
-                <th scope="col" class="nome" >Nome</th> 
-                <th scope="col" class="cpf" >CPF</th>
-                <th scope="col" class="login" >Login</th>
-                <th scope="col" class="situacao" >Situação</th> 
-                <th scope="col" class="editar" ></th> 
-              </tr>
-            </thead>
-            <tbody>
-              
-              {% for colaborador in colaboradores %} 
-              <tr>
-                <td>{{ colaborador.nome }}</td> 
-                <td>{{ colaborador.cpf_formatado }}</td>
-                <td>{{ colaborador.login }}</td>
-                <td>
-                  {% if colaborador.ativo %}
-                  Ativo
-                  {% else %}
-                  Inativo
-                  {% endif %}
-                </td>
-                <td class="coluna">
-                  <a href="{% url 'acessar_colaborador' colaborador.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
-                </td>          
-              </tr>    
-              {% endfor %}
-            </tbody>
-          </table>
-        </form>
-          
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        $('#cpf').inputmask('999.999.999-99');
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'colaboradores/visualizar.css' %}" />
+  <title>Visualização de Colaboradores</title>
+</head>
+
+<body>
+  <form class="form-visualizacao-colaborador">
+    {% csrf_token %}
+    {% if sucesso_cadastro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ sucesso_cadastro }}
+    </div>
+    {% endif %}
+    <h2 class="titulo"><strong>Lista de Colaboradores</strong></h2>
+    <input class="busca filtro-nome" type="text" id="nome" name="filtro-nome" placeholder="Filtrar por Nome">
+    <input class="busca filtro-cpf" type="text" id="cpf" name="filtro-cpf" placeholder="Filtrar por CPF">
+    <input class="busca filtro-email" type="text" name="filtro-email" placeholder="Filtrar por E-mail">
+    <input class="busca filtro-login" type="text" name="filtro-login" placeholder="Filtrar por Login">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
+    <div class="lista-container">
+      <table class="table table lista {% if filtrar_inativos %}lista-inativos{% endif %}">
+        <thead>
+          <tr>
+            <th scope="col" class="nome">Nome</th>
+            <th scope="col" class="cpf">CPF</th>
+            <th scope="col" class="email">E-mail</th>
+            <th scope="col" class="login">Login</th>
+            <th scope="col" class="situacao">Situação</th>
+            <th scope="col" class="editar"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for colaborador in colaboradores %}
+          <tr {% if not colaborador.ativo %}class="inativo" {% endif %}>
+            <td>{{ colaborador.nome }}</td>
+            <td>{{ colaborador.cpf_formatado }}</td>
+            <td>{{ colaborador.email }}</td>
+            <td>{{ colaborador.login }}</td>
+            <td>
+              {% if colaborador.ativo %}
+              Ativo
+              {% else %}
+              Inativo
+              {% endif %}
+            </td>
+            <td class="coluna">
+              <a href="{% url 'acessar_colaborador' colaborador.id %}"
+                class="btn btn-primary btn-sm botao-edit">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#cpf').inputmask('999.999.999-99');
+    });
+    function hideSuccessMessage(message) {
+      var successMessage = document.getElementById("success-cadastro-message");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
+
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 4000);
+    }
+    var successMessage = document.getElementById("success-cadastro-message");
+    if (successMessage) {
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
+    }
+
+    const nomeField = document.getElementById("nome");
+    nomeField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const situacaoField = document.getElementById("situacao");
+    situacaoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const codigoField = document.getElementById("cpf");
+    codigoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-nome, .filtro-cpf, .filtro-email, .filtro-login, .filtro-situacao').on('input', function () {
+        atualizarListaColaboradores();
       });
-        function hideSuccessMessage(message) {
-            var successMessage = document.getElementById("success-cadastro-message");
-            successMessage.innerText = message;
-            successMessage.style.display = "block";
-    
-            setTimeout(function() {
-                successMessage.style.display = "none";
-            }, 4000);
-        }
-        var successMessage = document.getElementById("success-cadastro-message");
-        if (successMessage) {
-            var message = successMessage.innerText;
-            hideSuccessMessage(message);
-        }
-        
-    </script>
-    {% endblock %}
+
+      function atualizarListaColaboradores() {
+        // Captura os valores dos campos de filtro
+        var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroCPF = $('.filtro-cpf').val().replace(/[^0-9]/g, ''); // Remove a formatação do CPF
+        var filtroEmail = $('.filtro-email').val().toLowerCase();
+        var filtroLogin = $('.filtro-login').val().toLowerCase();
+        var filtroSituacao = $('.filtro-situacao').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de colaboradores
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var cpff = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var email = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var login = $(this).find('td:nth-child(4)').text().toLowerCase();
+          var situacao = $(this).find('td:nth-child(5)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&
+            (filtroCPF === '' || cpff.indexOf(filtroCPF) !== -1) &&
+            (filtroEmail === '' || email.indexOf(filtroEmail) !== -1) &&
+            (filtroLogin === '' || login.indexOf(filtroLogin) !== -1) &&
+            (filtroSituacao === '' || situacao.indexOf(filtroSituacao) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
 </body>
+
 </html>

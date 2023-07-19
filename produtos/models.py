@@ -8,3 +8,13 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+
+    tipos = (
+        ('Alimento', 'Alimento'),
+        ('Bebida', 'Bebida'),
+        ('Camiseta', 'Camiseta'),
+        ('Ingresso', 'Ingresso')
+    )
+
+    tipo = models.CharField(
+            max_length=20, choices=tipos, null=True)

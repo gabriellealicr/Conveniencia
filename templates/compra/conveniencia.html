@@ -96,31 +96,13 @@
         {% endfor %}
     </div>
     {% endif %}
-    {% if erro %}
-    <div class="success-cadastro-message" id="success-cadastro-message">
-      {{ erro }}
-    </div>
-    {% endif %}
-    {% if erro_senha %}
-    <div class="erro_senha" id="erro_senha">
-      {{ erro_senha }}
-    </div>
-    {% endif %}
-    {% if erro_colab %}
-    <div class="erro_colab" id="erro_colab">
-      {{ erro_colab }}
-    </div>
-    {% endif %}
-    {% if erro_inativo %}
-    <div class="erro_inativo" id="erro_inativo">
-      {{ erro_inativo }}
-    </div>
-    {% endif %}
-    <!-- <h2 class="titulo">Conveniência</h2> -->
     <img class="imagem" src="{% static 'imagens/logooficial.png' %}">
     <strong class="campo">Inserir produto:</strong>
+    <div class="form-group">
     <input type="text" class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
-      placeholder="Código de Barras" required>
+     autocomplete="off" required>
+     <span>Código de Barras</span>
+    </div>
     <button class="btn btn-light botao-add" type="submit"><strong>Adicionar Produto</strong></button>
     <button class="btn btn-light botao-limpar" name="limpar" formnovalidate formaction="{% url 'limpar' %}">
       <strong>Limpar</strong></button>
@@ -131,7 +113,7 @@
     <div class="lista">
       <table class="table table-hover">
         {% if produtos_adicionados %}
-        <h3 class="prod_add">Produtos Adicionados</h3>
+        <strong class="prod_add">Produtos Adicionados</strong>
         <thead class="topo">
           <tr class="topo">
             <th scope="col" class="nome">Nome</th>
@@ -150,22 +132,21 @@
               <td>{{ produto_data.quantidade }}</td>
               <td>{{ produto_data.preco }}</td>
               <td>
-                <!-- <a class="deletar-item" href="{% url 'excluir_produto' produto_data.id %}">Excluir</a> -->
-                <a href="{% url 'excluir_produto' produto_data.id %}" class="fa fa-minus-square lixeira" aria-hidden="true"></a>
+                <a href="{% url 'excluir_produto' produto_data.id %}" class="fa fa-minus-square lixeira"
+                  aria-hidden="true"></a>
           </div>
           {% endfor %}
         </ul>
       </table>
     </div>
     <div class="valor_total">
-      <h5>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</h5>
+      <h5><strong>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</strong></h5>
     </div>
     <div class="itens">
-      <h5>Itens: {{itens}}</h5>
+      <h5><strong>Itens: {{itens}}</strong></h5>
       {% endif %}
     </div>
   </form>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
@@ -175,54 +156,14 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
-  <script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
 
+  <script>
     const codigoBarrasField = document.getElementById("codigo_barras");
     codigoBarrasField.addEventListener("input", function () {
       this.value = this.value.replace(/\D/g, "");
     });
-    function hideSuccessMessage(message) {
-      var successMessage = document.getElementById("success-cadastro-message");
-      successMessage.innerText = message;
-      successMessage.style.display = "block";
-      setTimeout(function () {
-        successMessage.style.display = "none";
-      }, 4000);
-    }
-    var successMessage = document.getElementById("success-cadastro-message");
-    if (successMessage) {
-      var message = successMessage.innerText;
-      hideSuccessMessage(message);
-    }
-
-    function hideSuccessMessage(message) {
-      var erroSenha = document.getElementById("erro_senha");
-      erroSenha.innerText = message;
-      erroSenha.style.display = "block";
-      setTimeout(function () {
-        erroSenha.style.display = "none";
-      }, 4000);
-    }
-    var erroSenha = document.getElementById("erro_senha");
-    if (erroSenha) {
-      var message = erroSenha.innerText;
-      hideSuccessMessage(message);
-    }
-
-    function hideSuccessMessage(message) {
-      var erroColab = document.getElementById("erro_colab");
-      erroColab.innerText = message;
-      erroColab.style.display = "block";
-      setTimeout(function () {
-        erroColab.style.display = "none";
-      }, 4000);
-    }
-    var erroColab = document.getElementById("erro_colab");
-    if (erroColab) {
-      var message = erroColab.innerText;
-      hideSuccessMessage(message);
-    }
-
+    
     function hideSuccessMessage(message) {
       var erroInativo = document.getElementById("erro_inativo");
       erroInativo.innerText = message;

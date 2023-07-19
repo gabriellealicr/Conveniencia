@@ -40,51 +40,76 @@ body {
 
 .grafico_produtos{
     height: 49vh;
-    width: 80vh;
+    width: 65vh;
     position: absolute;
-    top:70%;
+    top: 690px;
     left:26%;
     transform: translate(-50%,-50%);
+    border: 2px solid rgba(0,0,0,0.1); 
+    border-radius: 20px;
 }
 
 .grafico_produtos::after {
     content: attr(title);
     position: absolute;
-    top: 20px;
+    top: 5px;
     left: 50%;
     transform: translateX(-50%);
-    color: black;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.titulo{
-    position: absolute;
-    margin-top: 10vh;
-    left:47%;
-    color: rgb(9, 67, 143)
-}
-
-.titulo:hover{
-    color: rgb(235, 238, 79);
-    text-shadow: 3px 2px 2px rgb(9, 67, 143);
-}
-
-.titulo2{
-    position: absolute;
-    margin-top: 14vh;
-    left:36%;
     color: rgb(9, 67, 143);
-}
-
-.titulo2:hover{
-    color: rgb(235, 238, 79);
-    text-shadow: 3px 2px 2px rgb(9, 67, 143);
+    font-weight: bold;
+    font-size: 23px;
 }
   
 .imagem_tema{
     position: absolute;
     margin-top: 10vh;
     left: 35%;
+}
+
+.estoque{
+    max-height: 50vh;
+    height: 49vh;
+    width: 54vh;
+    position: absolute;
+    top: 47vh;
+    left: 120vh;
+    overflow-y: auto; 
+	background: #f1f9ff;	
+    border: 2px solid rgba(0,0,0,0.1); 
+    border-radius: 20px;
+    align-items: center;
+    text-align: center;
+}
+
+.tabela-prod{
+    position: static;
+    margin-top: 50px;
+} 
+
+.table-prod{
+    width: 480px;
+}
+
+.estoque .titulo-estoque{
+    position: fixed;
+    margin-left: 0vh;
+    background-color: #f1f9ff;
+    color: rgb(9, 67, 143);
+    height: 30px;
+    width: 53vh;
+    margin-top: 5px;
+    font-size: 23px;
+}
+
+.vermelho {
+    background-color: rgb(250, 102, 102);
+}
+
+.amarelo {
+    background-color: rgb(245, 245, 107);
+}
+
+.stt{
+    width: 50px;
 }
 

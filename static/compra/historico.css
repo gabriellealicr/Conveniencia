@@ -4,7 +4,7 @@ body {
 
 .lista {
     position: absolute;
-    top:38%;
+    top:32%;
     left: 10%;
     width: 80% !important; /* Defina a largura desejada */
     margin: 0 auto; /* Centralize horizontalmente */
@@ -56,8 +56,11 @@ body {
     height: 40px;
 }
 
-.btn-light{
-    background-color: rgb(162, 226, 238) !important;
+.btn-buscar{
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
+    margin-left: 53vh;
+    margin-top: -7vh;
 }
 
 .success-cadastro-message {
@@ -74,4 +77,49 @@ body {
     justify-content: center; 
     line-height: 1; 
     font-size: 14px;
+}
+
+.busca{
+    outline: none;
+    border: 2px solid rgb(238, 237, 237);
+    border-radius: 3px;
+    position: absolute;
+    margin-top: 273px;
+    background-color: #f3faff;
+}
+
+.filtro-data {
+    margin-left: 19vh;
+    width: 32vh !important;
+    height: 37px;
+}
+
+.filtro-valor{
+    margin-left: 51vh;
+    width: 19vh !important;
+    height: 37px;
+}
+
+.filtro-colab{
+    margin-left: 70vh;
+    width: 21vh !important;
+    height: 37px;
+}
+
+.filtro-prod{
+    margin-left: 91vh;
+    width: 30vh !important;
+    height: 37px;
+}
+
+.filtro-codigo-barras{
+    margin-left: 121vh;
+    width: 30vh !important;
+    height: 37px;
+}
+
+.filtro-qtd{
+    margin-left: 151vh;
+    width: 200px !important;
+    height: 37px;
 }

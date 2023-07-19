@@ -1,0 +1,40 @@
+/* .img{
+    background-color: rgb(9, 67, 143);
+} */
+
+.lista{
+    width: 40% !important;
+	background-color: #a5c9e4;	
+    border: 1px solid #ccc;
+}
+
+.valor_total {
+    position: absolute;
+    margin-top: 72vh;
+    margin-left: 125vh;
+    width: 300px;
+  }
+
+
+.topo .qtd, .topo .preco{
+    width: 50px;
+}
+
+.topo .nome{
+    width: 300px;
+}
+
+.lista {
+    table-layout: fixed;
+}
+
+.lista th,
+.lista td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nome{
+    width: 230px !important;
+}

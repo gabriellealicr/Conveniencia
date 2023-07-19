@@ -3,12 +3,19 @@
     justify-content: center;
     align-items: center;
     height: 70px;
-    background-color: rgb(136, 211, 224); 
+    background-color: rgb(9, 67, 143);
 }
   
 .fundo .dropdown {
     margin-right: 10px;
     margin-left: 10px;
+}
+
+.botao-colaboradores, .botao-pagina-inicial, .botao-relatorios, .botao-colaboradores, .botao-produtos, .botao-compras, .botao-usuarios, .botao-estoques{
+  background-color: rgb(9, 67, 143) !important;
+  color: rgb(253, 247, 247) !important;
+  border: 0.5px solid rgb(153, 191, 241)!important; 
+  border-radius: 20px; 
 }
 
 .fundo .pag-inicial{
@@ -20,14 +27,15 @@
 }
 
 .dropdown-item.cadastrar-item.active, .dropdown-item.cadastrar-item:active,
-.dropdown-item.visualizar-item.active, .dropdown-item.visualizar-item:active {
+.dropdown-item.visualizar-item.active, .dropdown-item.visualizar-item:active, .dropdown-item.botao-estoque:active, .dropdown-item.botao-movimentacao:active{
   background-color: rgb(235, 238, 79); 
   color: black;
 }
 
 .botao-logout{
     margin-left: 175vh;
-    background-color: rgb(136, 211, 224) !important; 
+    color: white !important;
+    cursor: pointer;
     border: none;
     position: absolute;
 }

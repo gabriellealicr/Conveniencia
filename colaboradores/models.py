@@ -3,6 +3,7 @@ from django.db import models
 class Colaborador(models.Model):
     nome = models.CharField(max_length=35, null=True)
     cpf = models.CharField(max_length=11, unique=True)
+    email = models.CharField(unique=True, max_length=60, null=True)
     login = models.CharField(unique=True, max_length=50)
     senha = models.CharField(max_length=80, null=True)
     ativo = models.BooleanField(null=True)

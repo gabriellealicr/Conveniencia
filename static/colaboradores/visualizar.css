@@ -1,88 +1,101 @@
 body {
-	background: #f1f9ff !important;	
+    background: #f1f9ff !important;
 }
 
 .lista {
     position: absolute;
-    top:47%;
+    top: 32%;
     left: 10%;
-    width: 80% !important; /* Defina a largura desejada */
-    margin: 0 auto; /* Centralize horizontalmente */
-    border: 1px solid #ccc; /* Adicione uma borda de 1px com cor cinza */
-  
+    width: 80% !important;
+    /* Defina a largura desejada */
+    margin: 0 auto;
+    /* Centralize horizontalmente */
+    border: 1px solid #ccc;
+    /* Adicione uma borda de 1px com cor cinza */
+
 }
 
-.botao-acessar-colaborador{
+.botao-acessar-colaborador {
     position: absolute;
     top: 50%;
 }
 
-.filtro{
+.filtro {
     position: absolute;
-    top:27%;
+    top: 27%;
     left: 34%;
 }
 
-.ch-colab-inativos{
+.ch-colab-inativos {
     position: absolute;
-    top:36%;
+    top: 36%;
     left: 40%;
 }
 
-.titulo{
+.titulo {
     text-align: center;
     position: absolute;
     top: 15%;
     left: 50%;
     transform: translateX(-50%);
     color: rgb(9, 67, 143);
-    font-family: 'Exo 2';
+    font-size: 33px;
 }
 
-.filtro .busca{
+.filtro .busca {
     width: 500px;
 }
 
-.botao-filtrar{
+.btn-filtrar {
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px !important;
     margin-left: 10px;
     height: 40px;
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
 }
 
-.btn-light{
-    background-color: rgb(162, 226, 238) !important;
+.btn-buscar {
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
+    margin-left: 53vh;
+    margin-top: -7vh;
 }
 
 .success-cadastro-message {
     background-color: green;
     color: #fff;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 5px;
     position: fixed;
     top: 80px;
     right: 10px;
     transition: opacity 0.5s ease-in-out;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
-    line-height: 1; 
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 14px;
 }
 
 .botao-edit {
+    background-color: rgb(9, 67, 143) !important;
     visibility: hidden;
 }
 
-.botao-edit:hover{
+.botao-edit:hover {
     background-color: yellow !important;
     color: #000 !important;
     border-color: rgb(235, 238, 79) !important;
 }
 
 tr:hover .botao-edit {
+    visibility: visible;
+}
+
+tr:hover .botao-edit-senha {
     visibility: visible;
 }
 
@@ -97,18 +110,63 @@ tr:hover .botao-edit {
     white-space: nowrap;
 }
 
-.situacao{
-    width: 100px;
-}
-
-.editar{
+.situacao {
     width: 80px;
 }
 
-.cpf, .login{
+.editar {
+    width: 80px;
+}
+
+.cpf,
+.login,
+.email {
     width: 200px;
 }
 
-.nome{
+.nome {
     width: 400px;
+}
+
+.inativo {
+    background-color: #dee4eb !important;
+}
+
+.busca{
+    outline: none;
+    border: 2px solid rgb(238, 237, 237);
+    border-radius: 3px;
+    position: absolute;
+    margin-top: 273px;
+    background-color: #f3faff;
+}
+
+.filtro-nome {
+    margin-left: 19vh;
+    width: 53vh !important;
+    height: 37px;
+}
+
+.filtro-cpf{
+    margin-left: 72vh;
+    width: 28vh !important;
+    height: 37px;
+}
+
+.filtro-email{
+    margin-left: 98vh;
+    width: 28vh !important;
+    height: 37px;
+}
+
+.filtro-login{
+    margin-left: 125vh;
+    width: 26vh !important;
+    height: 37px;
+}
+
+.filtro-situacao{
+    margin-left: 151vh;
+    width: 199px !important;
+    height: 37px;
 }

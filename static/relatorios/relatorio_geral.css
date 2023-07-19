@@ -1,22 +1,45 @@
-body{
-    background: #f1f9ff !important;	
+body {
+    background: #f1f9ff !important;
 }
 
-.form-relatorio-consumo{
+.form-relatorio-geral {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vh;
+    height: 56vh;
+    text-align: center;
+    background-color: #f6fcff;
+}
+
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 59vh;
-    width: 90vh;
-    position: absolute;
 }
 
-.botao-gerar{
+
+.titulo {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vh;
+    position: absolute;
+    margin-top: 3vh;
+    color: rgb(9, 67, 143); 
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.botao-gerar {
     background-color: rgb(9, 67, 143) !important;
-    width: 170px !important;
-    margin-left: 102vh;
-    margin-top: 280px;
+    width: 230px !important;
+    left: 58%;
+    transform: translate(-50%, -50%);
+    margin-top: 48vh;
     position: absolute;
 }
 
@@ -24,12 +47,80 @@ body{
     background-color: yellow !important;
     color: #000 !important;
     border-color: rgb(235, 238, 79) !important;
-}  
+}
 
-.titulo{
-    color: rgb(9, 67, 143);
-    margin-left: 110vh;
-    width: 500px;
+.ch-formato-pdf {
+    margin-top: 40vh;
     position: absolute;
-    margin-bottom: 260px;
+    margin-left: 220px;
+}
+
+.ch-formato-txt {
+    margin-top: 40vh;
+    margin-left: 345px;
+    position: absolute;
+}
+
+.robot {
+    top: 64%;
+    left: 6%;
+    position: absolute;
+    height: 20vh;
+    width: 18vh;
+}
+
+.info {
+    top: 3%;
+    left: 542px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.info::after {
+    content: attr(data-message);
+    display: none;
+    position: absolute;
+    background-color: rgb(9, 67, 143);
+    color: white;
+    padding: 10px;
+    width: 420px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    white-space: pre-line;
+}
+
+.info:hover::after {
+    display: block;
+}
+
+.ch-email{
+    position: absolute;
+    left: 10%;
+    margin-top: 140px;
+    font-size: 17px;
+}
+
+.email_input{
+    position: absolute;
+    left: 38%;
+    margin-top: 135px;
+    width: 302px !important;
+    visibility: hidden;
+}
+
+.colab_nao_encontrado {
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    position: fixed;
+    top: -16vh;
+    left: 100vh;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 14px;
+    width: 240px;
 }

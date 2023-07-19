@@ -1,0 +1,159 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.form-acesso-senha {
+  max-width: 480px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #f6fcff;
+  border: 2px solid rgba(0,0,0,0.1); 
+  border-radius: 15px; 
+}
+
+.form .form-acesso-senha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 75vh;
+    width: 90vh;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.arrow{
+    margin-top: 6px;
+    margin-left: -44vh;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.botao-salvar {
+    height: 48px;
+    margin-top: 66vh;
+    position: absolute;
+    width: 115px !important;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-ativar, .botao-inativar{
+    position: absolute;
+    margin-top: -10px;
+    width: 115px;
+    margin-top: 62vh;
+    left: 50%;
+    background-color: rgb(235, 238, 79) !important;
+    border-color: rgb(235, 238, 79) !important;
+}
+  
+.titulo{
+    position: absolute;
+    text-align: center;
+    margin-top: -5px;
+    font-size: 33px;
+    color: rgb(9, 67, 143); 
+    font-weight: bold;
+    margin-left: 2vh;
+}
+
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 40px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 47px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
+.input-group-text-senha {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 38vh;
+    margin-top: 23vh;
+    z-index: 2;
+    padding: 10px;
+}
+
+.input-group-text-conf {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 38vh;
+    margin-top: 315px;
+    z-index: 2;
+    padding: 10px;
+}
+
+.erro_senha{
+    color: red;
+    position: absolute;
+    margin-top: 320px;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+}
+
+.usuario{
+    margin-top: 89px;
+}
+
+.input_usuario{
+    background-color: white !important;
+}
+
+.usu{
+    font-size: 15px;
+    position: absolute;
+    margin-top: 92px;
+    margin-left: -287px;
+}
+
+.gerar_senha{
+    position: absolute;
+    font-size: 15px;
+    top: 39%;
+    margin-left: 22vh;
+    cursor: pointer;
+    color: rgb(9, 67, 143);
+    z-index: 1;
+}

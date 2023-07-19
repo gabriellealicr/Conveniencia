@@ -10,4 +10,6 @@ urlpatterns = [
     path("ativar_usuario/<int:usuario_id>/", views.Ativar, name="ativar_usuario"),
     path("acessar_usuario/<int:usuario_id>/", views.Acessar, name="acessar_usuario"),
     path("alterar_usuario/<int:usuario_id>/", views.Alterar, name="alterar_usuario"),
+    path("acessar_senha_usuario/<int:usuario_id>/", views.Acessar_Senha, name="acessar_senha_usuario"),
+    path("alterar_senha_usuario/<int:usuario_id>/", views.Alterar_Senha, name="alterar_senha_usuario"),
 ]

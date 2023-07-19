@@ -3,107 +3,144 @@ body {
 }
 
 .form-acesso-colaborador {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    position: absolute;
-    top:52%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    width: 70vh;
-    height: 66vh;
-    text-align: center;
-    background-color: #f6fcff;
+  max-width: 480px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #f6fcff;
+  border: 2px solid rgba(0,0,0,0.1); 
+  border-radius: 15px; 
 }
 
-.form{
+.form .form-acesso-colaborador {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-}
-
-.botao-salvar{
-    width: 115px;
-    height: 48px;
-    margin-top: 51px;
-    font-size: 15px;
-}
-
-.botao-ativar, .botao-inativar{
-    width: 115px;
-    margin-top: 51px;
-    background-color: rgb(235, 238, 79) !important;
-    border-color: rgb(235, 238, 79) !important;
-}
-
-.form-control {
-    font-size: 16px;
-    height: auto;
-    width: 40vh !important;
-}
-
-
-.filtro .busca{
-    width: 500px;
-}
-
-.campos{
+    height: 75vh;
+    width: 90vh;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 17vh;
-}
-
-.campo{
-    margin-top: -40px;
-    position: absolute;
-}
-
-.erro_cpf{
-    color: red;
-    position: absolute;
-    margin-top: 200px;
-    left: 38%;
-}
-
-.erro_login{
-    color: red;
-    position: absolute;
-    margin-top: 315px;
-    left: 38%;
-}
-
-.erro_nome{
-    color: red;
-    position: absolute;
-    margin-top: 95px;
-    margin-left: 250px;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .arrow{
-    margin-top: 3vh;
-    margin-left: -32vh;
+    margin-top: 6px;
+    margin-left: -44vh;
     position: absolute;
     font-size: 20px;
     cursor: pointer;
 }
 
-.btn-ok-modal {
+.botao-salvar {
+    height: 48px;
+    margin-top: 62vh;
+    position: absolute;
+    width: 115px !important;
+    left: 25%;
     background-color: rgb(9, 67, 143) !important;
-    color: #ffffff; 
+}
+
+.botao-ativar, .botao-inativar{
+    position: absolute;
+    margin-top: -10px;
+    width: 115px;
+    margin-top: 62vh;
+    left: 50%;
+    background-color: rgb(235, 238, 79) !important;
+    border-color: rgb(235, 238, 79) !important;
 }
   
-.btn-ok-modal:hover {
-    background-color: yellow !important;
-    color: #000 !important;
-    border-color: rgb(235, 238, 79) !important;
-}  
-  
 .titulo{
-    text-align: center;
     position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 410px;
+    text-align: center;
+    margin-top: -5px;
+    font-size: 33px;
+    color: rgb(9, 67, 143); 
+    font-weight: bold;
+    margin-left: 2vh;
+}
+
+.erro_cpf{
+    color: red;
+    position: absolute;
+    margin-top: 275px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_login{
+    color: red;
+    position: absolute;
+    margin-top: 465px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_nome{
+    color: red;
+    position: absolute;
+    margin-top: 174px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_email{
+    color: red;
+    position: absolute;
+    margin-top: 370px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.nome{
+    margin-top: 9vh;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 40px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 47px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
+.alterar_senha{
+    margin-top: 21vh;
+}
+
+.alterar_senha .alterar{
+    color: rgb(9, 67, 143);
 }

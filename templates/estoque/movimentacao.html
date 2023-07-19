@@ -1,0 +1,132 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'estoque/movimentacao.css' %}" />
+  <title>Visualização de Movimentações</title>
+</head>
+
+<body>
+  <form class="form-visualizacao-estoque">
+    {% csrf_token %}
+    {% if sucesso_cadastro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ sucesso_cadastro }}
+    </div>
+    {% endif %}
+    <h2 class="titulo"><strong>Movimentações do Estoque</strong></h2>
+    <input class="busca filtro-nome" type="text" id="nome" name="filtro-nome" placeholder="Filtrar por Nome">
+    <input class="busca filtro-codigo-barras" type="text" id="cod-barras" name="filtro-codigo-barras"
+      placeholder="Filtrar por Código de Barras">
+    <input class="busca filtro-data-hora" type="text" id="data-hora" name="filtro-data-hora"
+      placeholder="Filtrar por Data e Hora">
+    <input class="busca filtro-tipo" type="text" id="tipo" name="filtro-tipo"
+      placeholder="Filtrar por Tipo de Movimentação">
+    <input class="busca filtro-qtd" type="text" id="qtd" name="filtro-qtd" placeholder="Filtrar por Quantidade">
+    <input class="busca filtro-usuario" type="text" name="filtro-usuario" placeholder="Filtrar por Usuário">
+    <table class="table table-hover lista">
+      <thead>
+        <tr>
+          <th class="nome" scope="col">Nome</th>
+          <th class="codbarras" scope="col">Código de Barras</th>
+          <th scope="col" class="data_hora">Data e hora</th>
+          <th scope="col" class="tipo">Tipo de Movimentação</th>
+          <th scope="col" class="quantidade">Quantidade</th>
+          <th scope="col" class="usuario">Usuário</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for movimentacao in movimentacao %}
+        <tr>
+          <td>{{ movimentacao.estoque.produtos}}</td>
+          <td>{{ movimentacao.estoque.produtos.codigo_barras }}</td>
+          <td>{{ movimentacao.data_hora|date:"d-m-Y H:i:s"}}</td>
+          <td>{{ movimentacao.tipo }}</td>
+          <td>{{ movimentacao.quantidade_alteracao }}</td>
+          <td>{{ movimentacao.usuario }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script>
+
+    const nomeField = document.getElementById("nome");
+    nomeField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const codigoField = document.getElementById("cod-barras");
+    codigoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const qtdField = document.getElementById("qtd");
+    qtdField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const tipoField = document.getElementById("tipo");
+    tipoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const dataField = document.getElementById("data-hora");
+    dataField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9: -]/g, "");
+    });
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-nome, .filtro-codigo-barras, .filtro-data-hora, .filtro-tipo, .filtro-qtd, .filtro-usuario').on('input', function () {
+        // Chamada para a função de atualização da lista de colaboradores
+        atualizarListaColaboradores();
+      });
+
+      function atualizarListaColaboradores() {
+        // Captura os valores dos campos de filtro
+        var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroCodigoBarras = $('.filtro-codigo-barras').val().toLowerCase();
+        var filtroDataHora = $('.filtro-data-hora').val().toLowerCase();
+        var filtroTipo = $('.filtro-tipo').val().toLowerCase();
+        var filtroQuantidade = $('.filtro-qtd').val().toLowerCase();
+        var filtroUsuario = $('.filtro-usuario').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de colaboradores
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var cod = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var datahora = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var tipo = $(this).find('td:nth-child(4)').text().toLowerCase();
+          var qtd = $(this).find('td:nth-child(5)').text().toLowerCase();
+          var usuario = $(this).find('td:nth-child(6)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&
+            (filtroCodigoBarras === '' || cod.indexOf(filtroCodigoBarras) !== -1) &&
+            (filtroDataHora === '' || datahora.indexOf(filtroDataHora) !== -1) &&
+            (filtroTipo === '' || tipo.indexOf(filtroTipo) !== -1) &&
+            (filtroQuantidade === '' || qtd.indexOf(filtroQuantidade) !== -1) &&
+            (filtroUsuario === '' || usuario.indexOf(filtroUsuario) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
+</body>
+
+</html>

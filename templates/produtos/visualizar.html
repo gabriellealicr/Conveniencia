@@ -4,114 +4,170 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'produtos/visualizar.css' %}" />
-    <title>Visualização de Produtos</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'produtos/visualizar.css' %}" />
+  <title>Visualização de Produtos</title>
 </head>
+
 <body>
-        <!-- <form class="form-visualizacao-produto">
-            {% csrf_token %}
-            {% if sucesso_cadastro %}
-            <div class="success-cadastro-message" id = "success-cadastro-message">
-                    {{ sucesso_cadastro }}
-            </div> 
+  <form class="form-visualizacao-produto">
+    {% csrf_token %}
+    {% if sucesso_cadastro %}
+    <div class="success-cadastro-message" id="success-cadastro-message">
+      {{ sucesso_cadastro }}
+    </div>
+    {% endif %}
+    <h2 class="titulo"><strong>Lista de Produtos</strong></h2>
+    <input class="busca filtro-nome" type="text" id="nome" name="filtro-nome" placeholder="Filtrar por Nome">
+    <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras"
+      placeholder="Filtrar por Código de Barras">
+    <input class="busca filtro-preco" type="text" id="preco" name="filtro-preco" placeholder="Filtrar por Preço">
+    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif" placeholder="Filtrar por Classificação">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
+    <table class="table table lista">
+      <thead>
+        <tr>
+          <th class="nome" scope="col">Nome</th>
+          <th class="codbarras" scope="col">Código de Barras</th>
+          <th class="inpreco" scope="col">Preço</th>
+          <th scope="col" class="classificacao">Classificação</th>
+          <th scope="col" class="situacao">Situação</th>
+          <th class="exc" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produto in produtos %}
+        <tr {% if not produto.ativo %}class="inativo" {% endif %}>
+          <td>{{ produto.nome }}</td>
+          <td>{{ produto.codigo_barras }}</td>
+          <td class="preco">R$ {{ produto.preco|floatformat:2 }}</td>
+          <td>{{ produto.tipo }}</td>
+          <td>
+            {% if produto.ativo %}
+            Ativo
+            {% else %}
+            Inativo
             {% endif %}
-            <br>
-            <div class="filtro">
-              <br>
-              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome ou código de barras do produto">
-              <button class="btn btn-light" type="submit">Buscar</button>
-            </div>
-            <br>
-            {% for produto in produtos %}
-            <div>
-              <br>
-              <label class="campo" for="nome">Nome:</label>
-              {{ produto.nome }}
-            </div>
-            <div>
-              <label class="campo" for="cpf">Código de Barras:</label>
-              {{ produto.codigo_barras }}
-            </div>
-            <div>
-              <label class="campo" for="login">Preço:</label>
-              <span class="preco" data-preco="{{ produto.preco }}">{{ produto.preco }}</span>
-            </div>
-            <a href="{% url  'acessar_produto' produto.id %}" class="botao_acessar"> Acessar para edição </a>
-          {% endfor %}
-          </form> -->
+          </td>
+          <td class="coluna">
+            <a href="{% url 'acessar_produto' produto.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
 
-          <form class="form-visualizacao-produto">
-            {% csrf_token %}
-            {% if sucesso_cadastro %}
-            <div class="success-cadastro-message" id = "success-cadastro-message">
-                    {{ sucesso_cadastro }}
-            </div> 
-            {% endif %}
-            <h2 class="titulo"><strong>Lista de Produtos</strong></h2>
-            <div class="filtro">
-              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome ou código de barras do produto">
-              <button class="btn btn-light" type="submit">Buscar</button>  
-            </div>
-            <table class="table table-hover lista">
-              <thead>
-                <tr>
-                  <th class="nome" scope="col">Nome</th> 
-                  <th class="codbarras" scope="col">Código de Barras</th>
-                  <th class="inpreco" scope="col">Preço</th>
-                  <th class="exc" scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for produto in produtos %} 
-                <tr>
-                  <td>{{ produto.nome }}</td> 
-                  <td>{{ produto.codigo_barras }}</td>
-                  <td>R$ {{ produto.preco }}</td>
-                  <td class="coluna">
-                    <a href="{% url 'acessar_produto' produto.id %}" class="btn btn-primary btn-sm botao-edit">Editar</a>
-                  </td>          
-                </tr>    
-                {% endfor %}
-              </tbody>
-            </table>
-          </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function formatarPreco() {
+      var precoFields = document.getElementsByClassName("preco");
 
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+      for (var i = 0; i < precoFields.length; i++) {
+        var precoField = precoFields[i];
+        var precoValor = precoField.innerText.replace("R$ ", "").replace(",", ".");
+        var precoNumerico = parseFloat(precoValor);
 
-          <script>
-            const precos = document.getElementsByClassName("preco");
-            for (let i = 0; i < precos.length; i++) {
-                const precoElement = precos[i];
-                const preco = precoElement.getAttribute("data-preco");
-                const precoFormatado = parseFloat(preco).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                });
-                precoElement.textContent = precoFormatado;
-                }
-              $(document).ready(function() {
-                $('#cpf').inputmask('999.999.999-99');
-              });
-              function hideSuccessMessage(message) {
-                  var successMessage = document.getElementById("success-cadastro-message");
-                  successMessage.innerText = message;
-                  successMessage.style.display = "block";
-          
-                  setTimeout(function() {
-                      successMessage.style.display = "none";
-                  }, 4000);
-              }
-              var successMessage = document.getElementById("success-cadastro-message");
-              if (successMessage) {
-                  var message = successMessage.innerText;
-                  hideSuccessMessage(message);
-              }
-        </script>        
-    {% endblock %}
+        if (!isNaN(precoNumerico)) {
+          var precoFormatado = precoNumerico.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          });
+
+          precoField.innerText = precoFormatado;
+        }
+      }
+    }
+
+    formatarPreco();
+
+    $(document).ready(function () {
+      formatarPreco();
+    });
+
+    function hideSuccessMessage(message) {
+      var successMessage = document.getElementById("success-cadastro-message");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
+
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 4000);
+    }
+    var successMessage = document.getElementById("success-cadastro-message");
+    if (successMessage) {
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
+    }
+
+    const nomeField = document.getElementById("nome");
+    nomeField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const codigoField = document.getElementById("codigo-barras");
+    codigoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const precoField = document.getElementById("preco");
+    precoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+
+    const classifField = document.getElementById("classif");
+    classifField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const situacaoField = document.getElementById("situacao");
+    situacaoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-nome, .filtro-codigo-barras, .filtro-preco, .filtro-classif, .filtro-situacao').on('input', function () {
+        // Chamada para a função de atualização da lista de colaboradores
+        atualizarListaProdutos();
+      });
+
+      function atualizarListaProdutos() {
+        // Captura os valores dos campos de filtro
+        var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroCodigoBarras = $('.filtro-codigo-barras').val().toLowerCase();
+        var filtroPreco = $('.filtro-preco').val().toLowerCase();
+        var filtroClassif = $('.filtro-classif').val().toLowerCase();
+        var filtroSituacao = $('.filtro-situacao').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de produtos
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var cod = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var preco = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var classif = $(this).find('td:nth-child(4)').text().toLowerCase();
+          var situacao = $(this).find('td:nth-child(5)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&
+            (filtroCodigoBarras === '' || cod.indexOf(filtroCodigoBarras) !== -1) &&
+            (filtroPreco === '' || preco.indexOf(filtroPreco) !== -1) &&
+            (filtroClassif === '' || classif.indexOf(filtroClassif) !== -1) &&
+            (filtroSituacao === '' || situacao.indexOf(filtroSituacao) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
 </body>
+
 </html>

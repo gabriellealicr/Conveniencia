@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Conveniência 2.0</title>
+    <!-- <link rel="stylesheet" href="{% static 'compra/msg_email.css' %}" /> -->
+<style>
+    .fundo {
+        background-color: rgb(9, 67, 143);
+        width: 100vh;
+        height: 13vh;
+    }
+
+    .imagem {
+        margin-top: -50vh;
+        margin-left: 25vh;
+        width: 10vh !important;
+        height: 10vh !important;
+    }
+
+    .texto {
+        color: #000000;
+        font-size: 20px;
+    }
+
+    .att {
+        color: #000000;
+        font-size: 15px;
+        margin-left: 65vh;
+    }
+    .nome{
+        width: 200px;
+    }
+    .qtd{
+        width: 100px;
+    }
+</style>
+</head>
+<body>
+    <div class="fundo">
+        <img style="margin-top: 1vh; margin-left: 25vh; width: 40vh; height: 10vh;"
+            src="https://i.ibb.co/bzv2rD7/temaconvenienciabranco.png">
+    </div>
+    <div class="lista">
+        <p class="texto">{{ message }}</p>
+        <h3 class="titulo">Produtos</h3>
+        <table class="table table-hover lista">
+            <thead>
+                <tr>
+                    <th scope="col" class="nome">Nome</th>
+                    <th scope="col" class="qtd">Quantidade</th>
+                    <th scope="col" class="preco">Preço</th>
+                    <th scope="col" class="exc"></th>
+                </tr>
+            </thead>
+            <ul>
+                {% for produto_data in produtos_adicionados %}
+                <div class="produtos">
+                    <tr>
+                        <td>{{ produto_data.nome }}</td>
+                        <td>{{ produto_data.quantidade }}</td>
+                        <td>R$ {{ produto_data.preco|floatformat:2 }}</td>
+                        <td>
+                </div>
+                {% endfor %}
+            </ul>
+        </table>
+        <div class="valor_total">
+            <h5>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</h5>
+        </div>
+    </div>
+    <p class="att">Atenciosamente, Equipe SCI Sistemas Contábeis</p>
+</body>
+
+</html>

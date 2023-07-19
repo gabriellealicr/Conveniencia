@@ -3,65 +3,59 @@ body {
 }
 
 .form-acesso-usuario {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    position: absolute;
-    top:52%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    width: 70vh;
-    height: 66vh;
-    text-align: center;
+    max-width: 480px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
     background-color: #f6fcff;
+    border: 2px solid rgba(0,0,0,0.1); 
+    border-radius: 15px; 
 }
 
-.login{
+.login .form-acesso-usuario{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    height: 75vh;
+    width: 90vh;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .botao-salvar {
-    width: 115px;
     height: 48px;
-    margin-top: 113px;
-    font-size: 15px;
+    margin-top: 62vh;
+    position: absolute;
+    width: 115px !important;
+    left: 25%;
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-slv {
+    height: 48px;
+    margin-top: 624px;
+    position: absolute;
+    width: 115px !important;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgb(9, 67, 143) !important;
 }
 
 .botao-ativar, .botao-inativar{
+    position: absolute;
+    margin-top: -10px;
     width: 115px;
-    margin-top: 113px;
+    margin-top: 62vh;
+    left: 50%;
     background-color: rgb(235, 238, 79) !important;
     border-color: rgb(235, 238, 79) !important;
-}
-
-.form-control {
-    font-size: 16px;
-    height: auto;
-    width: 40vh !important;
-}
-
-.filtro .busca{
-    width: 500px;
-}
-
-.campo{
-    margin-top: -40px;
-    position: absolute;
-}
-
-.campos{
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 22vh;
 }
 
 .erro_usuario{
     color: red;
     position: absolute;
-    margin-top: 10vh;
+    margin-top: 17vh;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -69,8 +63,9 @@ body {
 .erro_email{
     color: red;
     position: absolute;
-    margin-top: 21vh;
-    margin-left: 250px;
+    margin-top: 28vh;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .arrow{
@@ -84,8 +79,72 @@ body {
 .titulo{
     text-align: center;
     position: absolute;
-    top: 20px;
+    top: 10px;
     left: 50%;
+    font-size: 33px;
+    color: rgb(9, 67, 143); 
+    font-weight: bold;
     transform: translateX(-50%);
     width: 410px;
+}
+
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.nome{
+    margin-top: 9vh;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 40px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 47px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
+.arrow{
+    margin-top: 6px;
+    margin-left: -44vh;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.alterar_senha{
+    margin-top: 391px;
+}
+
+.alterar_senha .alterar{
+    color: rgb(9, 67, 143);
 }

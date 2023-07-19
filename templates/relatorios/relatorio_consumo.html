@@ -4,51 +4,89 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'relatorios/relatorio_consumo.css' %}" />
-    <title>Relatório</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'relatorios/relatorio_consumo.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <title>Relatório</title>
 </head>
+
 <body>
-<form method="POST" class="form-relatorio-consumo" action="{% url 'relatorio_consumo' %}">
-  {% csrf_token %}
-  {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
+  <div class="form">
+    <form method="POST" class="form-relatorio-consumo" action="{% url 'relatorio_consumo' %}">
+      {% csrf_token %}
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+          {% endfor %}
+      </div>
+      {% endif %}
+      <img class="robot" src="{% static 'imagens/robot.png' %}">
+      <i class="bi bi-info-circle info"
+        data-message="Listagem do consumo de cada colaborador em um período específico. Informe a data de início, data final e login do colaborador para gerar um relatório detalhado.&#10;Para enviá-lo para um e-mail de preferência, selecione a opção 'Enviar por e-mail' e informe o destino.&#10;Opções de formatos para download: .PDF e .TXT.&#10;Se as informações digitadas não retornarem dados, será exibido uma mensagem de alerta."></i>
+      <h2 class="titulo">Relatório de Consumo Detalhado</h2>
+      <h4 class="de">De:</h4>
+      <input type="date" class="form-control data_inicio" id="data_inicio" name="data_inicio"
+        value="{{ request.GET.data_inicio }}" required>
+      <h4 class="ate">Até:</h4>
+      <input type="date" class="form-control data_fim" id="data_fim" name="data_fim" value="{{ request.GET.data_fim }}"
+        required>
+      <div class="form-group">
+        <input type="text" class="form-control login_colab_input" id="colaborador_pesquisa" name="colaborador_pesquisa"
+          autocomplete="off" required>
+        <span>Login de Colaborador</span>
+      </div>
+      <div class="ch-email">
+        <input type="checkbox" id="email_ch" class="email_ch" name="email_ch" onchange="toggleEmailInput()">
+        <label for="email_ch"> Enviar por e-mail </label>
+      </div>
+      <input type="text" class="form-control email_input" id="email_input" name="email_input"
+        placeholder="E-mail de destino">
+      <div class="ch-formato-pdf">
+        <input type="checkbox" id="formato_pdf" class="formato-pdf" name="formato_pdf">
+        <label for="formato_pdf"> Formato PDF </label>
+      </div>
+      <div class="ch-formato-txt">
+        <input type="checkbox" id="formato_txt" class="formato-txt" name="formato_txt">
+        <label for="formato_txt"> Formato TXT </label>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block botao-gerar" type="submit">Gerar Relatório</button>
+
+    </form>
   </div>
-{% endif %}
-    <h2 class="titulo">Relatório de Consumo Detalhado</h2>
-    <h4 class="de">De:</h4>
-    <input type="date" class="data_inicio" id="data_inicio" name="data_inicio">
-    <h4 class="ate">Até:</h4>
-    <input type="date" class="data_fim" id="data_fim" name="data_fim">
-  
-    <h4 class="login_colab">Login de Colaborador:</h4>
-    <input type="text" class="login_colab_input" id="colaborador_pesquisa" name="colaborador_pesquisa">
-  
-    <button class="btn btn-lg btn-primary btn-block botao-gerar" type="submit">Gerar Relatório</button>
-  </form>
   <script>
     function hideSuccessMessage(message) {
-        var successMessage = document.getElementById("colab_nao_encontrado");
-        successMessage.innerText = message;
-        successMessage.style.display = "block";
+      var successMessage = document.getElementById("colab_nao_encontrado");
+      successMessage.innerText = message;
+      successMessage.style.display = "block";
 
-        setTimeout(function() {
-            successMessage.style.display = "none";
-        }, 4000);
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 4000);
     }
 
     var successMessage = document.getElementById("colab_nao_encontrado");
     if (successMessage) {
-        var message = successMessage.innerText;
-        hideSuccessMessage(message);
+      var message = successMessage.innerText;
+      hideSuccessMessage(message);
     }
-</script>
-    {% endblock %}
+    function toggleEmailInput() {
+      var emailInput = document.getElementById("email_input");
+      var emailCheckbox = document.getElementById("email_ch");
+
+      if (emailCheckbox.checked) {
+        emailInput.style.visibility = "visible";
+      } if (!emailCheckbox.checked) {
+        emailInput.style.visibility = "hidden";
+      }
+    }
+  </script>
+  {% endblock %}
 </body>
+
 </html>

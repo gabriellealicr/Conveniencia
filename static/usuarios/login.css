@@ -61,8 +61,17 @@ body {
 .erro{
     color: red;
     position: absolute;
-    margin-top: 25px;
-    margin-left: 2px;
+    margin-top: 45px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_cad{
+    color: red;
+    position: absolute;
+    margin-top: 45px;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .input-group-text {

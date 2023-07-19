@@ -1,0 +1,149 @@
+body {
+	background: #f1f9ff !important;	
+}
+
+.form-acesso-produto {
+  max-width: 480px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #f6fcff;
+  border: 2px solid rgba(0,0,0,0.1); 
+  border-radius: 15px; 
+}
+
+.form .form-acesso-produto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+    width: 90vh;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.arrow{
+    margin-top: -630px;
+    margin-left: -44vh;
+    position: absolute;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.botao-salvar {
+    height: 48px;
+    margin-top: 668px;
+    position: absolute;
+    width: 115px !important;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: rgb(9, 67, 143) !important;
+}
+
+.botao-ativar, .botao-inativar{
+    position: absolute;
+    margin-top: -10px;
+    width: 115px;
+    margin-top: 588px;
+    left: 50%;
+    background-color: rgb(235, 238, 79) !important;
+    border-color: rgb(235, 238, 79) !important;
+}
+  
+.titulo{
+    position: absolute;
+    text-align: center;
+    margin-top: -64vh;
+    color: rgb(9, 67, 143); 
+    font-size: 33px;
+    margin-left: 2vh;
+    font-weight: bold;
+}
+
+.erro_codigo_barras{
+    color: red;
+    position: absolute;
+    margin-top: 389px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_preco{
+    color: red;
+    position: absolute;
+    margin-top: 498px;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.erro_nome{
+    color: red;
+    position: absolute;
+    left:50%;
+    transform: translate(-50%,-50%);
+    margin-top: 170px;
+}
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.nome_label{
+    font-size: 14px;
+    position: absolute;
+    top: 10%;
+    left: 0.5vh;
+}
+
+.quantidade_label{
+    font-size: 14px;
+    position: absolute;
+    top: 10%;
+    left: 0.5vh;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 40px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 47px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
+.input-nome{
+    margin-top: -150px;
+}
+
+.input-nome .nome, .qtd{
+    background-color: white !important;
+}

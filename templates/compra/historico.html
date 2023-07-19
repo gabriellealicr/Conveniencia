@@ -4,102 +4,140 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'compra/historico.css' %}" />
-    <title>Histórico de Compras</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'compra/historico.css' %}" />
+  <title>Histórico de Compras</title>
 </head>
+
 <body>
-      <!-- <form class="form-visualizacao-historico">
-            {% csrf_token %}
-            <br>
-            <div class="filtro">
-              <br>
-              <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
-              <button class="btn btn-light" type="submit">Buscar</button>  
-            </div>
-            <br>
-            {% for compra in compras %}
-            <br>
-            <div>
-              <label class="campo" id = "data" for="nome">Data:</label>
-              {{ compra.data|date:"d-m-Y H:i:s"}}
-            </div>
-            <div>
-              <label class="campo" id = "valor_total" for="cpf">Valor Total:</label>
-              {{ compra.valor_total }}
-            </div>
-            <div>
-              <label class="campo" for="login">Colaborador:</label>
-              {{ compra.colaborador }}
-            </div>
-            <div>
-              <label class="campo" for="produtos">Produtos:</label>
-              {% for item in compra.item_compra_set.all %}
-                  {{ item.produto.nome }} (Cód: {{ item.produto.codigo_barras }}){% if not forloop.last %},{% endif %}
-              {% endfor %}
-          </div>
-          {% endfor %}
-      </form> -->
-      <form class="form-visualizacao-historico">
-        {% csrf_token %}
-      <div class="tela">
-        {% if sucesso_cadastro %}
-        <div class="success-cadastro-message" id = "success-cadastro-message">
-                {{ sucesso_cadastro }}
-        </div> 
-        {% endif %}
-        <h2 class="titulo"><strong>Lista de Compras</strong></h2>
-        <div class="filtro">
-          <input class = "busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
-          <button class="btn btn-light" type="submit">Buscar</button>  
-        </div>
-        <table class="table table-hover lista">
-          <thead>
-            <tr>
-              <th scope="col">Data</th> 
-              <th scope="col">Valor total</th>
-              <th scope="col">Colaborador</th>
-              <th scope="col">Produtos</th> 
-              <th scope="col">Código de Barras</th> 
-              <th scope="col">Quantidade</th> 
-            </tr>
-          </thead>
-          <tbody>
-            {% for compra in compras %} 
-            <tr>
-              <td>{{ compra.data|date:"d-m-Y H:i:s" }}</td> 
-              <td>{{ compra.valor_total }}</td>
-              <td>{{ compra.colaborador }}</td>
-              <td>
-                {% for item in compra.item_compra_set.all %}
-                {{ item.produto.nome }}
-                <br>
-            {% endfor %} 
-              </td>
-              <td>
-                {% for item in compra.item_compra_set.all %}
-                {{ item.produto.codigo_barras }}
-                <br>
-                {% endfor %} 
-                </td>
-                <td>
-                  {% for item in compra.item_compra_set.all %}
-                  {{item.quantidade}}
-                  <br>
-                  {% endfor %} 
-                </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+  <form class="form-visualizacao-historico">
+    {% csrf_token %}
+    <div class="tela">
+      {% if sucesso_cadastro %}
+      <div class="success-cadastro-message" id="success-cadastro-message">
+        {{ sucesso_cadastro }}
       </div>
-    </form>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
-    {% endblock %}
+      {% endif %}
+      <h2 class="titulo"><strong>Lista de Compras</strong></h2>
+      <input class="busca filtro-data" type="text" id="data" name="filtro-data" placeholder="Filtrar por Data e Hora">
+      <input class="busca filtro-valor" type="text" id="valor" name="filtro-valor" placeholder="Filtrar por Valor Total">
+      <input class="busca filtro-colab" type="text" id="colab" name="filtro-colab" placeholder="Filtrar por Colaborador">
+      <input class="busca filtro-prod" type="text" id="prod" name="filtro-prod" placeholder="Filtrar por Produtos">
+      <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras" placeholder="Filtrar por Código de Barras">
+      <input class="busca filtro-qtd" type="text" id="qtd" name="filtro-qtd" placeholder="Filtrar por Quantidade">
+      <!-- <div class="filtro">
+        <input class="form-control busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
+        <button class="btn btn-light btn-buscar" type="submit">Buscar</button>
+      </div> -->
+      <table class="table table lista">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Valor total</th>
+            <th scope="col">Colaborador</th>
+            <th scope="col">Produtos</th>
+            <th scope="col">Código de Barras</th>
+            <th scope="col">Quantidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for compra in compras %}
+          <tr>
+            <td>{{ compra.data|date:"d-m-Y H:i:s"}}</td>
+            <td>{{ compra.valor_total }}</td>
+            <td>{{ compra.colaborador }}</td>
+            <td>
+              {% for item in compra.item_compra_set.all %}
+              {{ item.produto.nome }}
+              <br>
+              {% endfor %}
+            </td>
+            <td>
+              {% for item in compra.item_compra_set.all %}
+              {{ item.produto.codigo_barras }}
+              <br>
+              {% endfor %}
+            </td>
+            <td>
+              {% for item in compra.item_compra_set.all %}
+              {{item.quantidade}}
+              <br>
+              {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script>
+    const nomeField = document.getElementById("colab");
+    nomeField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    const prodField = document.getElementById("prod");
+    prodField.addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    });
+
+    // const situacaoField = document.getElementById("situacao");
+    // situacaoField.addEventListener("input", function () {
+    //   this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
+    // });
+
+    // const codigoField = document.getElementById("cpf");
+    // codigoField.addEventListener("input", function () {
+    //   this.value = this.value.replace(/[^0-9]/g, "");
+    // });
+
+    $(document).ready(function () {
+      // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
+      $('.filtro-data, .filtro-valor, .filtro-colab, .filtro-prod, .filtro-codigo-barras, .filtro-qtd').on('input', function () {
+        atualizarListaHistorico();
+      });
+
+      function atualizarListaHistorico() {
+        // Captura os valores dos campos de filtro
+        var filtroData = $('.filtro-data').val().toLowerCase();
+        var filtroValor = $('.filtro-valor').val().replace(/[^0-9]/g, ''); // Remove a formatação do CPF
+        var filtroColab = $('.filtro-colab').val().toLowerCase();
+        var filtroProd = $('.filtro-prod').val().toLowerCase();
+        var filtroCodigoBarras = $('.filtro-codigo-barras').val().toLowerCase();
+        var filtroQtd = $('.filtro-qtd').val().toLowerCase();
+
+        // Itera sobre cada linha da tabela de colaboradores
+        $('.table tbody tr').each(function () {
+          // Obtém os valores dos campos em cada linha
+          var data = $(this).find('td:nth-child(1)').text().toLowerCase();
+          var valor = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var colab = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var prod = $(this).find('td:nth-child(4)').text().toLowerCase();
+          var cod = $(this).find('td:nth-child(5)').text().toLowerCase();
+          var qtd = $(this).find('td:nth-child(6)').text().toLowerCase();
+
+          // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
+          if ((filtroData === '' || data.indexOf(filtroData) !== -1) &&
+            (filtroValor === '' || valor.indexOf(filtroValor) !== -1) &&
+            (filtroColab === '' || colab.indexOf(filtroColab) !== -1) &&
+            (filtroProd === '' || prod.indexOf(filtroProd) !== -1) &&
+            (filtroCodigoBarras === '' || cod.indexOf(filtroCodigoBarras) !== -1) &&
+            (filtroQtd === '' || qtd.indexOf(filtroQtd) !== -1)) {
+            $(this).show(); // Exibe a linha se corresponder aos filtros
+          } else {
+            $(this).hide(); // Oculta a linha se não corresponder aos filtros
+          }
+        });
+      }
+    });
+  </script>
+  {% endblock %}
 </body>
+
 </html>

@@ -1,0 +1,92 @@
+{% extends 'navbar/navbar.html' %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'estoque/entrada_estoque.css' %}" />
+  <title>Acesso ao Produto</title>
+</head>
+
+<body>
+  <div class="form">
+    <form class="form-acesso-produto"action="{% url 'att_qtd_entrada' estoque.id %}" method="POST">
+      {% csrf_token %}
+      <img class="robot" src="{% static 'imagens/robot.png' %}">
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+          {% endfor %}
+      </div>
+      {% endif %}
+      <h2 class="titulo">Entrada de Estoque</h2>
+      <i onclick="history.back()" class="fa fa-arrow-left arrow"></i>
+      <input type="hidden" value="{{estoque.id}}" name="estoque_id">
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+          {% endfor %}
+      </div>
+      {% endif %}
+      <div class="form-group input-nome">
+        <input type="text" class="form-control nome" id="nome" name="nome" readonly
+          value="{{estoque.produtos}}" />
+          <p class="nome_label">Nome</p> 
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control qtd" id="qtd" name="qtd" readonly
+          value="{{estoque.quantidade}}" />
+          <p class="quantidade_label">Quantidade atual</p>      
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control entrada" id="entrada" name="entrada" required autocomplete="off"
+           />
+        <span>Quantidade entrada</span>
+      </div>
+      <div class="form-group">
+        <label for="quantidade-atual">Quantidade atualizada:</label>
+        <span id="quantidade-atual"></span>
+      </div>
+      <button type="submit" class="btn btn-success botao-salvar btn-lg">Salvar</button>
+    </form>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script>
+    // Obtém referências aos elementos HTML
+    var entradaInput = document.getElementById('entrada');
+    var quantidadeAtualSpan = document.getElementById('quantidade-atual');
+  
+    // Adiciona um evento de input ao campo de entrada
+    entradaInput.addEventListener('input', function() {
+      var quantidadeAtual = parseInt('{{ estoque.quantidade }}'); // Obtém a quantidade atual do produto
+      var entrada = parseInt(entradaInput.value); // Obtém a entrada digitada pelo cliente
+  
+      if (!isNaN(entrada)) {
+        var quantidadeAtualizada = quantidadeAtual + entrada; // Calcula a quantidade atualizada
+  
+        quantidadeAtualSpan.textContent = quantidadeAtualizada; // Atualiza o texto do elemento HTML
+      } else {
+        quantidadeAtualSpan.textContent = quantidadeAtual; // Mantém a quantidade atual se a entrada for inválida
+      }
+    });
+  
+    // Adiciona um evento de 'change' ao campo de entrada
+    entradaInput.addEventListener('change', function() {
+      if (entradaInput.value === '') {
+        quantidadeAtualSpan.textContent = '{{ estoque.quantidade }}'; // Restaura a quantidade atual se o campo de entrada estiver vazio
+      }
+    });
+  </script>
+  
+  {% endblock %}
+</body>
+
+</html>

@@ -3,11 +3,12 @@ body {
 }
 
 .form-cadastro-usuario {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);  
+    max-width: 480px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #f6fcff;
+    border: 2px solid rgba(0,0,0,0.1); 
+    border-radius: 15px; 
 }
 
 .form .form-cadastro-usuario {
@@ -15,7 +16,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 59vh;
+    height: 75vh;
     width: 90vh;
     position: absolute;
     top:50%;
@@ -24,9 +25,10 @@ body {
 }
 
 .botao-salvar {
-    width: 200px;
+    position: fixed;
+    width: 308px !important;
     align-self: center;
-    margin-top: 110px;
+    margin-top: 64vh;
     background-color: rgb(9, 67, 143) !important;
 }
 
@@ -36,40 +38,42 @@ body {
     border-color: rgb(235, 238, 79) !important;
 }  
 
+.robot{
+    top: 8%;
+    left: 64%;
+    font-size: 10px;
+    height: 100px;
+    position: absolute;
+}
+
 .botao-salvar:active,
 .botao-salvar:focus {
   outline: none !important;
   box-shadow: none !important;
 }
-
-.form-control {
-    position: relative;
-    font-size: 16px;
-    height: auto;
-    margin-top: 30px;
-}
   
 .titulo{
+    position: absolute;
     text-align: center;
-}
-
-.usuario{
-    margin-top: 80px;
+    margin-top: -64vh;
+    color: rgb(9, 67, 143); 
+    font-size: 33px;
+    font-weight: bold;
 }
 
 .erro_usuario{
     color: red;
     position: absolute;
-    margin-top: 17vh;
+    margin-top: -9vh;
     left: 50%;
     transform: translateX(-50%);
-    width: 250px;
+    width: 190px;
 }
 
 .erro_usuario_cad{
     color: red;
     position: absolute;
-    margin-top: 17vh;
+    margin-top: -9vh;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -79,7 +83,7 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 24vh;
+    margin-top: -1vh;
 }
 
 .erro_senha{
@@ -87,7 +91,7 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 31vh;
+    margin-top: 14vh;
 }
 
 .input-group-text-senha {
@@ -95,8 +99,8 @@ body {
     border: none !important;
     cursor: pointer;
     position: absolute;
-    left: 31vh;
-    margin-top: 04vh;
+    left: 38vh;
+    margin-top: -7vh;
     z-index: 2;
     padding: 10px;
 }
@@ -106,8 +110,52 @@ body {
     border: none !important;
     cursor: pointer;
     position: absolute;
-    left: 31vh;
-    margin-top: 18vh;
+    left: 38vh;
+    margin-top: 8vh;
     z-index: 2;
     padding: 10px;
+}
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 20px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 27px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.input_nome{
+    margin-top: -15vh;
+}
+
+.gerar_senha{
+    position: absolute;
+    font-size: 15px;
+    margin-left: 22vh;
+    cursor: pointer;
+    color: rgb(9, 67, 143);
 }

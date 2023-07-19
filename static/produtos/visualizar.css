@@ -4,11 +4,11 @@ body {
 
 .lista {
     position: absolute;
-    top:40%;
+    top:32%;
     left: 10%;
-    width: 80% !important; /* Defina a largura desejada */
-    margin: 0 auto; /* Centralize horizontalmente */
-    border: 1px solid #ccc; /* Adicione uma borda de 1px com cor cinza */
+    width: 80% !important;
+    margin: 0 auto;
+    border: 1px solid #ccc; 
   
 }
 
@@ -24,25 +24,37 @@ body {
     top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    color: rgb(9, 67, 143);
-    font-family: 'Exo 2';
+    color: rgb(9, 67, 143); 
+    font-size: 33px;
 }
 
 .filtro .busca{
     width: 500px;
 }
 
-.botao-filtrar{
+.btn-filtrar{
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px !important;
     margin-left: 10px;
     height: 40px;
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
 }
 
-.btn-light{
-    background-color: rgb(162, 226, 238) !important;
+.ch-prod{
+    position: absolute;
+    top:36%;
+    left: 36%;
+}
+
+
+.btn-buscar{
+    background-color: rgb(9, 67, 143) !important;
+    color: white !important;
+    margin-left: 53vh;
+    margin-top: -7vh;
 }
 
 .success-cadastro-message {
@@ -62,6 +74,7 @@ body {
 }
 
 .botao-edit {
+    background-color: rgb(9, 67, 143) !important;
     visibility: hidden;
 }
 
@@ -87,17 +100,68 @@ tr:hover .botao-edit {
 }
 
 .inpreco{
-    width: 50px;
+    width: 120px;
 }
 
 .exc{
-    width: 50px;
+    width: 80px;
+}
+
+.situacao{
+    width: 70px;
 }
 
 .nome{
-    width: 200px;
+    width: 230px;
 }
 
 .codbarras{
-    width: 100px;
+    width: 140px;
+}
+
+.classificacao{
+    width: 110px;
+}
+
+.inativo {
+    background-color: #dee4eb !important;
+}
+
+.busca{
+    outline: none;
+    border: 2px solid rgb(238, 237, 237);
+    border-radius: 3px;
+    position: absolute;
+    margin-top: 273px;
+    background-color: #f3faff;
+}
+
+.filtro-nome {
+    margin-left: 19vh;
+    width: 47vh !important;
+    height: 37px;
+}
+
+.filtro-codigo-barras{
+    margin-left: 66vh;
+    width: 28vh !important;
+    height: 37px;
+}
+
+.filtro-preco{
+    margin-left: 94vh;
+    width: 25vh !important;
+    height: 37px;
+}
+
+.filtro-classif{
+    margin-left: 119vh;
+    width: 22vh !important;
+    height: 37px;
+}
+
+.filtro-situacao{
+    margin-left: 141vh;
+    width: 296px !important;
+    height: 37px;
 }
