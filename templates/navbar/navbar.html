@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 
 <body>
@@ -108,9 +110,22 @@
       </div>
     </div>
     {% endif %}
-    <a data-toggle="modal" data-target="#enviarMensagemModal" class="botao-logout">
-      Logout
-    </a>
+
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle botao-conta" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user"></i> {{user.username}}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% if usuario.is_superuser %}
+        <a class="dropdown-item cadastrar-item" href="{% url 'alterar_usuario' user.id %}">Editar conta</a>
+        {% endif %}
+        <a data-toggle="modal" data-target="#enviarMensagemModal" class="dropdown-item cadastrar-item">
+          Logout
+        </a>
+      </div>
+    </div>
+
   </nav>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -126,17 +141,30 @@
     $(document).ready(function () {
       $('#cpf').inputmask('999.999.999-99');
     });
-    // document.addEventListener("DOMContentLoaded", function () {
-    //   {% if campo_foco %}
-    //   document.getElementById("{{ campo_foco }}").focus();
-    //   {% endif %}
-    // });
+
     function enviarMensagem() {
       $('#enviarMensagemModal').modal('show');
     }
     function redirecionarLogout() {
       window.location.href = "{% url 'logout' %}";
     }
+
+    function copiarValor(valor) {
+      const el = document.createElement('textarea'); // Cria um elemento de área de texto temporário
+      el.value = valor; // Define o valor do elemento com o texto que você deseja copiar
+      document.body.appendChild(el); // Adiciona a área de texto temporária ao documento
+      el.select(); // Seleciona o texto dentro da área de texto
+      document.execCommand('copy'); // Copia o texto selecionado para a área de transferência
+      document.body.removeChild(el); // Remove a área de texto temporária do documento
+    }
+
+    // Adiciona evento de clique ao ícone para copiar o valor do campo
+    $('.icon').click(function () {
+      const valor = $(this).parent().text().trim(); // Obtém o conteúdo de texto do elemento pai (td)
+      copiarValor(valor);
+    });
+
+
   </script>
 </body>
 

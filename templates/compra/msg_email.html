@@ -5,39 +5,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Conveniência 2.0</title>
-    <!-- <link rel="stylesheet" href="{% static 'compra/msg_email.css' %}" /> -->
-<style>
-    .fundo {
-        background-color: rgb(9, 67, 143);
-        width: 100vh;
-        height: 13vh;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        .fundo {
+            background-color: rgb(9, 67, 143);
+            width: 100vh;
+            height: 13vh;
+        }
 
-    .imagem {
-        margin-top: -50vh;
-        margin-left: 25vh;
-        width: 10vh !important;
-        height: 10vh !important;
-    }
+        .imagem {
+            margin-top: -50vh;
+            margin-left: 25vh;
+            width: 10vh !important;
+            height: 10vh !important;
+        }
 
-    .texto {
-        color: #000000;
-        font-size: 20px;
-    }
+        .texto {
+            color: #000000;
+            font-size: 20px;
+        }
 
-    .att {
-        color: #000000;
-        font-size: 15px;
-        margin-left: 65vh;
-    }
-    .nome{
-        width: 200px;
-    }
-    .qtd{
-        width: 100px;
-    }
-</style>
+        .att {
+            color: #000000;
+            font-size: 13px;
+            margin-left: 66vh;
+        }
+
+        .data {
+            width: 200px;
+        }
+
+        .nome{
+            width: 450px;
+        }
+
+        .nome {
+            text-align: left;
+        }
+
+        .qtd,
+        .preco {
+            width: 150px;
+        }
+
+        .qtdd,
+        .precoo,
+        .qtd,
+        .preco {
+            text-align: right;
+        }
+
+        .dataa {
+            text-align: center;
+        }
+
+        .trfundo {
+            background-color: rgb(9, 67, 143);
+            color: white;
+        }
+
+        .valor_total {
+            color: #000000;
+            font-size: 15px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="fundo">
         <img style="margin-top: 1vh; margin-left: 25vh; width: 40vh; height: 10vh;"
@@ -45,14 +80,13 @@
     </div>
     <div class="lista">
         <p class="texto">{{ message }}</p>
-        <h3 class="titulo">Produtos</h3>
-        <table class="table table-hover lista">
+        <table class="table table lista">
             <thead>
-                <tr>
-                    <th scope="col" class="nome">Nome</th>
+                <tr class="trfundo">
+                    <th scope="col" class="nome">Produto</th>
                     <th scope="col" class="qtd">Quantidade</th>
                     <th scope="col" class="preco">Preço</th>
-                    <th scope="col" class="exc"></th>
+                    <th scope="col" class="data">Data da Compra</th>
                 </tr>
             </thead>
             <ul>
@@ -60,18 +94,41 @@
                 <div class="produtos">
                     <tr>
                         <td>{{ produto_data.nome }}</td>
-                        <td>{{ produto_data.quantidade }}</td>
-                        <td>R$ {{ produto_data.preco|floatformat:2 }}</td>
+                        <td class="qtdd">{{ produto_data.quantidade }}</td>
+                        <td id="precoo" class="precoo">R$ {{ produto_data.preco }}</td>
+                        <td class="dataa">{{ data }}</td>
                         <td>
                 </div>
                 {% endfor %}
             </ul>
         </table>
         <div class="valor_total">
-            <h5>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</h5>
+            <h5>Valor Total da Compra: R$ {{ valor_total }}</h5>
         </div>
     </div>
     <p class="att">Atenciosamente, Equipe SCI Sistemas Contábeis</p>
+
+    <script>
+        function formatarPreco() {
+            var precoFields = document.getElementsByClassName("precoo");
+
+            for (var i = 0; i < precoFields.length; i++) {
+                var precoField = precoFields[i];
+                var precoValor = precoField.innerText.replace("R$ ", "").replace(",", ".");
+                var precoNumerico = parseFloat(precoValor);
+
+                if (!isNaN(precoNumerico)) {
+                    var precoFormatado = precoNumerico.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                    });
+
+                    precoField.innerText = precoFormatado;
+                }
+            }
+        }
+        formatarPreco();
+    </script>
 </body>
 
 </html>

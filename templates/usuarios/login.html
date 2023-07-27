@@ -25,16 +25,23 @@
       <img class="imagem" src="{% static 'imagens/logooficial.png' %}">
       {% if messages %}
       <div class="messages">
-          {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-              {% endfor %}
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+          {% endfor %}
       </div>
       {% endif %}
       <br>
       <br>
-      <input type="text" class="form-control usuario" id="usuario" name="usuario" placeholder="Usuário" required=""
-        autofocus="" />
-      <input type="password" class="form-control senha" name="senha" placeholder="Senha" required="" />
+      <div class="form-group">
+        <input type="text" class="form-control usuario" id="usuario" name="usuario" autocomplete="off" required=""
+          autofocus="" />
+          <span>Login</span>
+      </div>
+      <br>
+      <div class="form-group">
+        <input type="password" class="form-control senha" name="senha" autocomplete="off" required="" />
+        <span>Senha</span>
+      </div>
       <span class="input-group-text">
         <i class="fas fa-eye" id="togglePassword"></i>
       </span>

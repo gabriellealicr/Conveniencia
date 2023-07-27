@@ -7,11 +7,8 @@ body {
     top: 32%;
     left: 10%;
     width: 80% !important;
-    /* Defina a largura desejada */
     margin: 0 auto;
-    /* Centralize horizontalmente */
     border: 1px solid #ccc;
-    /* Adicione uma borda de 1px com cor cinza */
 
 }
 
@@ -64,14 +61,15 @@ body {
     margin-top: -7vh;
 }
 
-.success-cadastro-message {
+.sucesso_cadastro {
     background-color: green;
     color: #fff;
     padding: 10px;
     border-radius: 5px;
     position: fixed;
     top: 80px;
-    right: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.5s ease-in-out;
     display: flex;
     align-items: center;
@@ -95,7 +93,12 @@ tr:hover .botao-edit {
     visibility: visible;
 }
 
-tr:hover .botao-edit-senha {
+.icon{
+    margin-left: 1vh;
+    visibility: hidden;
+}
+
+td:hover .icon{
     visibility: visible;
 }
 
@@ -119,9 +122,12 @@ tr:hover .botao-edit-senha {
 }
 
 .cpf,
-.login,
-.email {
+.login {
     width: 200px;
+}
+
+.email{
+    width: 270px;
 }
 
 .nome {
@@ -143,25 +149,25 @@ tr:hover .botao-edit-senha {
 
 .filtro-nome {
     margin-left: 19vh;
-    width: 53vh !important;
+    width: 50vh !important;
     height: 37px;
 }
 
 .filtro-cpf{
-    margin-left: 72vh;
-    width: 28vh !important;
+    margin-left: 69vh;
+    width: 25vh !important;
     height: 37px;
 }
 
 .filtro-email{
-    margin-left: 98vh;
-    width: 28vh !important;
+    margin-left: 94vh;
+    width: 32vh !important;
     height: 37px;
 }
 
 .filtro-login{
-    margin-left: 125vh;
-    width: 26vh !important;
+    margin-left: 126vh;
+    width: 25vh !important;
     height: 37px;
 }
 
@@ -170,3 +176,4 @@ tr:hover .botao-edit-senha {
     width: 199px !important;
     height: 37px;
 }
+

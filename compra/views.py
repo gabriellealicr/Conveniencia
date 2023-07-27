@@ -1,11 +1,14 @@
+from django import template
+import locale
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from .models import Produto, Compra, Item_Compra, Colaborador
 from estoque.models import Estoque
+from django.contrib.auth.models import User
 from datetime import datetime
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from reportlab.lib import colors
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
@@ -14,7 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import re
 from django.db.models import F
-from datetime import timedelta
+from datetime import timedelta, date
 from PIL import Image
 
 
@@ -51,7 +54,7 @@ def Adicionar_produto(request):
                 produto_existente = produto_data
                 break
         estoque = get_object_or_404(Estoque, produtos=produto)
-        if estoque.quantidade <= 0 and not produto.tipo == 'Ingresso' and not produto.tipo == 'Camiseta':
+        if estoque.quantidade <= 0:
             messages.error(request, 'Estoque indisponível!',
                            extra_tags='erro_inativo')
             url = reverse('conveniencia')
@@ -63,18 +66,19 @@ def Adicionar_produto(request):
             produto_existente['preco_total'] = produto_existente['preco'] * \
                 produto_existente['quantidade']
 
-            if estoque.quantidade <= produto_existente['quantidade'] and not produto.tipo == 'Ingresso' and not produto.tipo == 'Camiseta':
+            if estoque.quantidade < produto_existente['quantidade']:
                 messages.error(request, 'Estoque indisponível!',
                                extra_tags='erro_inativo')
                 url = reverse('conveniencia')
                 return redirect(url)
         else:                                 # Caso o produto ainda não tenha sido adicionado, cria um novo registro na lista de produtos
             contador = len(produtos) + 1      # Atribui um identificador único
+            preco = f"{produto.preco:.2f}".replace('.', ',')
             produto_data = {
                 'id': contador,
                 'nome': produto.nome,
                 'codigo_barras': produto.codigo_barras,
-                'preco': produto.preco,
+                'preco': preco,
                 'quantidade': 1,
                 'preco_total': produto.preco
             }
@@ -95,6 +99,7 @@ def Adicionar_produto(request):
     produtos_adicionados = request.session.get('produtos', [])
     # Obtém o valor total da compra na sessão
     valor_total = request.session.get('valor_total', 0)
+    valor_total = f"{valor_total:.2f}".replace('.', ',')
     itens = request.session.get('itens', 0)
     # Renderiza a página com os produtos adicionados e o valor total
     return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'valor_total': valor_total, 'itens': itens})
@@ -107,13 +112,13 @@ def calcular_gastos_referencia(colaborador):
     ano = hoje.year
 
     # Calcula as datas de referência
-    referencia_anterior_inicio = datetime(ano, mes_passado - 2, 26)
+    referencia_anterior_inicio = datetime(ano, mes_passado - 1, 26, 00, 00)
     referencia_anterior_fim = datetime(
-        ano if mes_passado != 12 else ano - 1, mes_passado - 1, 25)
-    referencia_atual_inicio = datetime(ano, mes_passado - 1, 26)
+        ano if mes_passado != 12 else ano - 1, mes_passado, 25, 23, 59)
+    referencia_atual_inicio = datetime(ano, mes_passado, 26, 00, 00)
     referencia_atual_fim = datetime(
-        ano if mes_atual != 12 else ano - 1, mes_atual - 1, 25)
-
+        ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
+    
     # Consulta o histórico de compras do colaborador na referência anterior
     compras_referencia_anterior = Compra.objects.filter(
         colaborador=colaborador,
@@ -127,9 +132,14 @@ def calcular_gastos_referencia(colaborador):
         colaborador=colaborador,
         data__range=[referencia_atual_inicio, referencia_atual_fim]
     )
-    print([referencia_atual_inicio, referencia_atual_fim])
     total_gasto_referencia_atual = sum(
         compra.valor_total for compra in compras_referencia_atual)
+    
+    total_gasto_referencia_anterior = f"{total_gasto_referencia_anterior:.2f}".replace(
+                            '.', ',')
+    total_gasto_referencia_atual = f"{total_gasto_referencia_atual:.2f}".replace(
+                            '.', ',')
+
     return total_gasto_referencia_anterior, total_gasto_referencia_atual
 
 
@@ -137,6 +147,7 @@ def Finalizar_compra(request):
     if request.method == 'POST':
         produtos_adicionados = request.session.get('produtos', [])
         valor_total = request.session.get('valor_total', 0)
+        valor_total = float(valor_total)
         quantidade = request.session.get('quantidade', 0)
         login = request.POST['login']
         senha = request.POST['senha']
@@ -149,6 +160,7 @@ def Finalizar_compra(request):
                         # Cria a nova compra e adiciona os produtos
                         compra = Compra.objects.create(
                             data=datetime.now(), valor_total=valor_total, colaborador=colaborador)
+                        data = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
                         for produto_data in produtos_adicionados:
                             produto = get_object_or_404(
                                 Produto, codigo_barras=produto_data['codigo_barras'])
@@ -170,28 +182,34 @@ def Finalizar_compra(request):
                             estoque.quantidade = F('quantidade') - quantidade
                             estoque.save()
                         compra.save()
-
-                        if produto.tipo == 'Camiseta' or produto.tipo == 'Ingresso':
+                        email_mark = ''
+                        email_rh = ''
+                        user = User.objects.all()
+                        for usuario_gestao in user:
+                            if usuario_gestao.username == 'marketing':
+                                email_mark = usuario_gestao.email
+                            if usuario_gestao.username == 'rh':
+                                email_rh = usuario_gestao.email
+                        valor_total = f"{valor_total:.2f}".replace('.', ',')
+                        if produto.tipo == 'Ingresso':
                             enviar_email(f'Compra de Colaborador {colaborador.nome} finalizada com sucesso!',
-                                         'gabriellealicehaak1387@gmail.com', produtos_adicionados, valor_total, colaborador.nome)
+                                         email_rh, produtos_adicionados, valor_total, colaborador.nome, data)
                             enviar_email(f'A sua compra foi finalizada com sucesso!',
-                                         colaborador.email, produtos_adicionados, valor_total, colaborador.nome)
+                                         colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
+                        elif produto.tipo == 'Camiseta':
+                            print("a")
+                            enviar_email(f'Compra de Colaborador {colaborador.nome} finalizada com sucesso!',
+                                         email_mark, produtos_adicionados, valor_total, colaborador.nome, data)
+                            enviar_email(f'A sua compra foi finalizada com sucesso!',
+                                         colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
                         else:
                             enviar_email(f'A sua compra foi finalizada com sucesso!',
-                                         colaborador.email, produtos_adicionados, valor_total, colaborador.nome)
-
-                        # Calcula os gastos de referência
+                                         colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
                         total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
                             colaborador)
-                        # url = reverse('conveniencia')
-                        # url += f'?mostrar_ref=True&gasto_referencia_anterior={total_gasto_referencia_anterior}&gasto_referencia_atual={total_gasto_referencia_atual}&colaborador={colaborador}'
-                        # return redirect(url)
                         return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador})
                     total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
                         colaborador)
-                    # url = reverse('conveniencia')
-                    # url += f'?mostrar_ref=True&gasto_referencia_anterior={total_gasto_referencia_anterior}&gasto_referencia_atual={total_gasto_referencia_atual}&colaborador={colaborador}'
-                    # return redirect(url)
                     return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador})
                 messages.error(request, 'Senha incorreta!',
                                extra_tags='erro_inativo')
@@ -208,11 +226,13 @@ def Finalizar_compra(request):
     return redirect('conveniencia')
 
 
-def enviar_email(messagem, para_email, produtos_adicionados, valor_total, nome):
+def enviar_email(messagem, para_email, produtos_adicionados, valor_total, nome, data_compra):
     # Cria um objeto PDF
     response = HttpResponse()
     response['Content-Type'] = 'application/pdf'
     response['Content-Disposition'] = 'attachment; filename="relatorio.pdf"'
+    response[
+        'Content-Disposition'] = f'attachment; filename="SciRelatorioConsumoColaborador{nome}.pdf"'
     p = canvas.Canvas(response)
 
     imagem_path = 'static/imagens/logo-sci-ofc.png'
@@ -220,12 +240,13 @@ def enviar_email(messagem, para_email, produtos_adicionados, valor_total, nome):
     imagem = Image.open(imagem_path)
 
     data_hora = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-    p.setFont("Helvetica", 9)
+    p.setFillColorRGB(0, 0, 0)
+    p.setFont("Helvetica", 10)
     p.drawCentredString(540, 820, data_hora)
-    cor = "#00008B"
+    p.setFont("Helvetica-Bold", 15)
+    cor = '#000059'
     p.setFillColor(cor)
-    p.setFont("Helvetica-Bold", 14)
-    p.drawCentredString(300, 800, "Relatório de Consumo Detalhado")
+    p.drawCentredString(300, 800, "Relatório de Compra - Conveniência 2.0")
 
     p.drawImage(imagem_path, 50, 770, 85, 50, mask='auto')
     p.setFillColorRGB(0, 0, 0)
@@ -233,25 +254,43 @@ def enviar_email(messagem, para_email, produtos_adicionados, valor_total, nome):
     y = 700
     p.drawString(
         50, 730, f"Colaborador: {nome}")
-    cor = '#D3D3D3'
+    cor = '#A9A9A9'
     p.setFillColor(cor)
     p.drawString(
-        40, 710, "____________________________________________________________________________")
+        40, 715, "____________________________________________________________________________")
     p.setFillColorRGB(0, 0, 0)
     for produto_data in produtos_adicionados:
         produto = get_object_or_404(
             Produto, codigo_barras=produto_data['codigo_barras'])
         quantidade = produto_data['quantidade']
         preco = produto.preco
+        preco_formh = f"{preco:.2f}".replace('.', ',')
+        preco_form = f"{preco:.2f}".replace('.', ',')
+
+        p.setFont("Helvetica-Bold", 12)
         p.drawString(50, 680, f"Produto")
         p.drawString(210, 680, f"Quantidade")
-        p.drawString(300, 680, f"Preço")
+        p.drawString(310, 680, f"Preço")
+        p.drawString(380, 680, f"Data da Compra")
+        cor = '#D3D3D3'
+        p.setFont("Helvetica", 12)
+        p.setFillColor(cor)
+        p.drawString(
+            48, 673, "____________________________________________________________________")
+        p.setFillColorRGB(0, 0, 0)
         p.drawString(50, y - 50, f"{produto}")
-        p.drawString(210, y - 50, f"{quantidade}")
-        p.drawString(300, y - 50, f"R${preco}")
+        p.drawString(264, y - 50, f"{quantidade}")
+        p.drawString(300, y - 50, f"R$ {preco_formh}")
+        p.drawString(370, y - 50, f"{data_compra}")
         y -= 30
-    p.drawString(450, 680, f"Valor total:")
-    p.drawString(510, 680, f"{valor_total}")
+        cor = '#D3D3D3'
+        p.setFillColor(cor)
+        p.drawString(
+            48, y-30, "____________________________________________________________________")
+        p.setFillColorRGB(0, 0, 0)
+        p.setFont("Helvetica-Bold", 12)
+    p.drawString(50, y-50, f"Valor total:")
+    p.drawString(115, y-50, f"R$ {valor_total}")
 
     p.showPage()
     p.save()
@@ -264,7 +303,15 @@ def enviar_email(messagem, para_email, produtos_adicionados, valor_total, nome):
     email_context = {
         'subject': subject,
         'message': message,
-        'produtos_adicionados': produtos_adicionados,
+        'data': data_compra,
+        'produtos_adicionados': [
+            {
+                'nome': produto_data['nome'],
+                'quantidade': produto_data['quantidade'],
+                'preco': produto_data['preco']
+            }
+            for produto_data in produtos_adicionados
+        ],
         'valor_total': valor_total
     }
     email_html = render_to_string(
@@ -312,21 +359,7 @@ def Verificar_referencia(request):
 @login_required(login_url='login')
 def Historico(request):
     compras = Compra.objects.all()
-    pesquisa = request.GET.get('pesquisa')
-    if pesquisa:
-        try:  # Verifica se o valor de pesquisa é uma data válida nos formatos desejados
-            # Converte para o formato "dd-mm-yyyy"
-            data_pesquisa = datetime.strptime(pesquisa, "%d-%m-%Y")
-        except ValueError:
-            try:
-                # Converte para o formato "dd/mm/yyyy"
-                data_pesquisa = datetime.strptime(pesquisa, "%d/%m/%Y")
-            except ValueError:
-                data_pesquisa = None
-        if data_pesquisa:           # Filtra as compras pela data de compra
-            compras = compras.filter(data__date=data_pesquisa)
-        else:
-            compras = []
+
     return render(request, 'compra/historico.html', {'compras': compras})
 
 
@@ -349,7 +382,7 @@ def Excluir_produto(request, produto_id):
         if produto['id'] == produto_id:
             produto_excluido = produto
             break
-
+    preco_produto = float(produto_excluido['preco'].replace(',', '.'))
     if produto_excluido:
         # Se o produto for excluído e possuir a qtd maior que 1, atualiza a quantidade e o valor total
         if produto_excluido['quantidade'] > 1:
@@ -357,7 +390,7 @@ def Excluir_produto(request, produto_id):
             produto_excluido['quantidade'] -= 1
             # Atualiza o valor total da compra
             valor_total = request.session.get('valor_total', 0)
-            valor_total -= produto_excluido['preco']
+            valor_total -= preco_produto
             request.session['valor_total'] = valor_total
             # Atualiza a quantidade de itens da compra
             itens = request.session.get('itens', 0)
@@ -368,7 +401,7 @@ def Excluir_produto(request, produto_id):
             produtos_adicionados.remove(produto_excluido)
             # Atualiza o valor total da compra
             valor_total = request.session.get('valor_total', 0)
-            valor_total -= produto_excluido['preco']
+            valor_total -= preco_produto
             request.session['valor_total'] = valor_total
             # Atualiza a quantidade de itens da compra
             itens = request.session.get('itens', 0)
@@ -457,7 +490,8 @@ def Relatorio_consumo(request):
                         colaborador = compra.colaborador
                         valor_total = compra.valor_total
                         data = compra.data.strftime("%d-%m-%Y %H:%M:%S")
-                        for item in compra.produtos.all():
+                        valor_total = f"{valor_total:.2f}".replace('.', ',')
+                        for item in compra.item_compra_set.all():
                             p.drawString(
                                 50, 730, f"Colaborador: {colaborador.nome}")
                             cor = '#D3D3D3'
@@ -465,12 +499,20 @@ def Relatorio_consumo(request):
                             p.drawString(
                                 40, 710, "____________________________________________________________________________")
                             p.setFillColorRGB(0, 0, 0)
-                            p.drawString(50, 680, f"Data da compra")
-                            p.drawString(210, 680, f"Valor total")
+                            p.drawString(63, 680, f"Data da compra")
+                            p.drawString(210, 680, f"Produtos")
+                            p.drawString(350, 680, f"Quantidade")
+                            p.drawString(450, 680, f"Valor total")
                             p.drawString(50, y - 50, f"{data}")
-                            p.drawString(210, y - 50, f"R${valor_total}")
-                            p.drawString(310, y - 50, f"{item.nome}")
+                            p.drawString(210, y - 50, f"{item.produto}")
+                            p.drawString(400, y - 50, f"{item.quantidade}")
+                            p.drawString(450, y - 50, f"R$ {valor_total}")
                             y -= 30
+                            cor = '#D3D3D3'
+                            p.setFillColor(cor)
+                            p.drawString(
+                                48, y-30, "____________________________________________________________________")
+                            p.setFillColorRGB(0, 0, 0)
                 else:
                     messages.error(request, 'Relatório não retorna dados!',
                                    extra_tags='colab_nao_encontrado')
@@ -489,6 +531,7 @@ def Relatorio_consumo(request):
                 for compra in compras:
                     colaborador = compra.colaborador
                     valor_total = compra.valor_total
+                    valor_total = f"{valor_total:.2f}".replace('.', ',')
                     data = compra.data.strftime("%d-%m-%Y")
                     content += f"Colaborador: {colaborador.nome}\n"
                     content += f"Data da compra: {data}\n"
@@ -544,14 +587,25 @@ def Relatorio_geral(request):
         mes_atual = (hoje.month) % 12 + 1
         ano = hoje.year
         email = request.POST.get('email_ch')
+        selected_format = request.POST.get('flexRadioDefault')
+        imagem_path = 'static/imagens/logo-sci-ofc.png'
+        imagem = Image.open(imagem_path)
+
+        selected_formats = []
+        if selected_format == 'ref_anterior':
+            selected_formats.append('anterior')
+        elif selected_format == 'ref_atual':
+            selected_formats.append('atual')
+        elif selected_format == 'ref_geral':
+            selected_formats.append('geral')
 
         # Calcula as datas de referência
-        referencia_anterior_inicio = datetime(ano, mes_passado - 2, 26)
+        referencia_anterior_inicio = datetime(ano, mes_passado - 1, 26, 00, 00)
         referencia_anterior_fim = datetime(
-            ano if mes_passado != 12 else ano - 1, mes_passado - 1, 25)
-        referencia_atual_inicio = datetime(ano, mes_passado - 1, 26)
+        ano if mes_passado != 12 else ano - 1, mes_passado, 25, 23, 59)
+        referencia_atual_inicio = datetime(ano, mes_passado, 26, 00, 00)
         referencia_atual_fim = datetime(
-            ano if mes_atual != 12 else ano - 1, mes_atual - 1, 25)
+        ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
 
         # Consulta o histórico de compras na referência anterior
         compras_referencia_anterior = Compra.objects.filter(
@@ -571,25 +625,7 @@ def Relatorio_geral(request):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="relatorio.pdf"'
 
-        # Cria o conteúdo do relatório em PDF
-        p = canvas.Canvas(response)
-        data_hora = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-        p.setFont("Helvetica", 9)
-        p.drawCentredString(540, 820, data_hora)
-        cor = colors.HexColor("#00008B")
-        p.setFillColor(cor)
-        p.setFont("Helvetica-Bold", 14)
-        p.drawCentredString(300, 800, "Relatório de consumo geral")
-        p.setFillColor(colors.black)
-        p.setFont("Helvetica", 12)
-        p.drawString(
-            50, 700, f"Total gasto na referência atual: R$ {total_gasto_referencia_atual}")
-        # Finaliza o documento PDF
-        p.showPage()
-        p.save()
-
         response = HttpResponse()
-        selected_formats = []
         if 'formato_pdf' in request.POST:
             selected_formats.append('pdf')
         if 'formato_txt' in request.POST:
@@ -601,7 +637,7 @@ def Relatorio_geral(request):
             return redirect(url)
 
         if 'formato_pdf' in request.POST or 'formato_txt' in request.POST:
-            response['Content-Disposition'] = 'attachment; filename="relatorio_geral"'
+            response['Content-Disposition'] = 'attachment; filename="RelatorioGeral"'
             if 'pdf' in selected_formats and 'txt' in selected_formats:
                 messages.error(
                     request, 'Selecione apenas uma opção de formato!', extra_tags='colab_nao_encontrado')
@@ -613,17 +649,42 @@ def Relatorio_geral(request):
                 response['Content-Disposition'] += '.pdf'
                 p = canvas.Canvas(response)
 
+                total_gasto_referencia_atual = f"{total_gasto_referencia_atual:.2f}".replace(
+                    '.', ',')
+                total_gasto_referencia_anterior = f"{total_gasto_referencia_anterior:.2f}".replace(
+                    '.', ',')
+
                 data_hora = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
                 p.setFont("Helvetica", 9)
                 p.drawCentredString(540, 820, data_hora)
-                cor = colors.HexColor("#00008B")
+                cor = '#000059'
                 p.setFillColor(cor)
                 p.setFont("Helvetica-Bold", 14)
                 p.drawCentredString(300, 800, "Relatório de Consumo Geral")
+                p.drawImage(imagem_path, 50, 770, 85, 50, mask='auto')
                 p.setFillColor(colors.black)
                 p.setFont("Helvetica", 12)
-                p.drawString(
-                    50, 700, f"Total gasto na referência atual: R$ {total_gasto_referencia_atual}")
+
+                if 'atual' in selected_formats:
+                    p.drawString(
+                        50, 720, f"Período referência atual: {date(ano, mes_passado - 1, 26).strftime('%d-%m')}/{date(ano if mes_atual != 12 else ano - 1, mes_atual - 1, 25).strftime('%d-%m')}")
+                    p.drawString(
+                        50, 700, f"Total consumido: R$ {total_gasto_referencia_atual}")
+                elif 'anterior' in selected_formats:
+                    p.drawString(
+                        50, 720, f"Período referência anterior: {date(ano, mes_passado - 2, 26).strftime('%d-%m')}/{date(ano if mes_atual != 12 else ano - 1, mes_atual - 2, 25).strftime('%d-%m')}")
+                    p.drawString(
+                        50, 700, f"Total gasto na referência anterior: R$ {total_gasto_referencia_anterior}")
+                elif 'geral' in selected_formats:
+                    p.drawString(
+                        50, 720, f"Período referência anterior: {date(ano, mes_passado - 2, 26).strftime('%d-%m')}/{date(ano if mes_atual != 12 else ano - 1, mes_atual - 2, 25).strftime('%d-%m')}")
+                    p.drawString(
+                        50, 700, f"Total gasto na referência anterior: R$ {total_gasto_referencia_anterior}")
+                    p.drawString(
+                        50, 680, f"Período referência atual: {date(ano, mes_passado - 1, 26).strftime('%d-%m')}/{date(ano if mes_atual != 12 else ano - 1, mes_atual - 1, 25).strftime('%d-%m')}")
+                    p.drawString(
+                        50, 660, f"Total gasto na referência atual: R$ {total_gasto_referencia_atual}")
+
                 # Finaliza o documento PDF
                 p.showPage()
                 p.save()

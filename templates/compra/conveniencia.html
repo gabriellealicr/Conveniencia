@@ -19,7 +19,7 @@
     {% csrf_token %}
     <div class="modal fade" id="enviarLoginModal" tabindex="-1" role="dialog" aria-labelledby="enviarLoginModalLabel"
       aria-hidden="true">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title3" id="enviarLoginModalLabel">Confirmação de Colaborador</h5>
@@ -28,9 +28,20 @@
             </button>
           </div>
           <div class="modal-body">
-            <input type="text" class="form-control login" id="login" name="login" placeholder="Login" required>
             <br>
-            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required>
+            <div class="form-group input-ref">
+              <input type="text" class="form-control login" id="login" name="login" autocomplete="off" required>
+              <span>Login</span>
+            </div>
+            <br>
+            <div class="form-group input-ref">
+              <input type="password" class="form-control senhaConf" id="senha" name="senha" autocomplete="off"
+                required>
+              <span>Senha</span>
+            </div>
+            <span class="input-group-text-senha">
+              <i class="fas fa-eye" id="togglePasswordC"></i>
+            </span>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -45,7 +56,7 @@
     {% csrf_token %}
     <div class="modal fade" id="enviarLoginRefModal" tabindex="-1" role="dialog"
       aria-labelledby="enviarLoginRefModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title1" id="enviarLoginRefModalLabel">Verificar Referência</h5>
@@ -54,9 +65,20 @@
             </button>
           </div>
           <div class="modal-body">
-            <input type="text" class="form-control login" id="login" name="login" placeholder="Login" required>
             <br>
-            <input type="password" class="form-control senha" id="senha" name="senha" placeholder="Senha" required>
+            <div class="form-group input-ref">
+              <input type="text" class="form-control login" id="login" name="login" autocomplete="off" required>
+              <span>Login</span>
+            </div>
+            <br>
+            <div class="form-group input-ref">
+              <input type="password" class="form-control senhaRef" id="senha" name="senha" autocomplete="off"
+                required>
+              <span>Senha</span>
+            </div>
+            <span class="input-group-text-senha">
+              <i class="fas fa-eye" id="togglePasswordR"></i>
+            </span>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -78,8 +100,8 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Referência Anterior: R${{ gasto_referencia_anterior|floatformat:2 }}</p>
-          <p>Referência Atual: R${{ gasto_referencia_atual|floatformat:2 }}</p>
+          <p>Referência Anterior: R$ {{ gasto_referencia_anterior }}</p>
+          <p>Referência Atual: R$ {{ gasto_referencia_atual }}</p>
         </div>
         <div class="modal-footer">
         </div>
@@ -98,10 +120,10 @@
     {% endif %}
     <img class="imagem" src="{% static 'imagens/logooficial.png' %}">
     <strong class="campo">Inserir produto:</strong>
-    <div class="form-group">
-    <input type="text" class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
-     autocomplete="off" required>
-     <span>Código de Barras</span>
+    <div class="form-group input-cod">
+      <input type="text" class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
+        autocomplete="off" required>
+      <span>Código de Barras</span>
     </div>
     <button class="btn btn-light botao-add" type="submit"><strong>Adicionar Produto</strong></button>
     <button class="btn btn-light botao-limpar" name="limpar" formnovalidate formaction="{% url 'limpar' %}">
@@ -130,7 +152,7 @@
               <td>{{ produto_data.nome }}</td>
               <td>{{ produto_data.codigo_barras }}</td>
               <td>{{ produto_data.quantidade }}</td>
-              <td>{{ produto_data.preco }}</td>
+              <td>R$ {{ produto_data.preco }}</td>
               <td>
                 <a href="{% url 'excluir_produto' produto_data.id %}" class="fa fa-minus-square lixeira"
                   aria-hidden="true"></a>
@@ -140,7 +162,7 @@
       </table>
     </div>
     <div class="valor_total">
-      <h5><strong>Valor Total da Compra: R$ {{ valor_total|floatformat:2 }}</strong></h5>
+      <h5><strong>Valor Total da Compra: R$ {{ valor_total }}</strong></h5>
     </div>
     <div class="itens">
       <h5><strong>Itens: {{itens}}</strong></h5>
@@ -163,7 +185,7 @@
     codigoBarrasField.addEventListener("input", function () {
       this.value = this.value.replace(/\D/g, "");
     });
-    
+
     function hideSuccessMessage(message) {
       var erroInativo = document.getElementById("erro_inativo");
       erroInativo.innerText = message;
@@ -190,8 +212,30 @@
 
     setTimeout(function () {
       $('#enviarReferenciaModal').modal('hide');
+      window.location.href = "{% url 'conveniencia' %}"
     }, 8000);
+
     {% endif %}
+
+    const togglePasswordR = document.querySelector('#togglePasswordR');
+    const passwordInputR = document.querySelector('.senhaRef');
+
+    togglePasswordR.addEventListener('click', function () {
+      const type = passwordInputR.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInputR.setAttribute('type', type);
+      togglePasswordR.classList.toggle('fa-eye-slash');
+    });
+
+    const togglePasswordC = document.querySelector('#togglePasswordC');
+    const passwordInputC = document.querySelector('.senhaConf');
+
+    togglePasswordC.addEventListener('click', function () {
+      const type = passwordInputC.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInputC.setAttribute('type', type);
+      togglePasswordC.classList.toggle('fa-eye-slash');
+    });
+    
+
   </script>
 </body>
 

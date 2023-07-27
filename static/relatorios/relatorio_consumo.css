@@ -101,7 +101,8 @@ body {
     border-radius: 5px;
     position: fixed;
     top: -16vh;
-    left: 100vh;
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.5s ease-in-out;
     display: flex;
     align-items: center;

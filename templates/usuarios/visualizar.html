@@ -16,15 +16,18 @@
 <body>
   <form class="form-visualizacao-usuario">
     {% csrf_token %}
-    {% if sucesso_cadastro %}
-    <div class="success-cadastro-message" id="success-cadastro-message">
-      {{ sucesso_cadastro }}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
     </div>
     {% endif %}
     <h2 class="titulo"><strong>Lista de Usuários</strong></h2>
     <input class="busca filtro-nome" type="text" name="filtro-nome" placeholder="Filtrar por Nome de Usuário">
     <input class="busca filtro-email" type="text" name="filtro-email" placeholder="Filtrar por E-mail">
-    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao"
+      placeholder="Filtrar por Situação">
     <table class="table table lista">
       <thead>
         <tr>
@@ -38,8 +41,10 @@
 
         {% for usuario in usuarios %}
         <tr {% if not usuario.is_active %}class="inativo" {% endif %}>
-          <td>{{ usuario.username }}</td>
-          <td>{{ usuario.email }}</td>
+          <td id="input-usuario">{{ usuario.username }} <span onclick="copiarValor('input-usuario')" class="icon"><i
+            class="fa-regular fa-paste"></i></span></td>
+          <td id="input-email">{{ usuario.email }} <span onclick="copiarValor('input-email')" class="icon"><i
+            class="fa-regular fa-paste"></i></span></td>
           <td>
             {% if usuario.is_active %}
             Ativo
@@ -57,6 +62,13 @@
   </form>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+
+    const messages = window.document.querySelector('.messages');
+
+    setTimeout(() => {
+      messages.style.display = 'none';
+    }, 5000);
+
     function hideSuccessMessage(message) {
       var successMessage = document.getElementById("success-cadastro-message");
       successMessage.innerText = message;

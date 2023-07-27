@@ -16,9 +16,11 @@
 <body>
   <form class="form-visualizacao-produto">
     {% csrf_token %}
-    {% if sucesso_cadastro %}
-    <div class="success-cadastro-message" id="success-cadastro-message">
-      {{ sucesso_cadastro }}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
     </div>
     {% endif %}
     <h2 class="titulo"><strong>Lista de Produtos</strong></h2>
@@ -26,9 +28,11 @@
     <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras"
       placeholder="Filtrar por Código de Barras">
     <input class="busca filtro-preco" type="text" id="preco" name="filtro-preco" placeholder="Filtrar por Preço">
-    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif" placeholder="Filtrar por Classificação">
-    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
-    <table class="table table lista">
+    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif"
+      placeholder="Filtrar por Classificação">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao"
+      placeholder="Filtrar por Situação">
+    <table class="table lista">
       <thead>
         <tr>
           <th class="nome" scope="col">Nome</th>
@@ -42,9 +46,12 @@
       <tbody>
         {% for produto in produtos %}
         <tr {% if not produto.ativo %}class="inativo" {% endif %}>
-          <td>{{ produto.nome }}</td>
-          <td>{{ produto.codigo_barras }}</td>
-          <td class="preco">R$ {{ produto.preco|floatformat:2 }}</td>
+          <td id="input-nome">{{ produto.nome }} <span onclick="copiarValor('input-nome')" class="icon"><i
+            class="fa-regular fa-paste"></i></span></td>
+          <td id="input-codigo">{{ produto.codigo_barras }} <span onclick="copiarValor('input-codigo')" class="icon"><i
+            class="fa-regular fa-paste"></i></span> </td>
+          <td id="input-preco" class="preco">R$ {{ produto.preco|floatformat:2 }}<span onclick="copiarValor('input-preco')" class="icon"><i
+            class="fa-regular fa-paste"></i></span> </td>
           <td>{{ produto.tipo }}</td>
           <td>
             {% if produto.ativo %}
@@ -64,6 +71,13 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    
+    const messages = window.document.querySelector('.messages');
+
+    setTimeout(() => {
+      messages.style.display = 'none';
+    }, 5000);
+
     function formatarPreco() {
       var precoFields = document.getElementsByClassName("preco");
 
@@ -116,7 +130,7 @@
 
     const precoField = document.getElementById("preco");
     precoField.addEventListener("input", function () {
-      this.value = this.value.replace(/[^0-9]/g, "");
+      this.value = this.value.replace(/[^0-9,]/g, "");
     });
 
     const classifField = document.getElementById("classif");
@@ -166,6 +180,7 @@
         });
       }
     });
+
   </script>
   {% endblock %}
 </body>

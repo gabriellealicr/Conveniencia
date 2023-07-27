@@ -21,7 +21,7 @@ body {
 
 .botao-login {
     width: 100%;
-    margin-top: 160px;
+    margin-top: 140px;
     background-color: rgb(9, 67, 143) !important;
 }
 
@@ -88,4 +88,37 @@ body {
 .senha {
     margin-top: 20px;
     width: 10px;
+}
+
+.form-group{
+    width: 350px;
+    position: relative;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    margin-top: 20px;
+}
+
+.form-group span{
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.form-group input:focus ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
+}
+
+.form-group input:valid ~ span{
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 14px;
 }

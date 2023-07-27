@@ -8,7 +8,9 @@ from estoque.models import Estoque
 import plotly.graph_objects as go
 from django.db.models import Count
 from django.views.decorators.cache import never_cache
-
+from datetime import datetime
+from compra.models import Compra
+from django.db.models import Sum
 
 @never_cache
 @login_required(login_url='login')
@@ -29,9 +31,13 @@ def Pagina_inicial(request):
         url = reverse('pagina_inicial')
         url += f'?sucess_login_message={sucess_login_message}'
         return redirect(url)
-        # return render(request, 'pagina_inicial/pagina_inicial.html', {'sucess_login_message': sucess_login_message, 'grafico': grafico, 'grafico_produtos': grafico_produtos})
     produtos_baixo_estoque = obter_produtos_baixo_estoque().order_by('quantidade')
-    return render(request, 'pagina_inicial/pagina_inicial.html', {'grafico': grafico, 'grafico_produtos': grafico_produtos, 'produtos_baixo_estoque': produtos_baixo_estoque})
+    referencia_anterior, referencia_atual = referencia()
+    referencia_anterior = f"{referencia_anterior:.2f}".replace(
+                        '.', ',')
+    referencia_atual = f"{referencia_atual:.2f}".replace(
+                        '.', ',')
+    return render(request, 'pagina_inicial/pagina_inicial.html', {'grafico': grafico, 'grafico_produtos': grafico_produtos, 'produtos_baixo_estoque': produtos_baixo_estoque, 'referencia_anterior': referencia_anterior, 'referencia_atual': referencia_atual})
 
 def obter_produtos_baixo_estoque():
     return Estoque.objects.filter(quantidade__lt=4)
@@ -48,6 +54,36 @@ def obter_contagem_produtos():
 
 def obter_contagem_usuarios():
     return User.objects.count()
+
+def referencia():
+    hoje = datetime.now().date()
+    mes_passado = (hoje.month - 1) % 12 + 1
+    mes_atual = (hoje.month) % 12 + 1
+    ano = hoje.year
+
+    referencia_anterior_inicio = datetime(ano, mes_passado - 1, 26, 00, 00)
+    referencia_anterior_fim = datetime(
+        ano if mes_passado != 12 else ano - 1, mes_passado, 25, 23, 59)
+    referencia_atual_inicio = datetime(ano, mes_passado, 26, 00, 00)
+    referencia_atual_fim = datetime(
+        ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
+
+    # Consulta o histórico de compras na referência anterior
+    compras_referencia_anterior = Compra.objects.filter(
+        data__range=[referencia_anterior_inicio, referencia_anterior_fim]
+    )
+    total_gasto_referencia_anterior = compras_referencia_anterior.aggregate(
+        Sum('valor_total'))['valor_total__sum'] or 0
+
+    # Consulta o histórico de compras na referência atual
+    compras_referencia_atual = Compra.objects.filter(
+        data__range=[referencia_atual_inicio, referencia_atual_fim]
+    )
+    total_gasto_referencia_atual = compras_referencia_atual.aggregate(
+        Sum('valor_total'))['valor_total__sum'] or 0
+    
+    return total_gasto_referencia_anterior, total_gasto_referencia_atual
+
 
 
 def criar_grafico():       # Gráfico de apresentação de quantidade

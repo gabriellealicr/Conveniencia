@@ -1,30 +1,31 @@
 body {
-	background: #f1f9ff !important;	
+    background: #f1f9ff !important;
 }
 
 .sucess_login_message {
     background-color: green;
     color: #fff;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 5px;
     position: fixed;
     top: 80px;
-    right: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.5s ease-in-out;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
-    line-height: 1; 
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 14px;
 }
 
-.grafico{
+.grafico {
     height: 49vh;
     width: 80vh;
     position: absolute;
-    top:70%;
-    left:76%;
-    transform: translate(-50%,-50%);
+    top: 70%;
+    left: 76%;
+    transform: translate(-50%, -50%);
 }
 
 .grafico::after {
@@ -38,14 +39,14 @@ body {
     font-size: 16px;
 }
 
-.grafico_produtos{
+.grafico_produtos {
     height: 49vh;
     width: 65vh;
     position: absolute;
     top: 690px;
-    left:26%;
-    transform: translate(-50%,-50%);
-    border: 2px solid rgba(0,0,0,0.1); 
+    left: 26%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 20px;
 }
 
@@ -59,38 +60,39 @@ body {
     font-weight: bold;
     font-size: 23px;
 }
-  
-.imagem_tema{
+
+.imagem_tema {
     position: absolute;
     margin-top: 10vh;
     left: 35%;
 }
 
-.estoque{
+.estoque {
     max-height: 50vh;
     height: 49vh;
-    width: 54vh;
+    width: 56vh;
     position: absolute;
     top: 47vh;
     left: 120vh;
-    overflow-y: auto; 
-	background: #f1f9ff;	
-    border: 2px solid rgba(0,0,0,0.1); 
+    overflow-y: auto;
+    background: #f1f9ff;
+    border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     align-items: center;
     text-align: center;
+    padding: 15px;
 }
 
-.tabela-prod{
+.tabela-prod {
     position: static;
     margin-top: 50px;
-} 
+}
 
-.table-prod{
+.table-prod {
     width: 480px;
 }
 
-.estoque .titulo-estoque{
+.estoque .titulo-estoque {
     position: fixed;
     margin-left: 0vh;
     background-color: #f1f9ff;
@@ -109,7 +111,106 @@ body {
     background-color: rgb(245, 245, 107);
 }
 
-.stt{
+.stt {
     width: 50px;
 }
 
+.alerta::after {
+    content: attr(x);
+    display: none;
+    position: absolute;
+    padding: 10px;
+    width: 120px;
+    border-radius: 15px;
+    white-space: pre-line;
+    margin-left: 8vh;
+    margin-top: -3vh;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.aviso::after {
+    content: attr(y);
+    display: none;
+    position: absolute;
+    padding: 10px;
+    width: 120px;
+    border-radius: 15px;
+    white-space: pre-line;
+    margin-left: -1vh;
+    margin-top: -3vh;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.alerta:hover::after {
+    display: block;
+}
+
+.aviso:hover::after {
+    display: block;
+}
+
+
+.titulo-ref {
+    position: fixed;
+    color: rgb(9, 67, 143);
+    font-size: 23px;
+}
+
+.ref_anterior {
+    top: 20%;
+    left: 15%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    width: 364px;
+    position: absolute;
+    background: #f1f9ff;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+}
+
+.ref_atual {
+    top: 20%;
+    left: 68%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    width: 335px;
+    position: absolute;
+    background: #f1f9ff;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+}
+
+.lapis{
+    width: 1px !important;
+    cursor: pointer;
+    color: black;
+}
+
+.lapis:hover{
+    color: black;
+}
+
+#stt{
+    width: 200px;
+}
+
+.produt{
+    text-align: left;
+}
+
+.nome{
+    text-align: left;
+    width: 300px;
+}
+
+.qtd{
+   text-align: right;
+}
+
+.edit{
+    width: 10px !important;
+}

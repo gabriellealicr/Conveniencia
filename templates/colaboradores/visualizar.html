@@ -10,15 +10,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'colaboradores/visualizar.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <title>Visualização de Colaboradores</title>
 </head>
 
 <body>
   <form class="form-visualizacao-colaborador">
     {% csrf_token %}
-    {% if sucesso_cadastro %}
-    <div class="success-cadastro-message" id="success-cadastro-message">
-      {{ sucesso_cadastro }}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
     </div>
     {% endif %}
     <h2 class="titulo"><strong>Lista de Colaboradores</strong></h2>
@@ -26,7 +29,8 @@
     <input class="busca filtro-cpf" type="text" id="cpf" name="filtro-cpf" placeholder="Filtrar por CPF">
     <input class="busca filtro-email" type="text" name="filtro-email" placeholder="Filtrar por E-mail">
     <input class="busca filtro-login" type="text" name="filtro-login" placeholder="Filtrar por Login">
-    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao" placeholder="Filtrar por Situação">
+    <input class="busca filtro-situacao" type="text" id="situacao" name="filtro-situacao"
+      placeholder="Filtrar por Situação">
     <div class="lista-container">
       <table class="table table lista {% if filtrar_inativos %}lista-inativos{% endif %}">
         <thead>
@@ -42,10 +46,15 @@
         <tbody>
           {% for colaborador in colaboradores %}
           <tr {% if not colaborador.ativo %}class="inativo" {% endif %}>
-            <td>{{ colaborador.nome }}</td>
-            <td>{{ colaborador.cpf_formatado }}</td>
-            <td>{{ colaborador.email }}</td>
-            <td>{{ colaborador.login }}</td>
+            <td id="input-nome">{{ colaborador.nome }} <span onclick="copiarValor('input-nome')" class="icon"><i
+                  class="fa-regular fa-paste"></i></span></td>
+            <td>{{ colaborador.cpf_formatado }} <span onclick="copiarValor('input-cpf')" class="icon"><i
+                  class="fa-regular fa-paste"></i></span></td>
+            <td>{{ colaborador.email }}<span onclick="copiarValor('input-email')" class="icon"><i
+                  class="fa-regular fa-paste"></i></span></td>
+            <td>{{ colaborador.login }}<span onclick="copiarValor('input-login')" class="icon"><i
+                  class="fa-regular fa-paste"></i></span></td>
+
             <td>
               {% if colaborador.ativo %}
               Ativo
@@ -69,20 +78,12 @@
     $(document).ready(function () {
       $('#cpf').inputmask('999.999.999-99');
     });
-    function hideSuccessMessage(message) {
-      var successMessage = document.getElementById("success-cadastro-message");
-      successMessage.innerText = message;
-      successMessage.style.display = "block";
 
-      setTimeout(function () {
-        successMessage.style.display = "none";
-      }, 4000);
-    }
-    var successMessage = document.getElementById("success-cadastro-message");
-    if (successMessage) {
-      var message = successMessage.innerText;
-      hideSuccessMessage(message);
-    }
+    const messages = window.document.querySelector('.messages');
+
+    setTimeout(() => {
+      messages.style.display = 'none';
+    }, 5000);
 
     const nomeField = document.getElementById("nome");
     nomeField.addEventListener("input", function () {

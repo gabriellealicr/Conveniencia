@@ -11,7 +11,7 @@
     margin-left: 10px;
 }
 
-.botao-colaboradores, .botao-pagina-inicial, .botao-relatorios, .botao-colaboradores, .botao-produtos, .botao-compras, .botao-usuarios, .botao-estoques{
+.botao-colaboradores, .botao-pagina-inicial, .botao-relatorios, .botao-colaboradores, .botao-produtos, .botao-compras, .botao-usuarios, .botao-estoques, .botao-conta{
   background-color: rgb(9, 67, 143) !important;
   color: rgb(253, 247, 247) !important;
   border: 0.5px solid rgb(153, 191, 241)!important; 
@@ -32,18 +32,18 @@
   color: black;
 }
 
-.botao-logout{
-    margin-left: 175vh;
+.botao-conta{
+    margin-left: 30vh;
     color: white !important;
-    cursor: pointer;
     border: none;
     position: absolute;
+    margin-top: -18px;
 }
 
-.botao-logout:hover {
+/* .botao-logout:hover {
   color: rgb(255, 255, 29)!important;
   border: none;
-}  
+}   */
 
 .navbar {
   position: fixed;

@@ -34,9 +34,8 @@ def Att_qtd_entrada(request, estoque_id):
         movimentacao.tipo = 'Entrada'
         movimentacao.save()
         url = reverse('estoque')
-        url += f'?sucesso_cadastro=Estoque alterado com sucesso!'
+        messages.success(request,f'Estoque de produto {estoque.produtos.nome} alterado com sucesso!', extra_tags='sucesso_cadastro')
         return redirect(url)
-
 
     return redirect('estoque')
 
@@ -62,7 +61,7 @@ def Att_qtd_saida(request, estoque_id):
         movimentacao.tipo = 'Saída'
         movimentacao.save()
         url = reverse('estoque')
-        url += f'?sucesso_cadastro=Estoque alterado com sucesso!'
+        messages.success(request,f'Estoque de produto {estoque.produtos.nome} alterado com sucesso!', extra_tags='sucesso_cadastro')
         return redirect(url)
 
     return redirect('estoque')

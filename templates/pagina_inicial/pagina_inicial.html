@@ -24,9 +24,29 @@
             {% endfor %}
     </div>
     {% endif %}
-     <div id="grafico_produtos" class="grafico_produtos" title="Produtos mais vendidos">
+
+    <div id="grafico_produtos" class="grafico_produtos" title="Produtos mais vendidos">
         {{ grafico_produtos|safe }}
     </div>
+
+    <div id="ref_anterior" class="ref_anterior">
+        <div class="titulo-ref">
+            <strong>Total gasto referência anterior</strong>
+        </div>
+        <br>
+        <br>
+        R$ {{ referencia_anterior }}
+    </div>
+
+    <div id="ref_atual" class="ref_atual">
+        <div class="titulo-ref">
+            <strong>Total gasto referência atual</strong>
+        </div>
+        <br>
+        <br>
+        R$ {{ referencia_atual }}
+    </div>
+
     <!-- <div id="grafico" class="grafico" title="Cadastrados no sistema">
         {{ grafico|safe }}
     </div> -->
@@ -45,11 +65,15 @@
                 <tr>
                     <td class="nome">{{ produto.produtos.nome }}</td>
                     <td class="qtd">{{ produto.quantidade }}</td>
-                    <td{% if produto.quantidade < 1 %}
-                    <i class="fas fa-square" style="color: #d92121;"></i>
-                    {% else %}
-                    <i class="fas fa-square" style="color: #d9d621;"></i>
-                    {% endif %}</td>
+                    <td id="stt" {% if produto.quantidade < 1 %} <i x="Alerta" class="fas fa-square alerta"
+                        style="color: #d92121;"></i>
+                        {% else %}
+                        <i y="Aviso" class="fas fa-square aviso" style="color: #d9d621;"></i>
+                        {% endif %}
+                    </td>
+                    <td class="lapis"> 
+                        <a href="{% url 'entrada_estoque' produto.id %}" class="fa fa-pencil lapis"></a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -57,6 +81,11 @@
     </div>
 
     <script>
+        const messages = window.document.querySelector('.messages');
+
+        setTimeout(() => {
+            messages.style.display = 'none';
+        }, 5000);
     </script>
     {% endblock %}
 </body>

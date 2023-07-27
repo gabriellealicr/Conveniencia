@@ -1,3 +1,5 @@
+from django.contrib.auth.hashers import make_password
+from django.views.decorators.cache import never_cache
 from django.contrib import messages
 import re
 from .decorators import redirect_if_authenticated
@@ -7,12 +9,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 import logging
 logger = logging.getLogger()
-from django.views.decorators.cache import never_cache
-from django.contrib.auth.hashers import make_password
 
 
 @never_cache
-@redirect_if_authenticated # Verifica se o usuário já está logado, caso sim, redirecionar para a página inicial
+# Verifica se o usuário já está logado, caso sim, redirecionar para a página inicial
+@redirect_if_authenticated
 def Login(request):
     if request.method == "POST":  # Quando o método é POST, ou seja, ao clicar no botão "Salvar", que é um submit
         usuario = request.POST.get("usuario")
@@ -35,9 +36,9 @@ def Login(request):
                     mensagem_erro = "Usuário e/ou senha informados incorretamente!"
                 except User.DoesNotExist:
                     mensagem_erro_cad = "Usuário não cadastrado."
-                # return render(request, "usuarios/login.html", {"erro": mensagem_erro, "erro_cad": mensagem_erro_cad, "campo_foco": "usuario"})
                 messages.error(request, mensagem_erro, extra_tags='erro')
-                messages.error(request, mensagem_erro_cad, extra_tags='erro_cad')
+                messages.error(request, mensagem_erro_cad,
+                               extra_tags='erro_cad')
                 return redirect('cadastrar_usuario')
     else:         # Quando o método não é POST, ou seja, entrando no formulário para cadastrar
         return render(request, "usuarios/login.html")
@@ -94,7 +95,8 @@ def Cadastro(request):
                 username=usuario_usuario, email=email_usuario, password=senha_usuario)
             user.save()
             url = reverse('visualizar_usuarios')
-            url += f'?sucesso_cadastro=Usuário cadastrado com sucesso!'
+            messages.success(
+                request, f'Usuário {user.username} cadastrado com sucesso!', extra_tags='sucesso_cadastro')
             return redirect(url)
         else:                               # Se as senhas não coincidem
             messages.error(request, 'Senhas não coincidem.',
@@ -113,16 +115,7 @@ def Visualizar(request):
     if request.user.is_authenticated:
         usuario = request.user
     usuarios_sistema = User.objects.all().order_by('-is_active', 'username')
-    inativos = request.GET.get('inativos')
-    if inativos:
-        usuarios_sistema = User.objects.filter(is_active=False)
-    pesquisa = request.GET.get('pesquisa')
-    if pesquisa:
-        usuarios_sistema = usuarios_sistema.filter(
-            username__icontains=pesquisa
-        ) | usuarios_sistema.filter(
-            email__icontains=pesquisa
-        )
+
     return render(request, "usuarios/visualizar.html", {"usuarios": usuarios_sistema, "usuario": usuario, "sucesso_cadastro": sucesso_cadastro})
 
 
@@ -166,9 +159,10 @@ def Alterar(request, usuario_id):         # Função após o "Salvar" na funçã
             return redirect(url)
         try:
             user.save()
-            redirect_url = reverse('visualizar_usuarios') + \
-                '?sucesso_cadastro=Usuário editado com sucesso!'
-            return redirect(redirect_url)
+            url = reverse('visualizar_usuarios')
+            messages.success(
+                request, f'Usuário {user.username} editado com sucesso!', extra_tags='sucesso_cadastro')
+            return redirect(url)
         except:
             messages.error(request, 'Erro de edição.', extra_tags='erro_email')
             url = reverse('acessar_usuario', args=[usuario_id])
@@ -184,7 +178,10 @@ def Inativar(request, usuario_id):  # Função para inativar um usuário, setand
     user = get_object_or_404(User, id=usuario_id)
     user.is_active = False
     user.save()
-    return redirect('visualizar_usuarios')
+    url = reverse('visualizar_usuarios')
+    messages.success(
+        request, f'Usuário {user.username} inativado com sucesso!', extra_tags='sucesso_cadastro')
+    return redirect(url)
 
 
 @never_cache
@@ -193,7 +190,10 @@ def Ativar(request, usuario_id):   # Função para ativar um usuário, setando o
     user = get_object_or_404(User, id=usuario_id)
     user.is_active = True
     user.save()
-    return redirect('visualizar_usuarios')
+    url = reverse('visualizar_usuarios')
+    messages.success(
+        request, f'Usuário {user.username} ativado com sucesso!', extra_tags='sucesso_cadastro')
+    return redirect(url)
 
 
 @never_cache
@@ -204,6 +204,7 @@ def Acessar(request, usuario_id):  # Visualização de edição
     user = User.objects.get(id=usuario_id)
     return render(request, 'usuarios/acessar.html', {'user': user, "usuario": usuario})
 
+
 @never_cache
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
 def Acessar_Senha(request, usuario_id):    # Visualização de edição
@@ -211,6 +212,7 @@ def Acessar_Senha(request, usuario_id):    # Visualização de edição
         usuario = request.user
     user = User.objects.get(id=usuario_id)
     return render(request, 'usuarios/acessar_senha.html', {'user': user, "usuario": usuario})
+
 
 @never_cache
 @user_passes_test(lambda u: u.is_superuser, login_url='login')

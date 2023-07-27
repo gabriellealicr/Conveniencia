@@ -57,19 +57,20 @@ body {
     margin-top: -7vh;
 }
 
-.success-cadastro-message {
+.sucesso_cadastro {
     background-color: green;
     color: #fff;
-    padding: 10px; 
+    padding: 10px;
     border-radius: 5px;
     position: fixed;
     top: 80px;
-    right: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.5s ease-in-out;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
-    line-height: 1; 
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 14px;
 }
 
@@ -164,4 +165,13 @@ tr:hover .botao-edit {
     margin-left: 141vh;
     width: 296px !important;
     height: 37px;
+}
+
+.icon{
+    margin-left: 1vh;
+    visibility: hidden;
+}
+
+td:hover .icon{
+    visibility: visible;
 }

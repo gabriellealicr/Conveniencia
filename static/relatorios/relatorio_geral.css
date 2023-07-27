@@ -29,7 +29,7 @@ body {
     width: 50vh;
     position: absolute;
     margin-top: 3vh;
-    color: rgb(9, 67, 143); 
+    color: rgb(9, 67, 143);
     font-weight: bold;
     font-size: 30px;
 }
@@ -60,6 +60,19 @@ body {
     margin-left: 345px;
     position: absolute;
 }
+
+.radios {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    margin-top: 15vh;
+    margin-left: 4vh;
+}
+
+.form-check {
+    margin-right: 20px;
+}
+
 
 .robot {
     top: 64%;
@@ -93,17 +106,17 @@ body {
     display: block;
 }
 
-.ch-email{
+.ch-email {
     position: absolute;
     left: 10%;
-    margin-top: 140px;
+    margin-top: 240px;
     font-size: 17px;
 }
 
-.email_input{
+.email_input {
     position: absolute;
     left: 38%;
-    margin-top: 135px;
+    margin-top: 235px;
     width: 302px !important;
     visibility: hidden;
 }
@@ -115,7 +128,8 @@ body {
     border-radius: 5px;
     position: fixed;
     top: -16vh;
-    left: 100vh;
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.5s ease-in-out;
     display: flex;
     align-items: center;

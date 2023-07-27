@@ -16,18 +16,21 @@
 <body>
   <form class="form-visualizacao-estoque">
     {% csrf_token %}
-    {% if sucesso_cadastro %}
-    <div class="success-cadastro-message" id="success-cadastro-message">
-      {{ sucesso_cadastro }}
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
     </div>
     {% endif %}
     <h2 class="titulo"><strong>Estoque</strong></h2>
     <input class="busca filtro-nome" type="text" id="nome" name="filtro-nome" placeholder="Filtrar por Nome">
     <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras"
       placeholder="Filtrar por Código de Barras">
-    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif" placeholder="Filtrar por Classificação">
+    <input class="busca filtro-classif" type="text" id="classif" name="filtro-classif"
+      placeholder="Filtrar por Classificação">
     <input class="busca filtro-qtd" type="text" id="qtd" name="filtro-qtd" placeholder="Filtrar por Quantidade">
-    <table class="table table lista">
+    <table class="table table-hover lista">
       <thead>
         <tr>
           <th class="nome" scope="col">Nome</th>
@@ -63,6 +66,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+
+    const messages = window.document.querySelector('.messages');
+
+    setTimeout(() => {
+      messages.style.display = 'none';
+    }, 5000);
 
     const nomeField = document.getElementById("nome");
     nomeField.addEventListener("input", function () {

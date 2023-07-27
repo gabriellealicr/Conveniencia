@@ -7,7 +7,9 @@ from django.contrib.auth.decorators import login_required
 from . models import Colaborador
 import logging
 logger = logging.getLogger()
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 @never_cache
 @login_required(login_url='login')
@@ -78,17 +80,41 @@ def Cadastro(request):
             messages.error(request, 'Senhas não coincidem.',
                            extra_tags='erro_senha')
             url = reverse('cadastro_colaborador')
-            url += f'?nome={nome_colaborador}&login={login_colaborador}&cpf={cpf_colaborador}&email={email_colaborador}&campo_foco={cpf_colaborador}'
+            url += f'?nome={nome_colaborador}&login={login_colaborador}&cpf={cpf_colaborador}&email={email_colaborador}'
             return redirect(url)
         if not colaborador_login and not colaborador_cpf:  # Caso não retorne erro, cria o colaborador
             colaborador = Colaborador(nome=nome_colaborador, cpf=cpf_colaborador,
                                       email=email_colaborador, login=login_colaborador, senha=senha_crip, ativo=True)
             colaborador.save()
+            print(colaborador.email)
+            enviar_email('Seja bem vindo à SCI Sistemas Contábeis!','Segue abaixo seu cadastro para realizar compras na nossa Conveniência:',f'Login: {login_colaborador}', f'Senha: {senha_colaborador}', colaborador.email)
             url = reverse('visualizar_colaboradores')
-            url += f'?sucesso_cadastro=Colaborador cadastrado com sucesso!'
+            messages.success(request,f'Colaborador {colaborador.nome} cadastrado com sucesso!', extra_tags='sucesso_cadastro')
             return redirect(url)
     return render(request, "colaboradores/cadastro.html", {"campo_foco": "nome"})
 
+def enviar_email(mensagem, contexto, dado_login, dado_senha, para_email):
+    subject = 'SCI - Conveniência 2.0'
+    message = mensagem
+    from_email = 'testeacademia@sci.com.br'
+    to_email = para_email
+
+    email_template = 'colaboradores/email_colab.html'
+    email_context = {
+        'subject': subject,
+        'message': message,
+        'dado_login': dado_login,
+        'dado_senha': dado_senha,
+        'contexto': contexto
+    }
+    email_html = render_to_string(
+        email_template, email_context)
+
+    email_text = strip_tags(email_html)
+    email = EmailMultiAlternatives(
+        subject, email_text, from_email, [to_email])
+    email.attach_alternative(email_html, 'text/html')
+    email.send()
 
 @never_cache
 @login_required(login_url='login')
@@ -105,9 +131,8 @@ def Ativar(request, colaborador_id):   # Função para ativar um colaborador, se
     colaborador = get_object_or_404(Colaborador, id=colaborador_id)
     colaborador.ativo = True
     colaborador.save()
-    # return redirect('visualizar_colaboradores')
     url = reverse('visualizar_colaboradores')
-    url += f'?sucesso_cadastro=Colaborador ativado com sucesso!'
+    messages.success(request,f'Colaborador {colaborador.nome} ativado com sucesso!', extra_tags='sucesso_cadastro')
     return redirect(url)
 
 
@@ -120,7 +145,7 @@ def Inativar(request, colaborador_id):
     colaborador.save()
     # return redirect('visualizar_colaboradores')
     url = reverse('visualizar_colaboradores')
-    url += f'?sucesso_cadastro=Colaborador inativado com sucesso!'
+    messages.success(request,f'Colaborador {colaborador.nome} inativado com sucesso!', extra_tags='sucesso_cadastro')
     return redirect(url)
 
 
@@ -188,9 +213,9 @@ def Alterar(request, colaborador_id):    # Função após o "Salvar" na função
         else:
             try:
                 colaborador.save()
-                redirect_url = reverse(
-                    'visualizar_colaboradores') + '?sucesso_cadastro=Colaborador editado com sucesso!'
-                return redirect(redirect_url)
+                url = reverse('visualizar_colaboradores')
+                messages.success(request,f'Colaborador {colaborador.nome} alterado com sucesso!', extra_tags='sucesso_cadastro')
+                return redirect(url)
             except:
                 return render(request, "colaboradores/acessar.html", {"erro": "Erro de edição"})
     else:
@@ -216,9 +241,9 @@ def Alterar_Senha(request, colaborador_id):
             try:
                 colaborador.senha = make_password(senha_colaborador)
                 colaborador.save()
-                redirect_url = reverse(
-                    'visualizar_colaboradores') + '?sucesso_cadastro=Senha de colaborador editada com sucesso!'
-                return redirect(redirect_url)
+                url = reverse('visualizar_colaboradores')
+                messages.success(request,f'Senha de colaborador {colaborador.nome} alterada com sucesso!', extra_tags='sucesso_cadastro')
+                return redirect(url)
             except:
                 return render(request, "colaboradores/acessar.html", {"erro": "Erro de edição"})
     else:

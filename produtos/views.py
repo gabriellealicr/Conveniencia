@@ -69,7 +69,7 @@ def Cadastro(request):
             estoque = Estoque(produtos=produto)
             estoque.save()
             url = reverse('visualizar_produtos')
-            url += f'?sucesso_cadastro=Produto cadastrado com sucesso!'
+            messages.success(request,f'Produto {produto.nome} cadastrado com sucesso!', extra_tags='sucesso_cadastro')
             return redirect(url)
         except ValidationError:
             messages.error(request, 'Erro de cadastro.',
@@ -79,7 +79,7 @@ def Cadastro(request):
             return redirect(url)    # Caso ocorra erro de sistema
 
     else:     # Quando o método não é POST, ou seja, entrando no formulário para cadastrar
-        return render(request, "produtos/cadastro.html", {"campo_foco": "nome"})
+        return render(request, "produtos/cadastro.html")
 
 
 @never_cache
@@ -87,29 +87,6 @@ def Cadastro(request):
 def Visualizar(request):
     sucesso_cadastro = request.GET.get('sucesso_cadastro')
     produto = Produto.objects.all().order_by('-ativo', 'nome')
-    inativos = request.GET.get('inativos')
-    alimento = request.GET.get('alimento')
-    bebida = request.GET.get('bebida')
-    camiseta = request.GET.get('camiseta')
-    ingresso = request.GET.get('ingresso')
-    if inativos:
-        produto = produto.filter(ativo=False)
-    if alimento:
-        produto = produto.filter(tipo='Alimento')
-    if bebida:
-        produto = produto.filter(tipo='Bebida')
-    if camiseta:
-        produto = produto.filter(tipo='Camiseta')
-    if ingresso:
-        produto = produto.filter(tipo='Ingresso')
-    pesquisa = request.GET.get('pesquisa')
-    if pesquisa:
-        # Filtro de pesquisa, onde o icontains busca pelo input de pesquisa e ignora up e low case
-        produto = produto.filter(
-            nome__icontains=pesquisa
-        ) | produto.filter(
-            codigo_barras__icontains=pesquisa
-        )
 
     return render(request, "produtos/visualizar.html", {"produtos": produto, "sucesso_cadastro": sucesso_cadastro})
 
@@ -120,7 +97,9 @@ def Ativar(request, produto_id):   # Função para ativar um colaborador, setand
     produto = get_object_or_404(Produto, id=produto_id)
     produto.ativo = True
     produto.save()
-    return redirect('visualizar_produtos')
+    url = reverse('visualizar_produtos')
+    messages.success(request,f'Produto {produto.nome} ativado com sucesso!', extra_tags='sucesso_cadastro')
+    return redirect(url)
 
 
 @never_cache
@@ -130,7 +109,9 @@ def Inativar(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
     produto.ativo = False
     produto.save()
-    return redirect('visualizar_produtos')
+    url = reverse('visualizar_produtos')
+    messages.success(request,f'Produto {produto.nome} inativado com sucesso!', extra_tags='sucesso_cadastro')
+    return redirect(url)
 
 
 @never_cache
@@ -201,7 +182,7 @@ def Alterar(request, produto_id):   # Função após o "Salvar" na função Aces
             produto.tipo = opc
             produto.save()
             url = reverse('visualizar_produtos')
-            url += f'?sucesso_cadastro=Produto editado com sucesso!'
+            messages.success(request,f'Produto {produto.nome} alterado com sucesso!', extra_tags='sucesso_cadastro')
             return redirect(url)
         except:
             messages.error(request, 'Erro de edição.', extra_tags='erro_preco')

@@ -84,6 +84,12 @@
         quantidadeAtualSpan.textContent = '{{ estoque.quantidade }}'; // Restaura a quantidade atual se o campo de entrada estiver vazio
       }
     });
+
+    const codigoField = document.getElementById("entrada");
+    codigoField.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    
   </script>
   
   {% endblock %}

@@ -21,7 +21,7 @@
       {% if messages %}
       <div class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} id={{message.tags}} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        <li{% if message.tags %} id="{{ message.tags }}" class="{{ message.tags }}" {% endif %}>{{ message }}</li>
           {% endfor %}
       </div>
       {% endif %}
@@ -59,22 +59,15 @@
 
     </form>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    function hideSuccessMessage(message) {
-      var successMessage = document.getElementById("colab_nao_encontrado");
-      successMessage.innerText = message;
-      successMessage.style.display = "block";
 
-      setTimeout(function () {
-        successMessage.style.display = "none";
-      }, 4000);
-    }
+    const messages = window.document.querySelector('.messages');
 
-    var successMessage = document.getElementById("colab_nao_encontrado");
-    if (successMessage) {
-      var message = successMessage.innerText;
-      hideSuccessMessage(message);
-    }
+    setTimeout(() => {
+      messages.style.display = 'none';
+    }, 5000);
+
     function toggleEmailInput() {
       var emailInput = document.getElementById("email_input");
       var emailCheckbox = document.getElementById("email_ch");

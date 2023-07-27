@@ -19,7 +19,7 @@ body {
 }
 
 .codigo-barras {
-    background: #d6edff !important;
+    background: rgb(224, 236, 250) !important;
     position: absolute;
     font-size: 20px;
     width: 135vh !important;
@@ -74,7 +74,7 @@ body {
     overflow-y: auto;
     height: 430px;
     width: 1500px;
-    background: #d6edff;
+    background: rgb(224, 236, 250);
     border: 2px solid #d6edff;
     border-radius: 10px;
 }
@@ -217,15 +217,27 @@ body {
 }
 
 .form-group {
-    width: 350px;
     position: relative;
-    top: -65%;
-    left: -42%;
 }
 
-.form-group span {
+.input-cod{
+    top: -65%;
+    left: -42%;
+    width: 350px;
+}
+
+.input-cod span {
     position: absolute;
     left: 175px;
+    top: 8px;
+    pointer-events: none;
+    transition: 0.5s;
+    opacity: .5;
+}
+
+.input-ref span {
+    position: absolute;
+    left: 10px;
     top: 8px;
     pointer-events: none;
     transition: 0.5s;
@@ -236,14 +248,37 @@ body {
     transform: translateY(-40px);
     opacity: 1;
     font-size: 16px;
-    font-weight: bold;
-    color: rgb(9, 67, 143);
 }
 
-.form-group input:valid~span {
+.input-cod input:focus~span {
     transform: translateY(-40px);
     opacity: 1;
     font-size: 16px;
     font-weight: bold;
     color: rgb(9, 67, 143);
+}
+
+.input-cod input:valid~span {
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(9, 67, 143);
+}
+
+.input-ref input:valid~span {
+    transform: translateY(-40px);
+    opacity: 1;
+    font-size: 16px;
+}
+
+.input-group-text-senha {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    position: absolute;
+    left: 45vh;
+    margin-top: -56px;
+    z-index: 2;
+    padding: 10px;
 }

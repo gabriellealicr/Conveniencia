@@ -22,12 +22,16 @@
         {{ sucesso_cadastro }}
       </div>
       {% endif %}
+
       <h2 class="titulo"><strong>Lista de Compras</strong></h2>
       <input class="busca filtro-data" type="text" id="data" name="filtro-data" placeholder="Filtrar por Data e Hora">
-      <input class="busca filtro-valor" type="text" id="valor" name="filtro-valor" placeholder="Filtrar por Valor Total">
-      <input class="busca filtro-colab" type="text" id="colab" name="filtro-colab" placeholder="Filtrar por Colaborador">
+      <input class="busca filtro-valor" type="text" id="valor" name="filtro-valor"
+        placeholder="Filtrar por Valor Total">
+      <input class="busca filtro-colab" type="text" id="colab" name="filtro-colab"
+        placeholder="Filtrar por Colaborador">
       <input class="busca filtro-prod" type="text" id="prod" name="filtro-prod" placeholder="Filtrar por Produtos">
-      <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras" placeholder="Filtrar por Código de Barras">
+      <input class="busca filtro-codigo-barras" type="text" id="codigo-barras" name="filtro-codigo-barras"
+        placeholder="Filtrar por Código de Barras">
       <input class="busca filtro-qtd" type="text" id="qtd" name="filtro-qtd" placeholder="Filtrar por Quantidade">
       <!-- <div class="filtro">
         <input class="form-control busca" type="text" name="pesquisa" id="pesquisa" placeholder="Filtre por data d-m-a ou d/m/a">
@@ -48,7 +52,7 @@
           {% for compra in compras %}
           <tr>
             <td>{{ compra.data|date:"d-m-Y H:i:s"}}</td>
-            <td>{{ compra.valor_total }}</td>
+            <td class="preco">R$ {{ compra.valor_total }}</td>
             <td>{{ compra.colaborador }}</td>
             <td>
               {% for item in compra.item_compra_set.all %}
@@ -77,6 +81,32 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
   <script>
+
+function formatarPreco() {
+      var precoFields = document.getElementsByClassName("preco");
+
+      for (var i = 0; i < precoFields.length; i++) {
+        var precoField = precoFields[i];
+        var precoValor = precoField.innerText.replace("R$ ", "").replace(",", ".");
+        var precoNumerico = parseFloat(precoValor);
+
+        if (!isNaN(precoNumerico)) {
+          var precoFormatado = precoNumerico.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          });
+
+          precoField.innerText = precoFormatado;
+        }
+      }
+    }
+
+    formatarPreco();
+
+    $(document).ready(function () {
+      formatarPreco();
+    });
+
     const nomeField = document.getElementById("colab");
     nomeField.addEventListener("input", function () {
       this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
@@ -87,15 +117,6 @@
       this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
     });
 
-    // const situacaoField = document.getElementById("situacao");
-    // situacaoField.addEventListener("input", function () {
-    //   this.value = this.value.replace(/[0-9´~'!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
-    // });
-
-    // const codigoField = document.getElementById("cpf");
-    // codigoField.addEventListener("input", function () {
-    //   this.value = this.value.replace(/[^0-9]/g, "");
-    // });
 
     $(document).ready(function () {
       // Evento 'input' é acionado quando o usuário digita em um dos campos de filtro
