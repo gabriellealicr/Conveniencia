@@ -19,6 +19,245 @@ import re
 from django.db.models import F
 from datetime import timedelta, date
 from PIL import Image
+import cv2 # Lê imagem / entrada de vídeo da câmera
+from pyzbar.pyzbar import decode # Biblioteca para decodificar códigos de barras e QR codes
+
+def Add_prod_codigo(request):
+    cap = cv2.VideoCapture(0) # Inicializa a captura de vídeo da câmera. O valor 0 indica que será usada a câmera padrão
+    cap.set(3, 640) # Define a largura do vídeo 
+    cap.set(4, 480) # Define a altura do vídeo
+    camera = True
+    while camera == True:
+        sucess, frame = cap.read() # Captura um quadro (frame) do vídeo da câmera
+        cv2.imshow('Testando', frame) # Exibe o frame em uma janela
+        cv2.waitKey(1) # Aguarda por 1 milissegundo para que a janela seja atualizada
+        if cv2.waitKey(1) & 0xFF == 27:
+            cap.release() # Libera o dispositivo de captura (a câmera)
+            cv2.destroyAllWindows() # Fecha a janela
+            break
+        if not sucess:
+            cap.release() # Libera o dispositivo de captura (a câmera)
+            cv2.destroyAllWindows() # Fecha a janela
+        for code in decode(frame): # Decodifica os códigos presentes no frame
+            print(code.data.decode('utf-8'))
+            codigo = code.data.decode('utf-8') # dado decodificado
+            if codigo:
+                cap.release() # Libera o dispositivo de captura (a câmera)
+                cv2.destroyAllWindows() # Fecha a janela
+                produto_codigo_barras = Produto.objects.filter(
+                codigo_barras=codigo)
+                if not produto_codigo_barras:
+                    produtos_adicionados = request.session.get('produtos', [])
+                    valor_total = request.session.get('valor_total', 0)
+                    messages.error(request, 'Código de barras inválido!',
+                                extra_tags='erro_inativo')
+                    url = reverse('conveniencia')
+                    return redirect(url)
+                produto = get_object_or_404(Produto, codigo_barras=codigo)
+                if not produto.ativo:
+                    messages.error(request, 'Produto está inativo!',
+                                extra_tags='erro_inativo')
+                    url = reverse('conveniencia')
+                    return redirect(url)
+
+                if 'produtos' not in request.session:   # Cria a instância da compra se ainda não existir na sessão
+                    request.session['produtos'] = []
+                    request.session['valor_total'] = 0
+                    request.session['itens'] = 0
+
+                # Verifica se o produto já foi adicionado anteriormente
+                produtos = request.session['produtos']
+                produto_existente = None
+                for produto_data in produtos:
+                    if str(produto_data['codigo_barras']) == str(codigo):
+                        produto_existente = produto_data
+                        break
+                estoque = get_object_or_404(Estoque, produtos=produto)
+                if estoque.quantidade <= 0:
+                    messages.error(request, 'Estoque indisponível!',
+                                extra_tags='erro_inativo')
+                    url = reverse('conveniencia')
+                    return redirect(url)
+
+                if produto_existente:
+                    # Incrementa a quantidade do produto existente
+                    produto_existente['quantidade'] += 1
+                    produto_existente['preco_total'] = produto_existente['preco'] * \
+                        produto_existente['quantidade']
+
+                    if estoque.quantidade < produto_existente['quantidade']:
+                        messages.error(request, 'Estoque indisponível!',
+                                    extra_tags='erro_inativo')
+                        url = reverse('conveniencia')
+                        return redirect(url)
+                else:                                 # Caso o produto ainda não tenha sido adicionado, cria um novo registro na lista de produtos
+                    contador = len(produtos) + 1      # Atribui um identificador único
+                    preco = f"{produto.preco:.2f}".replace('.', ',')
+                    produto_data = {
+                        'id': contador,
+                        'nome': produto.nome,
+                        'codigo_barras': produto.codigo_barras,
+                        'preco': preco,
+                        'quantidade': 1,
+                        'preco_total': produto.preco
+                    }
+                    produtos.append(produto_data)
+
+                # Atualiza o valor total da compra na sessão
+                valor_total = request.session['valor_total']
+                valor_total += produto.preco
+                request.session['valor_total'] = valor_total
+
+                itens = request.session['itens']
+                itens += 1
+                request.session['itens'] = itens
+
+                return redirect('conveniencia')
+
+            # Obtém a lista de produtos adicionados na sessão
+            produtos_adicionados = request.session.get('produtos', [])
+            # Obtém o valor total da compra na sessão
+            valor_total = request.session.get('valor_total', 0)
+            valor_total = f"{valor_total:.2f}".replace('.', ',')
+            itens = request.session.get('itens', 0)
+            # Renderiza a página com os produtos adicionados e o valor total
+            return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'valor_total': valor_total, 'itens': itens})
+    return redirect('conveniencia')
+
+def Finalizar_compra_codigo(request):
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 640)
+    cap.set(4, 480)
+    camera = True
+    itens = request.session['itens']
+    while camera == True:
+        sucess, frame = cap.read()
+        cv2.imshow('Testando', frame)
+        cv2.waitKey(1)
+        if cv2.waitKey(1) & 0xFF == 27:
+            cap.release() # Libera o dispositivo de captura (a câmera)
+            cv2.destroyAllWindows() # Fecha a janela
+            break
+        for code in decode(frame):
+            codigo = code.data.decode('utf-8')
+            if codigo:
+                cap.release()
+                cv2.destroyAllWindows()
+                produtos_adicionados = request.session.get('produtos', [])
+                if produtos_adicionados == []:
+                    messages.error(request, 'Carrinho vazio! Por favor, adicione um produto para realizar a compra',
+                            extra_tags='erro_inativo')
+                    url = reverse('conveniencia')
+                    return redirect(url)
+                valor_total = request.session.get('valor_total', 0)
+                valor_total = float(valor_total)
+                quantidade = request.session.get('quantidade', 0)
+                colaborador = Colaborador.objects.filter(codigo=codigo).first()
+                if colaborador:
+                    if colaborador.ativo:
+                        if colaborador.ativo:
+                            if valor_total > 0:
+
+                                # Cria a nova compra e adiciona os produtos
+                                compra = Compra.objects.create(
+                                    data=datetime.now(), valor_total=valor_total, colaborador=colaborador)
+                                data = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+                                for produto_data in produtos_adicionados:
+                                    produto = get_object_or_404(
+                                        Produto, codigo_barras=produto_data['codigo_barras'])
+                                    quantidade = produto_data['quantidade']
+                                    preco = produto.preco
+                                    item_compra = Item_Compra.objects.create(
+                                        compra=compra, produto=produto, preco=preco, quantidade=quantidade)
+                                    # Adiciona o produto à relação ManyToMany
+                                    compra.produtos.add(produto)
+                                # Limpa a lista de produtos na sessão
+                                request.session['produtos'] = []
+                                # Reseta o valor total da compra na sessão
+                                request.session['valor_total'] = 0
+                                # Reseta os itens na sessão
+                                request.session['itens'] = 0
+                                # Atualiza a quantidade no estoque
+                                if not produto.tipo == 'Ingresso' and not produto.tipo == 'Camiseta':
+                                    estoque = Estoque.objects.get(produtos=produto)
+                                    estoque.quantidade = F('quantidade') - quantidade
+                                    estoque.save()
+                                compra.save()
+                                email_mark = ''
+                                email_rh = ''
+                                user = User.objects.all()
+                                for usuario_gestao in user:
+                                    if usuario_gestao.username == 'marketing':
+                                        email_mark = usuario_gestao.email
+                                    if usuario_gestao.username == 'rh':
+                                        email_rh = usuario_gestao.email
+                                valor_total = f"{valor_total:.2f}".replace('.', ',')
+                                if produto.tipo == 'Ingresso':
+                                    enviar_email(f'Compra de Colaborador {colaborador.nome} finalizada com sucesso!',
+                                                email_rh, produtos_adicionados, valor_total, colaborador.nome, data)
+                                    enviar_email(f'A sua compra foi finalizada com sucesso!',
+                                                colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
+                                elif produto.tipo == 'Camiseta':
+                                    print("a")
+                                    enviar_email(f'Compra de Colaborador {colaborador.nome} finalizada com sucesso!',
+                                                email_mark, produtos_adicionados, valor_total, colaborador.nome, data)
+                                    enviar_email(f'A sua compra foi finalizada com sucesso!',
+                                                colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
+                                else:
+                                    enviar_email(f'A sua compra foi finalizada com sucesso!',
+                                                colaborador.email, produtos_adicionados, valor_total, colaborador.nome, data)
+                                total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
+                                    colaborador)
+                                return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador})
+                            total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
+                                colaborador)
+                            return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador})
+                        messages.error(request, 'Senha incorreta!',
+                           extra_tags='erro_inativo')
+                        url = reverse('conveniencia')
+                        return redirect(url)
+                    messages.error(request, 'Colaborador está inativo!',
+                           extra_tags='erro_inativo')
+                    url = reverse('conveniencia')
+                    return redirect(url)
+                messages.error(request, 'Colaborador não cadastrado!',
+                           extra_tags='erro_inativo')
+            url = reverse('conveniencia')
+            return redirect(url)
+
+def Verificar_referencia_codigo(request):
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 640)
+    cap.set(4, 480)
+    camera = True
+    itens = request.session['itens']
+    while camera == True:
+        sucess, frame = cap.read()
+        cv2.imshow('Testando', frame)
+        cv2.waitKey(1)
+        if cv2.waitKey(1) & 0xFF == 27:
+            cap.release() # Libera o dispositivo de captura (a câmera)
+            cv2.destroyAllWindows() # Fecha a janela
+            break
+        for code in decode(frame):
+            codigo = code.data.decode('utf-8')
+            if codigo:
+                cap.release()
+                cv2.destroyAllWindows()
+                colaborador = Colaborador.objects.filter(codigo=codigo).first()
+                produtos_adicionados = request.session.get('produtos', [])
+                valor_total = request.session.get('valor_total', 0)
+                itens = request.session.get('itens', 0)
+                if colaborador:
+                    if colaborador.ativo:
+                        if colaborador.ativo:
+                            total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
+                                colaborador)
+                            return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total})
+                        return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Senha incorreta!'})
+                    return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador está inativo!'})
+                return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador não cadastrado!'})
+            return redirect('conveniencia')
 
 
 def Adicionar_produto(request):
@@ -104,7 +343,6 @@ def Adicionar_produto(request):
     # Renderiza a página com os produtos adicionados e o valor total
     return render(request, 'compra/conveniencia.html', {'produtos_adicionados': produtos_adicionados, 'valor_total': valor_total, 'itens': itens})
 
-
 def calcular_gastos_referencia(colaborador):
     hoje = datetime.now().date()
     mes_passado = (hoje.month - 1) % 12 + 1
@@ -118,7 +356,7 @@ def calcular_gastos_referencia(colaborador):
     referencia_atual_inicio = datetime(ano, mes_passado, 26, 00, 00)
     referencia_atual_fim = datetime(
         ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
-    
+
     # Consulta o histórico de compras do colaborador na referência anterior
     compras_referencia_anterior = Compra.objects.filter(
         colaborador=colaborador,
@@ -134,16 +372,17 @@ def calcular_gastos_referencia(colaborador):
     )
     total_gasto_referencia_atual = sum(
         compra.valor_total for compra in compras_referencia_atual)
-    
+
     total_gasto_referencia_anterior = f"{total_gasto_referencia_anterior:.2f}".replace(
-                            '.', ',')
+        '.', ',')
     total_gasto_referencia_atual = f"{total_gasto_referencia_atual:.2f}".replace(
-                            '.', ',')
+        '.', ',')
 
     return total_gasto_referencia_anterior, total_gasto_referencia_atual
 
 
 def Finalizar_compra(request):
+    itens = request.session['itens']
     if request.method == 'POST':
         produtos_adicionados = request.session.get('produtos', [])
         valor_total = request.session.get('valor_total', 0)
@@ -152,6 +391,11 @@ def Finalizar_compra(request):
         login = request.POST['login']
         senha = request.POST['senha']
         colaborador = Colaborador.objects.filter(login=login).first()
+        if produtos_adicionados == []:
+            messages.error(request, 'Carrinho vazio! Por favor, adicione um produto para realizar a compra',
+                    extra_tags='erro_inativo')
+            url = reverse('conveniencia')
+            return redirect(url)
         if colaborador:
             if colaborador.ativo:
                 if check_password(senha, colaborador.senha):
@@ -211,18 +455,12 @@ def Finalizar_compra(request):
                     total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
                         colaborador)
                     return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador})
-                messages.error(request, 'Senha incorreta!',
-                               extra_tags='erro_inativo')
-                url = reverse('conveniencia')
-                return redirect(url)
-            messages.error(request, 'Colaborador está inativo!',
-                           extra_tags='erro_inativo')
-            url = reverse('conveniencia')
-            return redirect(url)
-        messages.error(request, 'Colaborador não cadastrado!',
-                       extra_tags='erro_inativo')
-        url = reverse('conveniencia')
-        return redirect(url)
+                valor_total = f"{valor_total:.2f}".replace('.', ',')
+                return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Senha incorreta!'})
+            valor_total = f"{valor_total:.2f}".replace('.', ',')
+            return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador está inativo!'})
+        valor_total = f"{valor_total:.2f}".replace('.', ',')
+        return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador não cadastrado!'})
     return redirect('conveniencia')
 
 
@@ -341,18 +579,9 @@ def Verificar_referencia(request):
                     total_gasto_referencia_anterior, total_gasto_referencia_atual = calcular_gastos_referencia(
                         colaborador)
                     return render(request, 'compra/conveniencia.html', {'mostrar_ref': True, 'gasto_referencia_anterior': total_gasto_referencia_anterior, 'gasto_referencia_atual': total_gasto_referencia_atual, 'colaborador': colaborador, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total})
-                messages.error(request, 'Senha incorreta!',
-                               extra_tags='erro_inativo')
-                url = reverse('conveniencia')
-                return redirect(url)
-            messages.error(request, 'Colaborador está inativo!',
-                           extra_tags='erro_inativo')
-            url = reverse('conveniencia')
-            return redirect(url)
-        messages.error(request, 'Colaborador não cadastrado!',
-                       extra_tags='erro_inativo')
-        url = reverse('conveniencia')
-        return redirect(url)
+                return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Senha incorreta!'})
+            return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador está inativo!'})
+        return render(request, 'compra/conveniencia.html', {'mostrar_cad': True, 'login': login, 'produtos_adicionados': produtos_adicionados, 'itens': itens, 'valor_total': valor_total, 'erro': 'Colaborador não cadastrado!'})
     return redirect('conveniencia')
 
 
@@ -602,10 +831,10 @@ def Relatorio_geral(request):
         # Calcula as datas de referência
         referencia_anterior_inicio = datetime(ano, mes_passado - 1, 26, 00, 00)
         referencia_anterior_fim = datetime(
-        ano if mes_passado != 12 else ano - 1, mes_passado, 25, 23, 59)
+            ano if mes_passado != 12 else ano - 1, mes_passado, 25, 23, 59)
         referencia_atual_inicio = datetime(ano, mes_passado, 26, 00, 00)
         referencia_atual_fim = datetime(
-        ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
+            ano if mes_atual != 12 else ano - 1, mes_atual, 25, 23, 59)
 
         # Consulta o histórico de compras na referência anterior
         compras_referencia_anterior = Compra.objects.filter(

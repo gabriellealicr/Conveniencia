@@ -53,6 +53,10 @@ body {
     width: 25vh;
 }
 
+.data_hora, .dataa, .qtd, .cod, .codbarras{
+    text-align: center;
+}
+
 .busca{
     outline: none;
     border: 2px solid rgb(238, 237, 237);

@@ -101,7 +101,12 @@ tr:hover .botao-edit {
 }
 
 .inpreco{
+    text-align: right;
     width: 120px;
+}
+
+#input-preco{
+    text-align: right;
 }
 
 .exc{
@@ -117,7 +122,13 @@ tr:hover .botao-edit {
 }
 
 .codbarras{
-    width: 140px;
+    width: 100px;
+    text-align: center;
+}
+
+#input-codigo{
+    width: 120px;
+    text-align: right;
 }
 
 .classificacao{
@@ -139,31 +150,31 @@ tr:hover .botao-edit {
 
 .filtro-nome {
     margin-left: 19vh;
-    width: 47vh !important;
+    width: 63vh !important;
     height: 37px;
 }
 
 .filtro-codigo-barras{
-    margin-left: 66vh;
-    width: 28vh !important;
+    margin-left: 95vh;
+    width: 21.2vh !important;
     height: 37px;
 }
 
 .filtro-preco{
-    margin-left: 94vh;
-    width: 25vh !important;
+    margin-left: 82vh;
+    width: 13vh !important;
     height: 37px;
 }
 
 .filtro-classif{
-    margin-left: 119vh;
-    width: 22vh !important;
+    margin-left: 116vh;
+    width: 21vh !important;
     height: 37px;
 }
 
 .filtro-situacao{
-    margin-left: 141vh;
-    width: 296px !important;
+    margin-left: 137vh;
+    width: 336px !important;
     height: 37px;
 }
 

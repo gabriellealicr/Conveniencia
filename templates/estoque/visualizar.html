@@ -34,9 +34,9 @@
       <thead>
         <tr>
           <th class="nome" scope="col">Nome</th>
+          <th scope="col" class="quantidade">Quantidade</th>
           <th class="codbarras" scope="col">Código de Barras</th>
           <th scope="col" class="classificacao">Classificação</th>
-          <th scope="col" class="quantidade">Quantidade</th>
           <th scope="col" class="opc">Movimentação</th>
         </tr>
       </thead>
@@ -46,11 +46,11 @@
         {% for estoque in produto.estoque_set.all %}
         <tr>
           <td>{{ produto.nome }}</td>
-          <td>{{ produto.codigo_barras }}</td>
-          <td>{{ produto.tipo }}</td>
           <td id="qtd" name="qtd" class="quantidade-atual">
             {{ estoque.quantidade }}
           </td>
+          <td class="cod">{{ produto.codigo_barras }}</td>
+          <td>{{ produto.tipo }}</td>
           <input type="hidden" value="{{ estoque.id }}" name="id_estoque_id">
           <td class="botoes">
             <a href="{% url 'entrada_estoque' estoque.id %}" class="btn btn entrada">Entrada</a>
@@ -118,17 +118,17 @@
       function atualizarListaEstoque() {
         // Captura os valores dos campos de filtro
         var filtroNome = $('.filtro-nome').val().toLowerCase();
+        var filtroQtd = $('.filtro-qtd').val().toLowerCase();
         var filtroCodigoBarras = $('.filtro-codigo-barras').val().toLowerCase();
         var filtroClassif = $('.filtro-classif').val().toLowerCase();
-        var filtroQtd = $('.filtro-qtd').val().toLowerCase();
 
         // Itera sobre cada linha da tabela de colaboradores
         $('.table tbody tr').each(function () {
           // Obtém os valores dos campos em cada linha
           var nome = $(this).find('td:nth-child(1)').text().toLowerCase();
-          var cod = $(this).find('td:nth-child(2)').text().toLowerCase();
-          var classif = $(this).find('td:nth-child(3)').text().toLowerCase();
-          var qtd = $(this).find('td:nth-child(4)').text().toLowerCase();
+          var qtd = $(this).find('td:nth-child(2)').text().toLowerCase();
+          var cod = $(this).find('td:nth-child(3)').text().toLowerCase();
+          var classif = $(this).find('td:nth-child(4)').text().toLowerCase();
 
           // Verifica se os valores correspondem aos filtros e exibe ou oculta a linha
           if ((filtroNome === '' || nome.indexOf(filtroNome) !== -1) &&

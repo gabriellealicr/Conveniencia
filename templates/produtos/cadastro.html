@@ -62,11 +62,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
   <script>
-    const nomeField = document.getElementById("nome");
-    nomeField.addEventListener("input", function () {
-      this.value = this.value.replace(/[0-9!@#$%¨^&*(),.?":{}|<>[\];=_/+\\-]/g, "");
-    });
-
+    
     const codigoField = document.getElementById("codigo_barras");
     codigoField.addEventListener("input", function () {
       this.value = this.value.replace(/[^0-9]/g, "");

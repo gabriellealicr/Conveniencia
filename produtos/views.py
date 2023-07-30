@@ -154,6 +154,7 @@ def Alterar(request, produto_id):   # Função após o "Salvar" na função Aces
             return redirect(url)
         # Verifica se o código de barras possui 13 números
         if len(str(produto.codigo_barras)) != 13:
+            print(len(str(produto.codigo_barras)))
             messages.error(
                 request, 'Código deve conter 13 números.', extra_tags='erro_codigo_barras')
             url = reverse('acessar_produto', args=[produto_id])

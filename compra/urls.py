@@ -10,4 +10,7 @@ urlpatterns = [
     path("verificar_referencia/", views.Verificar_referencia, name='verificar_referencia'),
     path("relatorio_consumo/", views.Relatorio_consumo, name='relatorio_consumo'),
     path("relatorio_geral/", views.Relatorio_geral, name='relatorio_geral'),
+    path("add_prod_codigo/", views.Add_prod_codigo, name='add_prod_codigo'),
+    path("finalizar_compra_codigo/", views.Finalizar_compra_codigo, name='finalizar_compra_codigo'),
+    path("verificar_referencia_codigo/", views.Verificar_referencia_codigo, name='verificar_referencia_codigo'),
 ]

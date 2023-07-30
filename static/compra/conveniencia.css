@@ -22,7 +22,7 @@ body {
     background: rgb(224, 236, 250) !important;
     position: absolute;
     font-size: 20px;
-    width: 135vh !important;
+    width: 130vh !important;
     margin-bottom: 27vh;
     left: 170px;
     border: 2px solid #d6edff;
@@ -33,17 +33,11 @@ body {
     position: absolute;
     width: 170px;
     margin-bottom: 27vh;
-    right: 170px;
+    right: 225px;
     border: 2px solid #d6edff !important;
     border-radius: 5px !important;
     background-color: #d6edff !important;
     color: rgb(9, 67, 143) !important;
-}
-
-.botao-add:hover {
-    border: 2px solid yellow !important;
-    color: black !important;
-    background-color: yellow !important;
 }
 
 .botao-limpar {
@@ -56,12 +50,6 @@ body {
     border-radius: 5px !important;
     background-color: #d6edff !important;
     color: rgb(9, 67, 143) !important;
-}
-
-.botao-limpar:hover {
-    border: 2px solid yellow !important;
-    color: black !important;
-    background-color: yellow !important;
 }
 
 .produtos {
@@ -96,7 +84,7 @@ body {
 }
 
 .imagem {
-    margin-bottom: 230px;
+    margin-bottom: 240px;
 }
 
 .botao-finalizar {
@@ -110,12 +98,6 @@ body {
     color: rgb(9, 67, 143) !important;
 }
 
-.botao-finalizar:hover {
-    border: 2px solid yellow !important;
-    color: black !important;
-    background-color: yellow !important;
-}
-
 .botao-referencia {
     position: absolute;
     font-size: 20px;
@@ -126,12 +108,6 @@ body {
     border-radius: 5px !important;
     background-color: #d6edff !important;
     color: rgb(9, 67, 143) !important;
-}
-
-.botao-referencia:hover {
-    border: 2px solid yellow !important;
-    color: black !important;
-    background-color: yellow !important;
 }
 
 .valor_total {
@@ -188,13 +164,17 @@ body {
     margin-left: 10px;
 }
 
-.topo .qtd,
-.topo .preco {
+.topo .qtd {
     width: 50px;
 }
 
+.topo .preco{
+    width: 10px;
+    text-align: right;
+}
+
 .topo .codbarras {
-    width: 150px;
+    width: 100px;
 }
 
 .topo .exc {
@@ -202,7 +182,7 @@ body {
 }
 
 .topo .nome {
-    width: 300px;
+    width: 600px;
 }
 
 .btn-ok-modal {
@@ -210,7 +190,7 @@ body {
     color: #ffffff;
 }
 
-.btn-ok-modal:hover {
+.btn-ok-modal:hover, .botao-add-codigo:hover, .finalizar-compra-codigo:hover, .botao-referencia:hover, .botao-finalizar:hover, .botao-limpar:hover, .botao-add:hover, .botao-referencia-codigo:hover{
     background-color: yellow !important;
     color: #000 !important;
     border-color: rgb(235, 238, 79) !important;
@@ -281,4 +261,53 @@ body {
     margin-top: -56px;
     z-index: 2;
     padding: 10px;
+}
+
+.erroo, .erro{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red
+}
+
+.botao-add-codigo{
+    position: absolute;
+    font-size: 32px;
+    margin-bottom: 27vh;
+    left: 169vh;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
+}
+
+.finalizar-compra-codigo{
+    position: absolute;
+    font-size: 32px;
+    margin-top: 85vh;
+    left: 105vh;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
+}
+
+.botao-referencia-codigo{
+    position: absolute;
+    font-size: 32px;
+    margin-top: 85vh;
+    left: 37vh;
+    border: 2px solid #d6edff !important;
+    border-radius: 5px !important;
+    background-color: #d6edff !important;
+    color: rgb(9, 67, 143) !important;
+}
+
+.inquantidade, .qtd, .inpreco{
+    text-align: right;
+}
+
+.lixeira{
+    text-align: right;
+    width: 100px;
 }

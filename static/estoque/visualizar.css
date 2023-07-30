@@ -52,16 +52,29 @@ body {
     white-space: nowrap;
 }
 
-.nome, .codbarras{
+.nome{
     width: 250px;
 }
 
+ .cod{
+    text-align: right;
+}
+
+.codbarras{
+    text-align: right;
+    width: 100px;
+}
+
 .classificacao{
-    width: 200px;
+    width: 100px;
 }
 
 .quantidade{
-    width: 160px;
+    width: 90px;
+}
+
+.quantidade-atual{
+    text-align: center;
 }
 
 .opc{
@@ -97,25 +110,25 @@ body {
 
 .filtro-nome {
     margin-left: 19vh;
-    width: 36vh !important;
+    width: 50vh !important;
     height: 37px;
 }
 
 .filtro-codigo-barras{
-    margin-left: 55vh;
-    width: 36vh !important;
+    margin-left: 88vh;
+    width: 22vh !important;
     height: 37px;
 }
 
 .filtro-classif{
-    margin-left: 91vh;
-    width: 28vh !important;
+    margin-left: 110vh;
+    width: 20vh !important;
     height: 37px;
 }
 
 .filtro-qtd{
-    margin-left: 119vh;
-    width: 23vh !important;
+    margin-left: 68vh;
+    width: 20vh !important;
     height: 37px;
 }
 

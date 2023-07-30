@@ -46,10 +46,10 @@
         {% for movimentacao in movimentacao %}
         <tr>
           <td>{{ movimentacao.estoque.produtos}}</td>
-          <td>{{ movimentacao.estoque.produtos.codigo_barras }}</td>
-          <td>{{ movimentacao.data_hora|date:"d-m-Y H:i:s"}}</td>
+          <td class="cod">{{ movimentacao.estoque.produtos.codigo_barras }}</td>
+          <td class="dataa">{{ movimentacao.data_hora|date:"d-m-Y H:i:s"}}</td>
           <td>{{ movimentacao.tipo }}</td>
-          <td>{{ movimentacao.quantidade_alteracao }}</td>
+          <td class="qtd">{{ movimentacao.quantidade_alteracao }}</td>
           <td>{{ movimentacao.usuario }}</td>
         </tr>
         {% endfor %}

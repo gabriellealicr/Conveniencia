@@ -36,8 +36,8 @@
       <thead>
         <tr>
           <th class="nome" scope="col">Nome</th>
-          <th class="codbarras" scope="col">Código de Barras</th>
           <th class="inpreco" scope="col">Preço</th>
+          <th class="codbarras" scope="col">Código de Barras</th>
           <th scope="col" class="classificacao">Classificação</th>
           <th scope="col" class="situacao">Situação</th>
           <th class="exc" scope="col"></th>
@@ -48,9 +48,9 @@
         <tr {% if not produto.ativo %}class="inativo" {% endif %}>
           <td id="input-nome">{{ produto.nome }} <span onclick="copiarValor('input-nome')" class="icon"><i
             class="fa-regular fa-paste"></i></span></td>
+            <td id="input-preco" class="preco">R$ {{ produto.preco|floatformat:2 }}<span onclick="copiarValor('input-preco')" class="icon"><i
+              class="fa-regular fa-paste"></i></span> </td>
           <td id="input-codigo">{{ produto.codigo_barras }} <span onclick="copiarValor('input-codigo')" class="icon"><i
-            class="fa-regular fa-paste"></i></span> </td>
-          <td id="input-preco" class="preco">R$ {{ produto.preco|floatformat:2 }}<span onclick="copiarValor('input-preco')" class="icon"><i
             class="fa-regular fa-paste"></i></span> </td>
           <td>{{ produto.tipo }}</td>
           <td>

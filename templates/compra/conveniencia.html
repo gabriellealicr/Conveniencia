@@ -30,13 +30,16 @@
           <div class="modal-body">
             <br>
             <div class="form-group input-ref">
-              <input type="text" class="form-control login" id="login" name="login" autocomplete="off" required>
+              <input type="text" class="form-control login" id="login" value="{{request.POST.login}}" name="login"
+                autocomplete="off" required>
               <span>Login</span>
+            </div>
+            <div class="erro" id="erro">
+              {{ erro }}
             </div>
             <br>
             <div class="form-group input-ref">
-              <input type="password" class="form-control senhaConf" id="senha" name="senha" autocomplete="off"
-                required>
+              <input type="password" class="form-control senhaConf" id="senha" name="senha" autocomplete="off" required>
               <span>Senha</span>
             </div>
             <span class="input-group-text-senha">
@@ -66,14 +69,17 @@
           </div>
           <div class="modal-body">
             <br>
+            <div class="error-message" id="error-message"></div>
             <div class="form-group input-ref">
-              <input type="text" class="form-control login" id="login" name="login" autocomplete="off" required>
+              <input type="text" class="form-control login" id="loginn" name="login" autocomplete="off" required>
               <span>Login</span>
+            </div>
+            <div class="erroo" id="erroo">
+              {{ erro }}
             </div>
             <br>
             <div class="form-group input-ref">
-              <input type="password" class="form-control senhaRef" id="senha" name="senha" autocomplete="off"
-                required>
+              <input type="password" class="form-control senhaRef" id="senhaa" name="senha" autocomplete="off" required>
               <span>Senha</span>
             </div>
             <span class="input-group-text-senha">
@@ -109,7 +115,7 @@
     </div>
   </div>
 
-  <form class="form-compra" method="post" action="{% url 'conveniencia' %}">
+  <form class="form-compra" method="post" action="{% url 'conveniencia' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {% if messages %}
     <div class="messages">
@@ -121,8 +127,8 @@
     <img class="imagem" src="{% static 'imagens/logooficial.png' %}">
     <strong class="campo">Inserir produto:</strong>
     <div class="form-group input-cod">
-      <input type="text" class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
-        autocomplete="off" required>
+      <input type="text" required class="form-control codigo-barras" id="codigo_barras" maxlength="13" name="codigo_barras"
+        autocomplete="off">
       <span>Código de Barras</span>
     </div>
     <button class="btn btn-light botao-add" type="submit"><strong>Adicionar Produto</strong></button>
@@ -132,6 +138,9 @@
         Compra</strong></a>
     <a class="btn btn-light botao-referencia" data-toggle="modal" data-target="#enviarLoginRefModal"><strong>Verificar
         Referência</strong></a>
+    <a class="fa fa-qrcode botao-add-codigo" href="{% url 'add_prod_codigo' %}"></a>
+    <a class="fa fa-qrcode finalizar-compra-codigo" href="{% url 'finalizar_compra_codigo' %}"></a>
+        <a class="fa fa-qrcode botao-referencia-codigo" href="{% url 'verificar_referencia_codigo' %}"></a>
     <div class="lista">
       <table class="table table-hover">
         {% if produtos_adicionados %}
@@ -140,8 +149,8 @@
           <tr class="topo">
             <th scope="col" class="nome">Nome</th>
             <th scope="col" class="codbarras">Código de Barras</th>
-            <th scope="col" class="qtd">Quantidade</th>
             <th scope="col" class="preco">Preço</th>
+            <th scope="col" class="qtd">Quantidade</th>
             <th scope="col" class="exc"></th>
           </tr>
         </thead>
@@ -151,8 +160,8 @@
             <tr>
               <td>{{ produto_data.nome }}</td>
               <td>{{ produto_data.codigo_barras }}</td>
-              <td>{{ produto_data.quantidade }}</td>
-              <td>R$ {{ produto_data.preco }}</td>
+              <td class="inpreco">R$ {{ produto_data.preco }}</td>
+              <td class="inquantidade">{{ produto_data.quantidade }}</td>
               <td>
                 <a href="{% url 'excluir_produto' produto_data.id %}" class="fa fa-minus-square lixeira"
                   aria-hidden="true"></a>
@@ -201,7 +210,7 @@
     }
 
     function finalizar_compra() {
-      window.location.href = "{% url 'finalizar_compra' %}";
+      window.location = "{% url 'finalizar_compra' %}";
     }
 
     {% if mostrar_ref %}
@@ -212,10 +221,48 @@
 
     setTimeout(function () {
       $('#enviarReferenciaModal').modal('hide');
-      window.location.href = "{% url 'conveniencia' %}"
+      loginn.value = ''
+      senhaa.value = ''
+      window.location = "{% url 'conveniencia' %}"
     }, 8000);
 
     {% endif %}
+
+    $('#enviarReferenciaModal').on('hidden.bs.modal', function () {
+      window.location = "{% url 'conveniencia' %}"
+    });
+
+
+    $('#enviarLoginModal').on('hidden.bs.modal', function () {
+      login.value = ''
+      senha.value = ''
+      erroo.style.display = 'none';
+      erro.style.display = 'none';
+      var newURL = window.location.protocol + '//' + window.location.host + '/compra/conveniencia';
+      window.history.pushState({ path: newURL }, '', newURL);
+    });
+
+    $('#enviarLoginRefModal').on('hidden.bs.modal', function () {
+      loginn.value = ''
+      senhaa.value = ''
+      erroo.style.display = 'none';
+      erro.style.display = 'none';
+
+      var newURL = window.location.protocol + '//' + window.location.host + '/compra/conveniencia';
+      window.history.pushState({ path: newURL }, '', newURL);
+    });
+
+
+    {% if mostrar_cad %}
+
+    $(document).ready(function () {
+      $('#enviarLoginModal').modal('show');
+      var newURL = window.location.protocol + '//' + window.location.host + '/compra/conveniencia';
+      window.history.pushState({ path: newURL }, '', newURL);
+    });
+
+    {% endif %}
+
 
     const togglePasswordR = document.querySelector('#togglePasswordR');
     const passwordInputR = document.querySelector('.senhaRef');
@@ -234,7 +281,7 @@
       passwordInputC.setAttribute('type', type);
       togglePasswordC.classList.toggle('fa-eye-slash');
     });
-    
+  </script>
 
   </script>
 </body>

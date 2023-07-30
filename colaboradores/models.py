@@ -7,6 +7,7 @@ class Colaborador(models.Model):
     login = models.CharField(unique=True, max_length=50)
     senha = models.CharField(max_length=80, null=True)
     ativo = models.BooleanField(null=True)
+    codigo = models.IntegerField(null=True, default=1)
 
     @property
     def cpf_formatado(self):
